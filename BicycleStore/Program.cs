@@ -1,30 +1,36 @@
-using BicycleStore.DbContext;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using BicycleStore.DbContext;
+using System.Xml.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Pobranie connection string
-var connectionString = builder.Configuration.GetConnectionString("AppDbContextConnection") ?? throw new InvalidOperationException("Connection string 'AppDbContextConnection' not found.");
-
-// Dodanie us³ug do kontenera
-builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddDefaultIdentity<IdentityUser>()       // dodaæ
+    .AddRoles<IdentityRole>()                             //
+    .AddEntityFrameworkStores<AppDbContext>();
 
+builder.Services.AddMemoryCache();                        // dodaæ
+builder.Services.AddSession();
+
+
+// Connection string
+var connectionString = builder.Configuration.GetConnectionString("AppDbContextConnection") ?? throw new InvalidOperationException("Connection string 'AppDbContextConnection' not found.");
 var dbPath = Path.Combine(builder.Environment.ContentRootPath, "Bike.db");
+
+// Add services to the container
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite($"Data Source={dbPath}"));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-// Konfiguracja potoku ¿¹dañ HTTP
+// Configure the HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // Domyœlna wartoœæ HSTS to 30 dni. Mo¿esz to zmieniæ dla œrodowiska produkcyjnego, zobacz https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -33,13 +39,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthentication(); // Dodanie uwierzytelniania
+app.UseAuthentication();
 app.UseAuthorization();
+app.UseSession();
+app.MapRazorPages();
+
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
-app.MapRazorPages();
 
 app.Run();
