@@ -1,6 +1,29 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<BicycleStore.Entities.Bike>
+
 @{
-   <h1>asdadsads</h1>
+    ViewData["Title"] = "Home Page";
 }
+
+<h1>Available Bikes</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Model</th>
+            <th>Brand</th>
+            <th>Price</th>
+            <th>Supplier</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bike in Model)
+        {
+            <tr>
+                <td>@bike.Model</td>
+                <td>@bike.Brand</td>
+                <td>@bike.Price.ToString("C")</td>
+                <td>@bike.Supplier?.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,17 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using BicycleStore.Entities;
+using BicycleStore.DbContext;
+using System.Threading.Tasks;
 
 namespace RowerStore.Controllers
 {
     public class BikeController : Controller
     {
-        public IActionResult Index()
+        private readonly AppDbContext _context;
+
+        public BikeController(AppDbContext context)
         {
-            return View();
+            _context = context;
         }
 
-        public IActionResult RedirectToIndex()
+        public async Task<IActionResult> Index()
         {
-            return RedirectToAction("Index");
+            var bikes = await _context.Bikes.ToListAsync();
+            return View(bikes);
         }
+
+
+
+
+
+       
     }
 }
