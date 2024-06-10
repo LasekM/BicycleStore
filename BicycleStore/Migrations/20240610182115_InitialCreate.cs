@@ -127,8 +127,8 @@ namespace BicycleStore.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
-                    ProviderKey = table.Column<string>(type: "TEXT", nullable: false),
+                    LoginProvider = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    ProviderKey = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "TEXT", nullable: true),
                     UserId = table.Column<string>(type: "TEXT", nullable: false)
                 },
@@ -172,8 +172,8 @@ namespace BicycleStore.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    LoginProvider = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
                     Value = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -241,8 +241,8 @@ namespace BicycleStore.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "13e8f6cc-2368-4d29-9fe0-c282ee86f013", "13e8f6cc-2368-4d29-9fe0-c282ee86f013", "admin", "ADMIN" },
-                    { "407740b5-fa66-42b6-93dc-97b9a6281246", "407740b5-fa66-42b6-93dc-97b9a6281246", "user", "USER" }
+                    { "9f85f11b-81b5-4ee5-bd2a-3f4fbaad0302", "9f85f11b-81b5-4ee5-bd2a-3f4fbaad0302", "user", "USER" },
+                    { "fcb24956-41ac-4893-ad81-12d24a21c912", "fcb24956-41ac-4893-ad81-12d24a21c912", "admin", "ADMIN" }
                 });
 
             migrationBuilder.InsertData(
@@ -250,8 +250,8 @@ namespace BicycleStore.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "65ef3b6b-e1ae-4745-90c1-548b89cdef69", 0, "2a5612c6-ae72-47da-8ccc-7b94fb89f0dd", "user@wsei.edu.pl", true, false, null, "USER@WSEI.EDU.PL", "USER", "AQAAAAIAAYagAAAAEPYZyRtiRkmMl7hQ2s/mZaCuEmgrtwYN9896OGLZi5UpzNRuMQu4ce9aAHLMkPY7LQ==", null, false, "a29e9457-9da6-44f6-9de9-2da4363610d8", false, "user" },
-                    { "b00acbaf-726b-4cea-bff0-de7661735c31", 0, "868e371a-fc5f-42e1-b35e-05a12c0f391c", "adam@wsei.edu.pl", true, false, null, "ADAM@WSEI.EDU.PL", "ADMIN", "AQAAAAIAAYagAAAAEOA2NfMpNQn76wXVkXZgUWDc1wb4uG6EEf7U0J/KmBr93apMfBrQAmLZ82xqWp0yCw==", null, false, "61111a05-2ea9-496c-b731-539885168ef5", false, "admin" }
+                    { "48bf0b3a-5b0e-4d85-a2bc-9adb5d1fce06", 0, "d35f522a-694a-4b46-b8d1-26c0a9408606", "user@wsei.edu.pl", true, false, null, "USER@WSEI.EDU.PL", "USER", "AQAAAAIAAYagAAAAENmQY0liUmQYmTLb6EcBbGlwpa/Hs8OvnnxLpz3V7GyGrPPjm2mDCum6DvxjL90jLQ==", null, false, "094a6632-b62f-4381-bf17-2c6116426a40", false, "user" },
+                    { "d0fbe9a8-ddb9-411a-b1c2-bfd5f0b5cf3a", 0, "7dc479a7-3bed-41bf-bf18-02caf8ff42ae", "adam@wsei.edu.pl", true, false, null, "ADAM@WSEI.EDU.PL", "ADMIN", "AQAAAAIAAYagAAAAEIiwFWhC1VcHy15nYCE0/0tgm9mu9uQZl2uMBdpxhQhygeavOw40b0uZkDF3ic94/Q==", null, false, "6f2e8672-33c0-4996-a14c-0e0dd0ae20fc", false, "admin" }
                 });
 
             migrationBuilder.InsertData(
@@ -277,8 +277,8 @@ namespace BicycleStore.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { "407740b5-fa66-42b6-93dc-97b9a6281246", "65ef3b6b-e1ae-4745-90c1-548b89cdef69" },
-                    { "13e8f6cc-2368-4d29-9fe0-c282ee86f013", "b00acbaf-726b-4cea-bff0-de7661735c31" }
+                    { "9f85f11b-81b5-4ee5-bd2a-3f4fbaad0302", "48bf0b3a-5b0e-4d85-a2bc-9adb5d1fce06" },
+                    { "fcb24956-41ac-4893-ad81-12d24a21c912", "d0fbe9a8-ddb9-411a-b1c2-bfd5f0b5cf3a" }
                 });
 
             migrationBuilder.InsertData(

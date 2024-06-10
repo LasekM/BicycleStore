@@ -7,22 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="src\Application\DTOs\" />
-    <Folder Include="src\Application\Commands\" />
-    <Folder Include="src\Application\Services\" />
-    <Folder Include="src\Domain\Entities\" />
-    <Folder Include="src\Domain\Interfaces\" />
-    <Folder Include="src\Domain\ValueObjects\" />
-    <Folder Include="src\Domain\" />
-    <Folder Include="src\Infrastructure\DataMappers\" />
-    <Folder Include="src\Infrastructure\ExternalServices\" />
-    <Folder Include="src\Infrastructure\Repostories\" />
-    <Folder Include="src\Presentation\Controllers\" />
-    <Folder Include="src\Presentation\ViewModels\" />
-    <Folder Include="src\Presentation\Views\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.5" />

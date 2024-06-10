@@ -6,11 +6,11 @@ using System.Xml.Linq;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
-builder.Services.AddDefaultIdentity<IdentityUser>()       // dodaæ
+builder.Services.AddDefaultIdentity<IdentityUser>()       // dodaÄ‡
     .AddRoles<IdentityRole>()                             //
     .AddEntityFrameworkStores<AppDbContext>();
 
-builder.Services.AddMemoryCache();                        // dodaæ
+builder.Services.AddMemoryCache();                        // dodaÄ‡
 builder.Services.AddSession();
 
 

@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using BicycleStore.Entities;
+using BicycleStore.Models;
 using BicycleStore.DbContext;
 using System.Threading.Tasks;
 
-namespace RowerStore.Controllers
+namespace BicycleStore.Controllers
 {
     public class BikeController : Controller
     {

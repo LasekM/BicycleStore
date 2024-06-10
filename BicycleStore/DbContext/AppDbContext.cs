@@ -1,4 +1,4 @@
-﻿using BicycleStore.Entities;
+﻿using BicycleStore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
