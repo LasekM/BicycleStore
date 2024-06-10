@@ -202,15 +202,15 @@ namespace BicycleStore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "fcb24956-41ac-4893-ad81-12d24a21c912",
-                            ConcurrencyStamp = "fcb24956-41ac-4893-ad81-12d24a21c912",
+                            Id = "1cf96380-0117-494f-8a99-1af9e3267be2",
+                            ConcurrencyStamp = "1cf96380-0117-494f-8a99-1af9e3267be2",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "9f85f11b-81b5-4ee5-bd2a-3f4fbaad0302",
-                            ConcurrencyStamp = "9f85f11b-81b5-4ee5-bd2a-3f4fbaad0302",
+                            Id = "a3e67484-81e0-4dd0-8182-e7a354c14a6c",
+                            ConcurrencyStamp = "a3e67484-81e0-4dd0-8182-e7a354c14a6c",
                             Name = "user",
                             NormalizedName = "USER"
                         });
@@ -305,35 +305,35 @@ namespace BicycleStore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d0fbe9a8-ddb9-411a-b1c2-bfd5f0b5cf3a",
+                            Id = "739ba347-c0a0-4e40-8762-2ea9fb41c8c9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7dc479a7-3bed-41bf-bf18-02caf8ff42ae",
+                            ConcurrencyStamp = "f34d39e6-1b68-4ba9-9b71-9444705683c1",
                             Email = "adam@wsei.edu.pl",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADAM@WSEI.EDU.PL",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIiwFWhC1VcHy15nYCE0/0tgm9mu9uQZl2uMBdpxhQhygeavOw40b0uZkDF3ic94/Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIuUoQ5e0JKlkksmEmRwzqah+FjWUT5b14rY5TnxIkUqiCuqaXCFimUVH87fevJi+w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6f2e8672-33c0-4996-a14c-0e0dd0ae20fc",
+                            SecurityStamp = "47d50d97-dc33-4140-9a97-66302fb5e70e",
                             TwoFactorEnabled = false,
-                            UserName = "admin"
+                            UserName = "adam@wsei.edu.pl"
                         },
                         new
                         {
-                            Id = "48bf0b3a-5b0e-4d85-a2bc-9adb5d1fce06",
+                            Id = "50705f14-f971-4f79-b862-5c0d4de0725b",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d35f522a-694a-4b46-b8d1-26c0a9408606",
+                            ConcurrencyStamp = "94ca4bc4-cc35-41fb-80ed-7ac20a2d9e17",
                             Email = "user@wsei.edu.pl",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@WSEI.EDU.PL",
                             NormalizedUserName = "USER",
-                            PasswordHash = "AQAAAAIAAYagAAAAENmQY0liUmQYmTLb6EcBbGlwpa/Hs8OvnnxLpz3V7GyGrPPjm2mDCum6DvxjL90jLQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEF0QprOSci2BPFA2nS3Sb07lG387aWEIWpBq+nUjM0h3LzPfyuSeftIHOL9KIcoSTA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "094a6632-b62f-4381-bf17-2c6116426a40",
+                            SecurityStamp = "526ccf06-943a-4867-a26f-336cfc0fb3d1",
                             TwoFactorEnabled = false,
-                            UserName = "user"
+                            UserName = "user@wsei.edu.pl"
                         });
                 });
 
@@ -401,13 +401,13 @@ namespace BicycleStore.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "d0fbe9a8-ddb9-411a-b1c2-bfd5f0b5cf3a",
-                            RoleId = "fcb24956-41ac-4893-ad81-12d24a21c912"
+                            UserId = "739ba347-c0a0-4e40-8762-2ea9fb41c8c9",
+                            RoleId = "1cf96380-0117-494f-8a99-1af9e3267be2"
                         },
                         new
                         {
-                            UserId = "48bf0b3a-5b0e-4d85-a2bc-9adb5d1fce06",
-                            RoleId = "9f85f11b-81b5-4ee5-bd2a-3f4fbaad0302"
+                            UserId = "50705f14-f971-4f79-b862-5c0d4de0725b",
+                            RoleId = "a3e67484-81e0-4dd0-8182-e7a354c14a6c"
                         });
                 });
 

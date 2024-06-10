@@ -2,11 +2,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using BicycleStore.DbContext;
 using System.Xml.Linq;
+using BicycleStore.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
-builder.Services.AddDefaultIdentity<IdentityUser>()       // dodać
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)       // dodać
     .AddRoles<IdentityRole>()                             //
     .AddEntityFrameworkStores<AppDbContext>();
 
@@ -24,6 +25,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+builder.Services.AddScoped<IBicycleService, MemoryRowerekService>();
+builder.Services.AddScoped<ISupplierService, MemorySupplierService>();
+
 
 var app = builder.Build();
 

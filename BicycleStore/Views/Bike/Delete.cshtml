@@ -1,0 +1,29 @@
+﻿@model IEnumerable<BicycleStore.Models.Bike>
+
+@{
+    ViewData["Title"] = "Search Bikes";
+}
+
+<h1>Search Bikes</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Model</th>
+            <th>Brand</th>
+            <th>Price</th>
+            <th>Supplier</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bike in Model)
+        {
+            <tr>
+                <td>@bike.Model</td>
+                <td>@bike.Brand</td>
+                <td>@bike.Price</td>
+                <td>@bike.Supplier?.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>
