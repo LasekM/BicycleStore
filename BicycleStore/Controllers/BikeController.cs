@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
-using System;
 using System.Linq;
 using BicycleStore.Services;
+using Newtonsoft.Json;
 
 namespace BicycleStore.Controllers
 {
@@ -32,7 +32,7 @@ namespace BicycleStore.Controllers
         public IActionResult Create()
         {
             var suppliers = _supplierService.FindAll();
-            ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name");
+            ViewBag.Suppliers = new SelectList(suppliers, "SupplierId", "Name");
             return View(new Bike());
         }
 
@@ -45,6 +45,8 @@ namespace BicycleStore.Controllers
                 _rowerekService.Add(model);
                 return RedirectToAction("Index");
             }
+            var suppliers = _supplierService.FindAll();
+            ViewBag.Suppliers = new SelectList(suppliers, "SupplierId", "Name");
             return View(model);
         }
 
@@ -70,18 +72,73 @@ namespace BicycleStore.Controllers
                 return NotFound();
             }
             var suppliers = _supplierService.FindAll();
-            ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name");
+            ViewBag.Suppliers = new SelectList(suppliers, "SupplierId", "Name");
+            return View(rowerek);
+        }
+
+        // Edycja roweru
+        [Authorize(Roles = "admin")]
+        [HttpGet]
+        public IActionResult UpdateBike(int id)
+        {
+            var rowerek = _rowerekService.FindById(id);
+            if (rowerek == null)
+            {
+                return NotFound();
+            }
             return View(rowerek);
         }
 
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public IActionResult Update(Bike model)
+        public IActionResult UpdateBike(Bike model)
         {
+            Console.WriteLine(JsonConvert.SerializeObject(model, Formatting.Indented)); // Logowanie całego modelu
             if (ModelState.IsValid)
             {
                 _rowerekService.Update(model);
                 return RedirectToAction("Index");
+            }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                foreach (var error in errors)
+                {
+                    Console.WriteLine(error.ErrorMessage);
+                }
+            }
+            return View(model);
+        }
+
+        // Edycja dostawcy
+        [Authorize(Roles = "admin")]
+        [HttpGet]
+        public IActionResult UpdateSupplier(int id)
+        {
+            var supplier = _supplierService.FindById(id);
+            if (supplier == null)
+            {
+                return NotFound();
+            }
+            return View(supplier);
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPost]
+        public IActionResult UpdateSupplier(Supplier model)
+        {
+            if (ModelState.IsValid)
+            {
+                _supplierService.Update(model);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                foreach (var error in errors)
+                {
+                    Console.WriteLine(error.ErrorMessage);
+                }
             }
             return View(model);
         }

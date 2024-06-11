@@ -6,11 +6,11 @@ using BicycleStore.Models;
 
 namespace BicycleStore.Services
 {
-    public class MemoryRowerekService : IBicycleService
+    public class MemoryBicycleService : IBicycleService
     {
         private readonly AppDbContext _context;
 
-        public MemoryRowerekService(AppDbContext context)
+        public MemoryBicycleService(AppDbContext context)
         {
             _context = context;
         }

@@ -27,8 +27,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
-builder.Services.AddScoped<IBicycleService, MemoryRowerekService>();
+builder.Services.AddScoped<IBicycleService, MemoryBicycleService>();
 builder.Services.AddScoped<ISupplierService, MemorySupplierService>();
+
 
 
 var app = builder.Build();

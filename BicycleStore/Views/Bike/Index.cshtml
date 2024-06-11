@@ -5,7 +5,7 @@
 }
 
 <h1>Bikes</h1>
-
+<a class="btn btn-primary" asp-controller="Bike" asp-action="Create">Dodaj</a>
 <table class="table">
     <thead>
         <tr>
@@ -25,7 +25,7 @@
                 <td>@bike.Supplier?.Name</td>
                 <td>
                     <a asp-action="Details" asp-route-id="@bike.BikeId">Details</a> |
-                    <a asp-action="Update" asp-route-id="@bike.BikeId">Edit</a> |
+                    <a asp-action="UpdateBike" asp-route-id="@bike.BikeId">Edit</a> |
                     <a asp-action="Delete" asp-route-id="@bike.BikeId">Delete</a>
                 </td>
             </tr>
