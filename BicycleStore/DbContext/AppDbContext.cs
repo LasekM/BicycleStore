@@ -79,7 +79,7 @@ namespace BicycleStore.DbContext
                 Email = "adam@wsei.edu.pl",
                 EmailConfirmed = true,
                 UserName = "adam@wsei.edu.pl",
-                NormalizedUserName = "ADMIN",
+                NormalizedUserName = "ADAM@WSEI.EDU.PL",
                 NormalizedEmail = "ADAM@WSEI.EDU.PL"
             };
 
@@ -112,7 +112,7 @@ namespace BicycleStore.DbContext
                 Email = "user@wsei.edu.pl",
                 EmailConfirmed = true,
                 UserName = "user@wsei.edu.pl",
-                NormalizedUserName = "USER",
+                NormalizedUserName = "USER@WSEI.EDU.PL",
                 NormalizedEmail = "USER@WSEI.EDU.PL"
             };
 
