@@ -1,4 +1,5 @@
 ﻿using BicycleStore.Models;
+using BicycleStore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -10,14 +11,12 @@ namespace BicycleStore.DbContext
 {
     public class AppDbContext : IdentityDbContext<IdentityUser>
     {
-        public DbSet<Bike> Bikes { get; set; }
-        public DbSet<Customer> Customers { get; set; }
-        public DbSet<Order> Orders { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Bike> Bikes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=BikeShop.db");
+            optionsBuilder.UseSqlite("Data Source=Bike.db");
         }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
@@ -26,45 +25,37 @@ namespace BicycleStore.DbContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //Dane//
+
             base.OnModelCreating(modelBuilder);
 
             // Przykładowe dane
             modelBuilder.Entity<Supplier>().HasData(
-                new Supplier { SupplierId = 1, Name = "Bike Suppliers Inc.", ContactEmail = "contact@bikesuppliers.com" },
-                new Supplier { SupplierId = 2, Name = "Premium Bike Parts", ContactEmail = "info@premiumbikeparts.com" }
+                new Supplier { Id = 1, Name = "Bike Suppliers Inc." },
+                new Supplier { Id = 2, Name = "Premium Bike Parts" }
             );
 
             modelBuilder.Entity<Bike>().HasData(
-                new Bike { BikeId = 1, Model = "Mountain King", Brand = "TrailBlazer", Price = 999.99m, SupplierId = 1 },
-                new Bike { BikeId = 2, Model = "Road Pro", Brand = "Speedster", Price = 1299.99m, SupplierId = 2 }
+                new Bike { Id = 1, Model = "Mountain King", Price = 999.99m, SupplierID = 1 },
+                new Bike { Id = 2, Model = "Road Pro", Price = 1299.99m, SupplierID = 2 }
             );
 
-            modelBuilder.Entity<Customer>().HasData(
-                new Customer { CustomerId = 1, FirstName = "John", LastName = "Doe", Email = "john.doe@example.com" },
-                new Customer { CustomerId = 2, FirstName = "Jane", LastName = "Smith", Email = "jane.smith@example.com" }
-            );
-
-            modelBuilder.Entity<Order>().HasData(
-                new Order { OrderId = 1, BikeId = 1, CustomerId = 1, OrderDate = new DateTime(2023, 1, 1) },
-                new Order { OrderId = 2, BikeId = 2, CustomerId = 2, OrderDate = new DateTime(2023, 2, 15) }
-            );
-
-            modelBuilder.Entity<Bike>()
-                .HasMany(bike => bike.Orders)
-                .WithOne(order => order.Bike)
-                .HasForeignKey(order => order.BikeId)
+            modelBuilder.Entity<Supplier>()
+                .HasMany(supplier => supplier.Bikes)
+                .WithOne(bike => bike.Supplier)
+                .HasForeignKey(bike => bike.SupplierID)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Customer>()
-                .HasMany(customer => customer.Orders)
-                .WithOne(order => order.Customer)
-                .HasForeignKey(order => order.CustomerId)
-                .OnDelete(DeleteBehavior.Cascade);
 
-            // Użytkownicy i role
+
+
+
+            //Uzytkownicy//
+
             string ADMIN_ID = Guid.NewGuid().ToString();
             string ROLE_ID = Guid.NewGuid().ToString();
 
+            // dodanie roli administratora
             modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
             {
                 Name = "admin",
@@ -73,6 +64,7 @@ namespace BicycleStore.DbContext
                 ConcurrencyStamp = ROLE_ID
             });
 
+            // utworzenie administratora jako użytkownika
             var admin = new IdentityUser
             {
                 Id = ADMIN_ID,
@@ -83,17 +75,20 @@ namespace BicycleStore.DbContext
                 NormalizedEmail = "ADAM@WSEI.EDU.PL"
             };
 
+            // haszowanie hasła
             PasswordHasher<IdentityUser> ph = new PasswordHasher<IdentityUser>();
             admin.PasswordHash = ph.HashPassword(admin, "1234abcd!@#$ABCD");
 
+            // zapisanie użytkownika
             modelBuilder.Entity<IdentityUser>().HasData(admin);
 
-            modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
+            // przypisanie roli administratora użytkownikowi
+            modelBuilder.Entity<IdentityUserRole<string>>()
+            .HasData(new IdentityUserRole<string>
             {
                 RoleId = ROLE_ID,
                 UserId = ADMIN_ID
             });
-
             string USER_ROLE_ID = Guid.NewGuid().ToString();
 
             modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
@@ -103,7 +98,6 @@ namespace BicycleStore.DbContext
                 Id = USER_ROLE_ID,
                 ConcurrencyStamp = USER_ROLE_ID
             });
-
             string USER_ID = Guid.NewGuid().ToString();
 
             var user = new IdentityUser
@@ -111,22 +105,20 @@ namespace BicycleStore.DbContext
                 Id = USER_ID,
                 Email = "user@wsei.edu.pl",
                 EmailConfirmed = true,
-                UserName = "user@wsei.edu.pl",
-                NormalizedUserName = "USER@WSEI.EDU.PL",
+                UserName = "user",
+                NormalizedUserName = "USER",
                 NormalizedEmail = "USER@WSEI.EDU.PL"
+
             };
 
             user.PasswordHash = ph.HashPassword(user, "userPassword123");
-
             modelBuilder.Entity<IdentityUser>().HasData(user);
-
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
             {
                 RoleId = USER_ROLE_ID,
                 UserId = USER_ID
             });
+
         }
-
-
     }
 }

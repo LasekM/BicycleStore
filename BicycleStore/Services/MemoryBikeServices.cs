@@ -1,16 +1,16 @@
 ﻿using BicycleStore.DbContext;
+using BicycleStore.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using BicycleStore.Models;
 
 namespace BicycleStore.Services
 {
-    public class MemoryBicycleService : IBicycleService
+    public class MemoryBikeService : IBikeService
     {
         private readonly AppDbContext _context;
 
-        public MemoryBicycleService(AppDbContext context)
+        public MemoryBikeService(AppDbContext context)
         {
             _context = context;
         }
@@ -19,7 +19,7 @@ namespace BicycleStore.Services
         {
             _context.Bikes.Add(bike);
             _context.SaveChanges();
-            return bike.BikeId;
+            return bike.Id;
         }
 
         public void DeleteById(Bike bike)
@@ -30,17 +30,17 @@ namespace BicycleStore.Services
 
         public List<Bike> FindAll()
         {
-            return _context.Bikes.Include(b => b.Supplier).ToList();
+            return _context.Bikes.Include(s => s.Supplier).ToList();
         }
 
         public Bike? FindById(int id)
         {
-            return _context.Bikes.FirstOrDefault(b => b.BikeId == id);
+            return _context.Bikes.Include(s => s.Supplier).FirstOrDefault(a => a.Id == id);
         }
 
         public void Update(Bike bike)
         {
-            var actualBike = _context.Bikes.Find(bike.BikeId);
+            var actualBike = _context.Bikes.Find(bike.Id);
             if (actualBike != null)
             {
                 _context.Entry(actualBike).CurrentValues.SetValues(bike);

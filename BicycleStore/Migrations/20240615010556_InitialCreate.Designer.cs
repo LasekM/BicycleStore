@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BicycleStore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240610192605_InitialCreate")]
+    [Migration("20240615010556_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -22,13 +22,9 @@ namespace BicycleStore.Migrations
 
             modelBuilder.Entity("BicycleStore.Models.Bike", b =>
                 {
-                    b.Property<int>("BikeId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Brand")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("Model")
                         .IsRequired()
@@ -37,142 +33,55 @@ namespace BicycleStore.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("SupplierId")
+                    b.Property<int>("SupplierID")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("BikeId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("SupplierId");
+                    b.HasIndex("SupplierID");
 
                     b.ToTable("Bikes");
 
                     b.HasData(
                         new
                         {
-                            BikeId = 1,
-                            Brand = "TrailBlazer",
+                            Id = 1,
                             Model = "Mountain King",
                             Price = 999.99m,
-                            SupplierId = 1
+                            SupplierID = 1
                         },
                         new
                         {
-                            BikeId = 2,
-                            Brand = "Speedster",
+                            Id = 2,
                             Model = "Road Pro",
                             Price = 1299.99m,
-                            SupplierId = 2
-                        });
-                });
-
-            modelBuilder.Entity("BicycleStore.Models.Customer", b =>
-                {
-                    b.Property<int>("CustomerId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("CustomerId");
-
-                    b.ToTable("Customers");
-
-                    b.HasData(
-                        new
-                        {
-                            CustomerId = 1,
-                            Email = "john.doe@example.com",
-                            FirstName = "John",
-                            LastName = "Doe"
-                        },
-                        new
-                        {
-                            CustomerId = 2,
-                            Email = "jane.smith@example.com",
-                            FirstName = "Jane",
-                            LastName = "Smith"
-                        });
-                });
-
-            modelBuilder.Entity("BicycleStore.Models.Order", b =>
-                {
-                    b.Property<int>("OrderId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BikeId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("OrderId");
-
-                    b.HasIndex("BikeId");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("Orders");
-
-                    b.HasData(
-                        new
-                        {
-                            OrderId = 1,
-                            BikeId = 1,
-                            CustomerId = 1,
-                            OrderDate = new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            OrderId = 2,
-                            BikeId = 2,
-                            CustomerId = 2,
-                            OrderDate = new DateTime(2023, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            SupplierID = 2
                         });
                 });
 
             modelBuilder.Entity("BicycleStore.Models.Supplier", b =>
                 {
-                    b.Property<int>("SupplierId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("ContactEmail")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("SupplierId");
+                    b.HasKey("Id");
 
                     b.ToTable("Suppliers");
 
                     b.HasData(
                         new
                         {
-                            SupplierId = 1,
-                            ContactEmail = "contact@bikesuppliers.com",
+                            Id = 1,
                             Name = "Bike Suppliers Inc."
                         },
                         new
                         {
-                            SupplierId = 2,
-                            ContactEmail = "info@premiumbikeparts.com",
+                            Id = 2,
                             Name = "Premium Bike Parts"
                         });
                 });
@@ -205,15 +114,15 @@ namespace BicycleStore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1cf96380-0117-494f-8a99-1af9e3267be2",
-                            ConcurrencyStamp = "1cf96380-0117-494f-8a99-1af9e3267be2",
+                            Id = "ed4ed5a4-3430-49e2-8794-ed5c86d5456b",
+                            ConcurrencyStamp = "ed4ed5a4-3430-49e2-8794-ed5c86d5456b",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "a3e67484-81e0-4dd0-8182-e7a354c14a6c",
-                            ConcurrencyStamp = "a3e67484-81e0-4dd0-8182-e7a354c14a6c",
+                            Id = "3bd51258-c289-43fa-82e0-c0bf23afcf70",
+                            ConcurrencyStamp = "3bd51258-c289-43fa-82e0-c0bf23afcf70",
                             Name = "user",
                             NormalizedName = "USER"
                         });
@@ -308,35 +217,35 @@ namespace BicycleStore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "739ba347-c0a0-4e40-8762-2ea9fb41c8c9",
+                            Id = "9d122e86-4ea3-40dd-a8c8-f481f8f84e80",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f34d39e6-1b68-4ba9-9b71-9444705683c1",
+                            ConcurrencyStamp = "8af4d807-5cd6-40e3-884a-db8ca2962630",
                             Email = "adam@wsei.edu.pl",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADAM@WSEI.EDU.PL",
-                            NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIuUoQ5e0JKlkksmEmRwzqah+FjWUT5b14rY5TnxIkUqiCuqaXCFimUVH87fevJi+w==",
+                            NormalizedUserName = "ADAM@WSEI.EDU.PL",
+                            PasswordHash = "AQAAAAIAAYagAAAAEL26OQGigumWFOVfH7tvxEwIcqwlZ31XIg1ISabecGhdinhKMHXJv+XuENG1MJocmw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "47d50d97-dc33-4140-9a97-66302fb5e70e",
+                            SecurityStamp = "060fba3c-40f9-47d5-9084-8a260938c7c3",
                             TwoFactorEnabled = false,
                             UserName = "adam@wsei.edu.pl"
                         },
                         new
                         {
-                            Id = "50705f14-f971-4f79-b862-5c0d4de0725b",
+                            Id = "f8609f58-18ef-4104-b051-0445e206fd39",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "94ca4bc4-cc35-41fb-80ed-7ac20a2d9e17",
+                            ConcurrencyStamp = "e85e8d58-6a9b-4707-a18e-f9ff3f0fd612",
                             Email = "user@wsei.edu.pl",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@WSEI.EDU.PL",
                             NormalizedUserName = "USER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEF0QprOSci2BPFA2nS3Sb07lG387aWEIWpBq+nUjM0h3LzPfyuSeftIHOL9KIcoSTA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBcwMfYo241fwXX7RgfJQLaU3awDfLAK/tjm59mgVKVPgwu3TO78mlhjIRp4MiyZFA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "526ccf06-943a-4867-a26f-336cfc0fb3d1",
+                            SecurityStamp = "29723aad-c162-462f-b77c-e2d212b90862",
                             TwoFactorEnabled = false,
-                            UserName = "user@wsei.edu.pl"
+                            UserName = "user"
                         });
                 });
 
@@ -404,13 +313,13 @@ namespace BicycleStore.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "739ba347-c0a0-4e40-8762-2ea9fb41c8c9",
-                            RoleId = "1cf96380-0117-494f-8a99-1af9e3267be2"
+                            UserId = "9d122e86-4ea3-40dd-a8c8-f481f8f84e80",
+                            RoleId = "ed4ed5a4-3430-49e2-8794-ed5c86d5456b"
                         },
                         new
                         {
-                            UserId = "50705f14-f971-4f79-b862-5c0d4de0725b",
-                            RoleId = "a3e67484-81e0-4dd0-8182-e7a354c14a6c"
+                            UserId = "f8609f58-18ef-4104-b051-0445e206fd39",
+                            RoleId = "3bd51258-c289-43fa-82e0-c0bf23afcf70"
                         });
                 });
 
@@ -439,30 +348,11 @@ namespace BicycleStore.Migrations
                 {
                     b.HasOne("BicycleStore.Models.Supplier", "Supplier")
                         .WithMany("Bikes")
-                        .HasForeignKey("SupplierId")
+                        .HasForeignKey("SupplierID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Supplier");
-                });
-
-            modelBuilder.Entity("BicycleStore.Models.Order", b =>
-                {
-                    b.HasOne("BicycleStore.Models.Bike", "Bike")
-                        .WithMany("Orders")
-                        .HasForeignKey("BikeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BicycleStore.Models.Customer", "Customer")
-                        .WithMany("Orders")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Bike");
-
-                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -514,16 +404,6 @@ namespace BicycleStore.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("BicycleStore.Models.Bike", b =>
-                {
-                    b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("BicycleStore.Models.Customer", b =>
-                {
-                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("BicycleStore.Models.Supplier", b =>

@@ -9,5 +9,6 @@ namespace BicycleStore.Services
         void DeleteById(Supplier supplier);
         Supplier? FindById(int id);
         List<Supplier> FindAll();
+        
     }
 }

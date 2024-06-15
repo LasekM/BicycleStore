@@ -1,11 +1,20 @@
-﻿namespace BicycleStore.Models
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+
+
+
+namespace BicycleStore.Models
 {
     public class Supplier
     {
-        public int SupplierId { get; set; }
-        public string Name { get; set; }
-        public string ContactEmail { get; set; }
 
-        public ICollection<Bike> Bikes { get; set; }
+        public int Id { get; set; }
+
+        public string Name { get; set; }//
+
+        public ICollection<Bike> Bikes { get; set; } = new HashSet<Bike>();
     }
+
+   
+
 }

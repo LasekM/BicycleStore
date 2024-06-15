@@ -1,43 +1,33 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using BicycleStore.DbContext;
-using System.Xml.Linq;
 using BicycleStore.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("AppDbContextConnection")
+    ?? throw new InvalidOperationException("Connection string 'AppDbContextConnection' not found.");
 
+// Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)       // dodać
-    .AddRoles<IdentityRole>()                             //
+builder.Services.AddDefaultIdentity<IdentityUser>()
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IBikeService, MemoryBikeService>();
+builder.Services.AddScoped<ISupplierService, MemorySupplierService>();
 
-builder.Services.AddMemoryCache();                        // dodać
-builder.Services.AddSession();
-
-
-// Connection string
-var connectionString = builder.Configuration.GetConnectionString("AppDbContextConnection") ?? throw new InvalidOperationException("Connection string 'AppDbContextConnection' not found.");
 var dbPath = Path.Combine(builder.Environment.ContentRootPath, "Bike.db");
-
-// Add services to the container
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite($"Data Source={dbPath}"));
 
-builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages();
-
-builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
-builder.Services.AddScoped<IBicycleService, MemoryBicycleService>();
-builder.Services.AddScoped<ISupplierService, MemorySupplierService>();
-
-
+builder.Services.AddSession();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline
+// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error");
+    app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
 
@@ -49,8 +39,8 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();
-app.MapRazorPages();
 
+app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",

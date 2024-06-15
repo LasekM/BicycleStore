@@ -53,32 +53,16 @@ namespace BicycleStore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Customers",
-                columns: table => new
-                {
-                    CustomerId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    FirstName = table.Column<string>(type: "TEXT", nullable: false),
-                    LastName = table.Column<string>(type: "TEXT", nullable: false),
-                    Email = table.Column<string>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Customers", x => x.CustomerId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Suppliers",
                 columns: table => new
                 {
-                    SupplierId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    ContactEmail = table.Column<string>(type: "TEXT", nullable: false)
+                    Name = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Suppliers", x => x.SupplierId);
+                    table.PrimaryKey("PK_Suppliers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -191,48 +175,20 @@ namespace BicycleStore.Migrations
                 name: "Bikes",
                 columns: table => new
                 {
-                    BikeId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Model = table.Column<string>(type: "TEXT", nullable: false),
-                    Brand = table.Column<string>(type: "TEXT", nullable: false),
                     Price = table.Column<decimal>(type: "TEXT", nullable: false),
-                    SupplierId = table.Column<int>(type: "INTEGER", nullable: false)
+                    SupplierID = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Bikes", x => x.BikeId);
+                    table.PrimaryKey("PK_Bikes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Bikes_Suppliers_SupplierId",
-                        column: x => x.SupplierId,
+                        name: "FK_Bikes_Suppliers_SupplierID",
+                        column: x => x.SupplierID,
                         principalTable: "Suppliers",
-                        principalColumn: "SupplierId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    OrderId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    BikeId = table.Column<int>(type: "INTEGER", nullable: false),
-                    CustomerId = table.Column<int>(type: "INTEGER", nullable: false),
-                    OrderDate = table.Column<DateTime>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.OrderId);
-                    table.ForeignKey(
-                        name: "FK_Orders_Bikes_BikeId",
-                        column: x => x.BikeId,
-                        principalTable: "Bikes",
-                        principalColumn: "BikeId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Orders_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
-                        principalColumn: "CustomerId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -241,8 +197,8 @@ namespace BicycleStore.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1cf96380-0117-494f-8a99-1af9e3267be2", "1cf96380-0117-494f-8a99-1af9e3267be2", "admin", "ADMIN" },
-                    { "a3e67484-81e0-4dd0-8182-e7a354c14a6c", "a3e67484-81e0-4dd0-8182-e7a354c14a6c", "user", "USER" }
+                    { "3bd51258-c289-43fa-82e0-c0bf23afcf70", "3bd51258-c289-43fa-82e0-c0bf23afcf70", "user", "USER" },
+                    { "ed4ed5a4-3430-49e2-8794-ed5c86d5456b", "ed4ed5a4-3430-49e2-8794-ed5c86d5456b", "admin", "ADMIN" }
                 });
 
             migrationBuilder.InsertData(
@@ -250,26 +206,17 @@ namespace BicycleStore.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "50705f14-f971-4f79-b862-5c0d4de0725b", 0, "94ca4bc4-cc35-41fb-80ed-7ac20a2d9e17", "user@wsei.edu.pl", true, false, null, "USER@WSEI.EDU.PL", "USER", "AQAAAAIAAYagAAAAEF0QprOSci2BPFA2nS3Sb07lG387aWEIWpBq+nUjM0h3LzPfyuSeftIHOL9KIcoSTA==", null, false, "526ccf06-943a-4867-a26f-336cfc0fb3d1", false, "user@wsei.edu.pl" },
-                    { "739ba347-c0a0-4e40-8762-2ea9fb41c8c9", 0, "f34d39e6-1b68-4ba9-9b71-9444705683c1", "adam@wsei.edu.pl", true, false, null, "ADAM@WSEI.EDU.PL", "ADMIN", "AQAAAAIAAYagAAAAEIuUoQ5e0JKlkksmEmRwzqah+FjWUT5b14rY5TnxIkUqiCuqaXCFimUVH87fevJi+w==", null, false, "47d50d97-dc33-4140-9a97-66302fb5e70e", false, "adam@wsei.edu.pl" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Customers",
-                columns: new[] { "CustomerId", "Email", "FirstName", "LastName" },
-                values: new object[,]
-                {
-                    { 1, "john.doe@example.com", "John", "Doe" },
-                    { 2, "jane.smith@example.com", "Jane", "Smith" }
+                    { "9d122e86-4ea3-40dd-a8c8-f481f8f84e80", 0, "8af4d807-5cd6-40e3-884a-db8ca2962630", "adam@wsei.edu.pl", true, false, null, "ADAM@WSEI.EDU.PL", "ADAM@WSEI.EDU.PL", "AQAAAAIAAYagAAAAEL26OQGigumWFOVfH7tvxEwIcqwlZ31XIg1ISabecGhdinhKMHXJv+XuENG1MJocmw==", null, false, "060fba3c-40f9-47d5-9084-8a260938c7c3", false, "adam@wsei.edu.pl" },
+                    { "f8609f58-18ef-4104-b051-0445e206fd39", 0, "e85e8d58-6a9b-4707-a18e-f9ff3f0fd612", "user@wsei.edu.pl", true, false, null, "USER@WSEI.EDU.PL", "USER", "AQAAAAIAAYagAAAAEBcwMfYo241fwXX7RgfJQLaU3awDfLAK/tjm59mgVKVPgwu3TO78mlhjIRp4MiyZFA==", null, false, "29723aad-c162-462f-b77c-e2d212b90862", false, "user" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Suppliers",
-                columns: new[] { "SupplierId", "ContactEmail", "Name" },
+                columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { 1, "contact@bikesuppliers.com", "Bike Suppliers Inc." },
-                    { 2, "info@premiumbikeparts.com", "Premium Bike Parts" }
+                    { 1, "Bike Suppliers Inc." },
+                    { 2, "Premium Bike Parts" }
                 });
 
             migrationBuilder.InsertData(
@@ -277,26 +224,17 @@ namespace BicycleStore.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { "a3e67484-81e0-4dd0-8182-e7a354c14a6c", "50705f14-f971-4f79-b862-5c0d4de0725b" },
-                    { "1cf96380-0117-494f-8a99-1af9e3267be2", "739ba347-c0a0-4e40-8762-2ea9fb41c8c9" }
+                    { "ed4ed5a4-3430-49e2-8794-ed5c86d5456b", "9d122e86-4ea3-40dd-a8c8-f481f8f84e80" },
+                    { "3bd51258-c289-43fa-82e0-c0bf23afcf70", "f8609f58-18ef-4104-b051-0445e206fd39" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Bikes",
-                columns: new[] { "BikeId", "Brand", "Model", "Price", "SupplierId" },
+                columns: new[] { "Id", "Model", "Price", "SupplierID" },
                 values: new object[,]
                 {
-                    { 1, "TrailBlazer", "Mountain King", 999.99m, 1 },
-                    { 2, "Speedster", "Road Pro", 1299.99m, 2 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Orders",
-                columns: new[] { "OrderId", "BikeId", "CustomerId", "OrderDate" },
-                values: new object[,]
-                {
-                    { 1, 1, 1, new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, 2, 2, new DateTime(2023, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, "Mountain King", 999.99m, 1 },
+                    { 2, "Road Pro", 1299.99m, 2 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -337,19 +275,9 @@ namespace BicycleStore.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bikes_SupplierId",
+                name: "IX_Bikes_SupplierID",
                 table: "Bikes",
-                column: "SupplierId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Orders_BikeId",
-                table: "Orders",
-                column: "BikeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Orders_CustomerId",
-                table: "Orders",
-                column: "CustomerId");
+                column: "SupplierID");
         }
 
         /// <inheritdoc />
@@ -371,19 +299,13 @@ namespace BicycleStore.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "Bikes");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Bikes");
-
-            migrationBuilder.DropTable(
-                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "Suppliers");

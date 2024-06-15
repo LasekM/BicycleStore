@@ -1,121 +1,82 @@
-﻿using BicycleStore.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Mvc;
+using BicycleStore.Models;
+using System.Collections.Generic;
 using System.Linq;
-using BicycleStore.Services;
-using Newtonsoft.Json;
+using BicycleStore.DbContext;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BicycleStore.Controllers
 {
-    [Authorize]
     public class BikeController : Controller
     {
-        private readonly IBicycleService _rowerekService;
-        private readonly ISupplierService _supplierService;
+        private readonly AppDbContext _context;
 
-        public BikeController(IBicycleService rowerekService, ISupplierService supplierService)
+        public BikeController(AppDbContext context)
         {
-            _rowerekService = rowerekService;
-            _supplierService = supplierService;
+            _context = context;
         }
 
-        [AllowAnonymous]
         public IActionResult Index()
         {
-            var rowerDictionary = _rowerekService.FindAll().ToDictionary(b => b.BikeId);
-            return View(rowerDictionary);
+            var suppliers = _context.Suppliers.ToList();
+            return View(suppliers);
         }
 
-        [Authorize(Roles = "admin")]
-        [HttpGet]
-        public IActionResult Create()
-        {
-            var suppliers = _supplierService.FindAll();
-            ViewBag.Suppliers = new SelectList(suppliers, "SupplierId", "Name");
-            return View(new Bike());
-        }
-
-        [Authorize(Roles = "admin")]
-        [HttpPost]
-        public IActionResult Create(Bike model)
-        {
-            if (ModelState.IsValid)
-            {
-                _rowerekService.Add(model);
-                return RedirectToAction("Index");
-            }
-            var suppliers = _supplierService.FindAll();
-            ViewBag.Suppliers = new SelectList(suppliers, "SupplierId", "Name");
-            return View(model);
-        }
-
-        [AllowAnonymous]
-        [HttpGet]
         public IActionResult Details(int id)
         {
-            var rowerek = _rowerekService.FindById(id);
-            if (rowerek == null)
+            var supplier = _context.Suppliers.FirstOrDefault(s => s.Id == id);
+            if (supplier == null)
             {
                 return NotFound();
             }
-            return View(rowerek);
+            var bikes = _context.Bikes.Where(b => b.SupplierID == id).ToList();
+            ViewBag.Bikes = bikes;
+            return View(supplier);
         }
 
-        [Authorize(Roles = "admin")]
-        [HttpGet]
-        public IActionResult Update(int id)
+        public IActionResult CreateSupplier()
         {
-            var rowerek = _rowerekService.FindById(id);
-            if (rowerek == null)
-            {
-                return NotFound();
-            }
-            var suppliers = _supplierService.FindAll();
-            ViewBag.Suppliers = new SelectList(suppliers, "SupplierId", "Name");
-            return View(rowerek);
+            return View();
         }
 
-        // Edycja roweru
-        [Authorize(Roles = "admin")]
-        [HttpGet]
-        public IActionResult UpdateBike(int id)
-        {
-            var rowerek = _rowerekService.FindById(id);
-            if (rowerek == null)
-            {
-                return NotFound();
-            }
-            return View(rowerek);
-        }
-
-        [Authorize(Roles = "admin")]
         [HttpPost]
-        public IActionResult UpdateBike(Bike model)
+        public IActionResult CreateSupplier(Supplier supplier)
         {
-            Console.WriteLine(JsonConvert.SerializeObject(model, Formatting.Indented)); // Logowanie całego modelu
             if (ModelState.IsValid)
             {
-                _rowerekService.Update(model);
-                return RedirectToAction("Index");
+                _context.Suppliers.Add(supplier);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
             }
-            else
-            {
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
-                foreach (var error in errors)
-                {
-                    Console.WriteLine(error.ErrorMessage);
-                }
-            }
-            return View(model);
+            return View(supplier);
         }
 
-        // Edycja dostawcy
-        [Authorize(Roles = "admin")]
-        [HttpGet]
-        public IActionResult UpdateSupplier(int id)
+        public IActionResult CreateBike()
         {
-            var supplier = _supplierService.FindById(id);
+            var suppliers = _context.Suppliers.ToList();
+            ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name");
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateBike(Bike bike)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Bikes.Add(bike);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            var suppliers = _context.Suppliers.ToList();
+            ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name");
+            return View(bike);
+        }
+
+
+
+        public IActionResult EditSupplier(int id)
+        {
+            var supplier = _context.Suppliers.FirstOrDefault(s => s.Id == id);
             if (supplier == null)
             {
                 return NotFound();
@@ -123,49 +84,108 @@ namespace BicycleStore.Controllers
             return View(supplier);
         }
 
-        [Authorize(Roles = "admin")]
         [HttpPost]
-        public IActionResult UpdateSupplier(Supplier model)
+        public IActionResult EditSupplier(Supplier supplier)
         {
             if (ModelState.IsValid)
             {
-                _supplierService.Update(model);
-                return RedirectToAction("Index");
+                _context.Suppliers.Update(supplier);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
             }
-            else
-            {
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
-                foreach (var error in errors)
-                {
-                    Console.WriteLine(error.ErrorMessage);
-                }
-            }
-            return View(model);
+            return View(supplier);
         }
 
-        [Authorize(Roles = "admin")]
-        [HttpGet]
-        public IActionResult Delete(int id)
+        public IActionResult EditBike(int id)
         {
-            var rowerek = _rowerekService.FindById(id);
-            if (rowerek == null)
+            var bike = _context.Bikes.FirstOrDefault(b => b.Id == id);
+            if (bike == null)
             {
                 return NotFound();
             }
-            return View(rowerek);
+            var suppliers = _context.Suppliers.ToList();
+            ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name");
+            return View(bike);
         }
 
-        [Authorize(Roles = "admin")]
-        [HttpPost, ActionName("Delete")]
-        public IActionResult ConfirmDelete(int id)
+        [HttpPost]
+        public IActionResult EditBike(Bike bike)
         {
-            var rowerekToDelete = _rowerekService.FindById(id);
-            if (rowerekToDelete != null)
+            if (ModelState.IsValid)
             {
-                _rowerekService.DeleteById(rowerekToDelete);
-                return RedirectToAction("Index");
+                _context.Bikes.Update(bike);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Details), new { id = bike.SupplierID });
+            }
+            var suppliers = _context.Suppliers.ToList();
+            ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name");
+            return View(bike);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        public IActionResult DeleteBike(int id)
+        {
+            var bike = _context.Bikes.FirstOrDefault(b => b.Id == id);
+            if (bike == null)
+            {
+                return NotFound();
+            }
+            return View(bike);
+        }
+
+        [HttpPost, ActionName("DeleteBikeConfirmed")]
+        public IActionResult DeleteBikeConfirmed(int id)
+        {
+            var bike = _context.Bikes.FirstOrDefault(b => b.Id == id);
+            if (bike != null)
+            {
+                _context.Bikes.Remove(bike);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
             }
             return NotFound();
         }
+
+
+
+
+
+
+
+        public IActionResult DeleteSupplier(int id)
+        {
+            var supplier = _context.Suppliers.FirstOrDefault(s => s.Id == id);
+            if (supplier == null)
+            {
+                return NotFound();
+            }
+            return View(supplier);
+        }
+
+        [HttpPost, ActionName("DeleteConfirmed")]
+        public IActionResult DeleteSupplierConfirmed(int id)
+        {
+            var supplier = _context.Suppliers.FirstOrDefault(s => s.Id == id);
+            if (supplier != null)
+            {
+                var bikes = _context.Bikes.Where(b => b.SupplierID == id).ToList();
+                _context.Bikes.RemoveRange(bikes);
+                _context.Suppliers.Remove(supplier);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            return NotFound();
+        }
+
     }
 }

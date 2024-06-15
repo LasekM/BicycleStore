@@ -3,7 +3,6 @@ using BicycleStore.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using BicycleStore.Services;
 
 namespace BicycleStore.Services
 {
@@ -20,7 +19,17 @@ namespace BicycleStore.Services
         {
             _context.Suppliers.Add(supplier);
             _context.SaveChanges();
-            return supplier.SupplierId;
+            return supplier.Id;
+        }
+
+        public void Update(Supplier supplier)
+        {
+            var actualSupplier = _context.Suppliers.Find(supplier.Id);
+            if (actualSupplier != null)
+            {
+                _context.Entry(actualSupplier).CurrentValues.SetValues(supplier);
+                _context.SaveChanges();
+            }
         }
 
         public void DeleteById(Supplier supplier)
@@ -29,24 +38,14 @@ namespace BicycleStore.Services
             _context.SaveChanges();
         }
 
-        public List<Supplier> FindAll()
-        {
-            return _context.Suppliers.ToList();
-        }
-
         public Supplier? FindById(int id)
         {
-            return _context.Suppliers.FirstOrDefault(s => s.SupplierId == id);
+            return _context.Suppliers.Include(a => a.Bikes).FirstOrDefault(a => a.Id == id);
         }
 
-        public void Update(Supplier supplier)
+        public List<Supplier> FindAll()
         {
-            var actualSupplier = _context.Suppliers.Find(supplier.SupplierId);
-            if (actualSupplier != null)
-            {
-                _context.Entry(actualSupplier).CurrentValues.SetValues(supplier);
-                _context.SaveChanges();
-            }
+            return _context.Suppliers.Include(a => a.Bikes).ToList();
         }
     }
 }

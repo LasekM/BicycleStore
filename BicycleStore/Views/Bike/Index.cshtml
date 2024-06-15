@@ -1,32 +1,35 @@
-﻿@model Dictionary<int, BicycleStore.Models.Bike>
+﻿@model IEnumerable<BicycleStore.Models.Supplier>
 
 @{
-    ViewData["Title"] = "Bike List";
+    ViewData["Title"] = "Suppliers";
 }
 
-<h1>Bikes</h1>
-<a class="btn btn-primary" asp-controller="Bike" asp-action="Create">Dodaj</a>
+<h1>Suppliers</h1>
+
+<p>
+    <a asp-action="CreateSupplier" class="btn btn-primary">Create New Supplier</a>
+    <a asp-action="CreateBike" class="btn btn-primary">Create New Bike</a>
+</p>
 <table class="table">
     <thead>
         <tr>
-            <th>Model</th>
-            <th>Brand</th>
-            <th>Price</th>
-            <th>Supplier</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var bike in Model.Values)
+        @foreach (var item in Model)
         {
             <tr>
-                <td>@bike.Model</td>
-                <td>@bike.Brand</td>
-                <td>@bike.Price</td>
-                <td>@bike.Supplier?.Name</td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@bike.BikeId">Details</a> |
-                    <a asp-action="UpdateBike" asp-route-id="@bike.BikeId">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@bike.BikeId">Delete</a>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <a asp-action="EditSupplier" asp-route-id="@item.Id" class="btn btn-primary">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a> |
+                    <a asp-action="DeleteSupplier" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
         }
