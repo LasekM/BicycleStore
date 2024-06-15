@@ -53,6 +53,19 @@ namespace BicycleStore.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Customers",
+                columns: table => new
+                {
+                    CustomerId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    LastName = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customers", x => x.CustomerId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Suppliers",
                 columns: table => new
                 {
@@ -192,13 +205,40 @@ namespace BicycleStore.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    OrderId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    BikeId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CustomerId = table.Column<int>(type: "INTEGER", nullable: false),
+                    OrderDate = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.OrderId);
+                    table.ForeignKey(
+                        name: "FK_Orders_Bikes_BikeId",
+                        column: x => x.BikeId,
+                        principalTable: "Bikes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Orders_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "CustomerId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "3bd51258-c289-43fa-82e0-c0bf23afcf70", "3bd51258-c289-43fa-82e0-c0bf23afcf70", "user", "USER" },
-                    { "ed4ed5a4-3430-49e2-8794-ed5c86d5456b", "ed4ed5a4-3430-49e2-8794-ed5c86d5456b", "admin", "ADMIN" }
+                    { "8af49192-e911-44ee-9553-1d52382a6a1c", "8af49192-e911-44ee-9553-1d52382a6a1c", "user", "USER" },
+                    { "90c0de8b-c60b-419b-b59d-eb65991849da", "90c0de8b-c60b-419b-b59d-eb65991849da", "admin", "ADMIN" }
                 });
 
             migrationBuilder.InsertData(
@@ -206,8 +246,17 @@ namespace BicycleStore.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "9d122e86-4ea3-40dd-a8c8-f481f8f84e80", 0, "8af4d807-5cd6-40e3-884a-db8ca2962630", "adam@wsei.edu.pl", true, false, null, "ADAM@WSEI.EDU.PL", "ADAM@WSEI.EDU.PL", "AQAAAAIAAYagAAAAEL26OQGigumWFOVfH7tvxEwIcqwlZ31XIg1ISabecGhdinhKMHXJv+XuENG1MJocmw==", null, false, "060fba3c-40f9-47d5-9084-8a260938c7c3", false, "adam@wsei.edu.pl" },
-                    { "f8609f58-18ef-4104-b051-0445e206fd39", 0, "e85e8d58-6a9b-4707-a18e-f9ff3f0fd612", "user@wsei.edu.pl", true, false, null, "USER@WSEI.EDU.PL", "USER", "AQAAAAIAAYagAAAAEBcwMfYo241fwXX7RgfJQLaU3awDfLAK/tjm59mgVKVPgwu3TO78mlhjIRp4MiyZFA==", null, false, "29723aad-c162-462f-b77c-e2d212b90862", false, "user" }
+                    { "a4597adf-3666-4bf5-ab16-5750ff72ea32", 0, "d16a8a8e-9a29-4a50-99db-723ffd440843", "adam@wsei.edu.pl", true, false, null, "ADAM@WSEI.EDU.PL", "ADAM@WSEI.EDU.PL", "AQAAAAIAAYagAAAAEBZMLs1bLAz9LufHsjr/RxSxGbBNUPBgp2LbGuxxlX5uYwaj5LRoOoJ0l2+I4GHsbA==", null, false, "f375d43c-497d-4d4d-97f9-44c1d0e84d9b", false, "adam@wsei.edu.pl" },
+                    { "c262ee46-c512-4660-88c1-43a3f0cfdfd2", 0, "6b2b7500-d958-4e84-93af-d549d057496a", "user@wsei.edu.pl", true, false, null, "USER@WSEI.EDU.PL", "USER", "AQAAAAIAAYagAAAAEAbqu4VRlkFDTyVpDBykiwAet87b/+rTwiH40P1pc66hZC9cGydwcwjrQrHwRHVTJw==", null, false, "2f885b6e-27c8-4f9a-84ba-ef173e04278f", false, "user" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Customers",
+                columns: new[] { "CustomerId", "LastName" },
+                values: new object[,]
+                {
+                    { 1, "Smith" },
+                    { 2, "Johnson" }
                 });
 
             migrationBuilder.InsertData(
@@ -224,8 +273,8 @@ namespace BicycleStore.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { "ed4ed5a4-3430-49e2-8794-ed5c86d5456b", "9d122e86-4ea3-40dd-a8c8-f481f8f84e80" },
-                    { "3bd51258-c289-43fa-82e0-c0bf23afcf70", "f8609f58-18ef-4104-b051-0445e206fd39" }
+                    { "90c0de8b-c60b-419b-b59d-eb65991849da", "a4597adf-3666-4bf5-ab16-5750ff72ea32" },
+                    { "8af49192-e911-44ee-9553-1d52382a6a1c", "c262ee46-c512-4660-88c1-43a3f0cfdfd2" }
                 });
 
             migrationBuilder.InsertData(
@@ -235,6 +284,15 @@ namespace BicycleStore.Migrations
                 {
                     { 1, "Mountain King", 999.99m, 1 },
                     { 2, "Road Pro", 1299.99m, 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Orders",
+                columns: new[] { "OrderId", "BikeId", "CustomerId", "OrderDate" },
+                values: new object[,]
+                {
+                    { 1, 1, 1, new DateTime(2024, 6, 16, 0, 46, 59, 156, DateTimeKind.Local).AddTicks(3744) },
+                    { 2, 2, 2, new DateTime(2024, 6, 16, 0, 46, 59, 156, DateTimeKind.Local).AddTicks(3780) }
                 });
 
             migrationBuilder.CreateIndex(
@@ -278,6 +336,16 @@ namespace BicycleStore.Migrations
                 name: "IX_Bikes_SupplierID",
                 table: "Bikes",
                 column: "SupplierID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_BikeId",
+                table: "Orders",
+                column: "BikeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_CustomerId",
+                table: "Orders",
+                column: "CustomerId");
         }
 
         /// <inheritdoc />
@@ -299,13 +367,19 @@ namespace BicycleStore.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Bikes");
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Bikes");
+
+            migrationBuilder.DropTable(
+                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "Suppliers");

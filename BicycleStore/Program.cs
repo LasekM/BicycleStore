@@ -2,8 +2,20 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using BicycleStore.DbContext;
 using BicycleStore.Services;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Konfiguracja Seriloga
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .WriteTo.Console()
+    .WriteTo.File("Logs/log.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+// Dodanie Seriloga do buildera
+builder.Host.UseSerilog();
+
 var connectionString = builder.Configuration.GetConnectionString("AppDbContextConnection")
     ?? throw new InvalidOperationException("Connection string 'AppDbContextConnection' not found.");
 
@@ -15,6 +27,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>()
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IBikeService, MemoryBikeService>();
 builder.Services.AddScoped<ISupplierService, MemorySupplierService>();
+builder.Services.AddScoped<IOrderService, MemoryOrderServices>();
+builder.Services.AddScoped<ICustomerService, MemoryCustomerService>();
+
 
 var dbPath = Path.Combine(builder.Environment.ContentRootPath, "Bike.db");
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -46,4 +61,16 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.Run();
+try
+{
+    Log.Information("Starting up the application");
+    app.Run();
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Application start-up failed");
+}
+finally
+{
+    Log.CloseAndFlush();
+}

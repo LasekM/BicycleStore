@@ -1,0 +1,35 @@
+﻿@model IEnumerable<BicycleStore.Models.Order>
+
+@{
+    ViewData["Title"] = "Orders";
+}
+
+<h1>Orders</h1>
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Order</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order Date</th>
+            <th>Bike</th>
+            <th>Customer Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.OrderDate</td>
+                <td>@item.Bike?.Model</td>
+                <td>@item.Customer?.LastName</td> 
+                @* <td>
+                    <a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
+                </td> *@
+            </tr>
+        }
+    </tbody>
+</table>

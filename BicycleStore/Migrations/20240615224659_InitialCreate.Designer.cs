@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BicycleStore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240615010556_InitialCreate")]
+    [Migration("20240615224659_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -56,6 +56,73 @@ namespace BicycleStore.Migrations
                             Model = "Road Pro",
                             Price = 1299.99m,
                             SupplierID = 2
+                        });
+                });
+
+            modelBuilder.Entity("BicycleStore.Models.Customer", b =>
+                {
+                    b.Property<int>("CustomerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CustomerId");
+
+                    b.ToTable("Customers");
+
+                    b.HasData(
+                        new
+                        {
+                            CustomerId = 1,
+                            LastName = "Smith"
+                        },
+                        new
+                        {
+                            CustomerId = 2,
+                            LastName = "Johnson"
+                        });
+                });
+
+            modelBuilder.Entity("BicycleStore.Models.Order", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BikeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("OrderId");
+
+                    b.HasIndex("BikeId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("Orders");
+
+                    b.HasData(
+                        new
+                        {
+                            OrderId = 1,
+                            BikeId = 1,
+                            CustomerId = 1,
+                            OrderDate = new DateTime(2024, 6, 16, 0, 46, 59, 156, DateTimeKind.Local).AddTicks(3744)
+                        },
+                        new
+                        {
+                            OrderId = 2,
+                            BikeId = 2,
+                            CustomerId = 2,
+                            OrderDate = new DateTime(2024, 6, 16, 0, 46, 59, 156, DateTimeKind.Local).AddTicks(3780)
                         });
                 });
 
@@ -114,15 +181,15 @@ namespace BicycleStore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ed4ed5a4-3430-49e2-8794-ed5c86d5456b",
-                            ConcurrencyStamp = "ed4ed5a4-3430-49e2-8794-ed5c86d5456b",
+                            Id = "90c0de8b-c60b-419b-b59d-eb65991849da",
+                            ConcurrencyStamp = "90c0de8b-c60b-419b-b59d-eb65991849da",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "3bd51258-c289-43fa-82e0-c0bf23afcf70",
-                            ConcurrencyStamp = "3bd51258-c289-43fa-82e0-c0bf23afcf70",
+                            Id = "8af49192-e911-44ee-9553-1d52382a6a1c",
+                            ConcurrencyStamp = "8af49192-e911-44ee-9553-1d52382a6a1c",
                             Name = "user",
                             NormalizedName = "USER"
                         });
@@ -217,33 +284,33 @@ namespace BicycleStore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9d122e86-4ea3-40dd-a8c8-f481f8f84e80",
+                            Id = "a4597adf-3666-4bf5-ab16-5750ff72ea32",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8af4d807-5cd6-40e3-884a-db8ca2962630",
+                            ConcurrencyStamp = "d16a8a8e-9a29-4a50-99db-723ffd440843",
                             Email = "adam@wsei.edu.pl",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADAM@WSEI.EDU.PL",
                             NormalizedUserName = "ADAM@WSEI.EDU.PL",
-                            PasswordHash = "AQAAAAIAAYagAAAAEL26OQGigumWFOVfH7tvxEwIcqwlZ31XIg1ISabecGhdinhKMHXJv+XuENG1MJocmw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBZMLs1bLAz9LufHsjr/RxSxGbBNUPBgp2LbGuxxlX5uYwaj5LRoOoJ0l2+I4GHsbA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "060fba3c-40f9-47d5-9084-8a260938c7c3",
+                            SecurityStamp = "f375d43c-497d-4d4d-97f9-44c1d0e84d9b",
                             TwoFactorEnabled = false,
                             UserName = "adam@wsei.edu.pl"
                         },
                         new
                         {
-                            Id = "f8609f58-18ef-4104-b051-0445e206fd39",
+                            Id = "c262ee46-c512-4660-88c1-43a3f0cfdfd2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e85e8d58-6a9b-4707-a18e-f9ff3f0fd612",
+                            ConcurrencyStamp = "6b2b7500-d958-4e84-93af-d549d057496a",
                             Email = "user@wsei.edu.pl",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@WSEI.EDU.PL",
                             NormalizedUserName = "USER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBcwMfYo241fwXX7RgfJQLaU3awDfLAK/tjm59mgVKVPgwu3TO78mlhjIRp4MiyZFA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAbqu4VRlkFDTyVpDBykiwAet87b/+rTwiH40P1pc66hZC9cGydwcwjrQrHwRHVTJw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "29723aad-c162-462f-b77c-e2d212b90862",
+                            SecurityStamp = "2f885b6e-27c8-4f9a-84ba-ef173e04278f",
                             TwoFactorEnabled = false,
                             UserName = "user"
                         });
@@ -313,13 +380,13 @@ namespace BicycleStore.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "9d122e86-4ea3-40dd-a8c8-f481f8f84e80",
-                            RoleId = "ed4ed5a4-3430-49e2-8794-ed5c86d5456b"
+                            UserId = "a4597adf-3666-4bf5-ab16-5750ff72ea32",
+                            RoleId = "90c0de8b-c60b-419b-b59d-eb65991849da"
                         },
                         new
                         {
-                            UserId = "f8609f58-18ef-4104-b051-0445e206fd39",
-                            RoleId = "3bd51258-c289-43fa-82e0-c0bf23afcf70"
+                            UserId = "c262ee46-c512-4660-88c1-43a3f0cfdfd2",
+                            RoleId = "8af49192-e911-44ee-9553-1d52382a6a1c"
                         });
                 });
 
@@ -353,6 +420,25 @@ namespace BicycleStore.Migrations
                         .IsRequired();
 
                     b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("BicycleStore.Models.Order", b =>
+                {
+                    b.HasOne("BicycleStore.Models.Bike", "Bike")
+                        .WithMany()
+                        .HasForeignKey("BikeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BicycleStore.Models.Customer", "Customer")
+                        .WithMany("Orders")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bike");
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -404,6 +490,11 @@ namespace BicycleStore.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("BicycleStore.Models.Customer", b =>
+                {
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("BicycleStore.Models.Supplier", b =>
