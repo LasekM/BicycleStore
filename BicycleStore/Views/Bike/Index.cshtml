@@ -1,20 +1,25 @@
-﻿@model IEnumerable<BicycleStore.Models.Supplier>
+﻿@model IEnumerable<BicycleStore.Models.Bike>
 
 @{
-    ViewData["Title"] = "Suppliers";
+    ViewData["Title"] = "Bike Index";
 }
 
-<h1>Suppliers</h1>
+<h1>Bike Index</h1>
 
 <p>
-    <a asp-action="CreateSupplier" class="btn btn-primary">Create New Supplier</a>
-    <a asp-action="CreateBike" class="btn btn-primary">Create New Bike</a>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.Model)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Supplier.Name)
             </th>
             <th></th>
         </tr>
@@ -24,12 +29,18 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    @Html.DisplayFor(modelItem => item.Model)
                 </td>
                 <td>
-                    <a asp-action="EditSupplier" asp-route-id="@item.Id" class="btn btn-primary">Edit</a> |
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Supplier.Name)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a> |
-                    <a asp-action="DeleteSupplier" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
         }

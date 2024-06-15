@@ -1,0 +1,71 @@
+﻿@model IEnumerable<BicycleStore.Models.Bike>
+
+@{
+    ViewData["Title"] = "Search Bikes";
+}
+
+<h1>Search Bikes</h1>
+
+<input type="text" id="searchString" placeholder="Search by Model" class="form-control" />
+
+<table class="table" id="searchResults">
+    <thead>
+        <tr>
+            <th>Model</th>
+            <th>Price</th>
+            <th>Supplier</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bike in Model)
+        {
+            <tr>
+                <td>@bike.Model</td>
+                <td>@bike.Price</td>
+                <td>@bike.Supplier.Name</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@bike.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@bike.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@bike.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#searchString').on('input', function () {
+                var searchString = $(this).val();
+                $.ajax({
+                    url: '@Url.Action("SearchBikes", "Bike")',
+                    type: 'GET',
+                    data: { searchString: searchString },
+                    success: function (data) {
+                        var tableBody = $('#searchResults tbody');
+                        tableBody.empty();
+                        if (data.length === 0) {
+                            tableBody.append('<tr><td colspan="4">No bikes found.</td></tr>');
+                        } else {
+                            $.each(data, function (index, bike) {
+                                tableBody.append('<tr>'
+                                    + '<td>' + bike.model + '</td>'
+                                    + '<td>' + bike.price + '</td>'
+                                    + '<td>' + bike.supplierName + '</td>'
+                                    + '<td>'
+                                    + '<a href="/Bike/Edit/' + bike.id + '">Edit</a> | '
+                                    + '<a href="/Bike/Details/' + bike.id + '">Details</a> | '
+                                    + '<a href="/Bike/Delete/' + bike.id + '">Delete</a>'
+                                    + '</td>'
+                                    + '</tr>');
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}

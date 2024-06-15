@@ -1,0 +1,38 @@
+﻿@model IEnumerable<BicycleStore.Models.Supplier>
+
+@{
+    ViewData["Title"] = "Suppliers";
+}
+
+<h1>Suppliers</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Supplier</a>
+    <a asp-action="CreateBike" class="btn btn-primary">Create New Bike</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                    @* <a asp-action="CreateBike" asp-route-id="@item.Id" class="btn btn-primary">Create New Bike</a> *@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

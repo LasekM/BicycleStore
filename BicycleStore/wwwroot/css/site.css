@@ -20,3 +20,12 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.carousel-item {
+    transition: transform 0.5s ease, opacity 0.5s ease !important;
+    opacity: 0;
+}
+
+.carousel-item.active {
+    opacity: 1;
+}

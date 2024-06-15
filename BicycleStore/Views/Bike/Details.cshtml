@@ -1,52 +1,38 @@
-﻿@model BicycleStore.Models.Supplier
+﻿@model BicycleStore.Models.Bike
 
 @{
-    ViewData["Title"] = "Supplier Details";
-    var bikes = ViewBag.Bikes as List<BicycleStore.Models.Bike>;
+    ViewData["Title"] = "Bike Details";
 }
 
-<h1>Supplier Details</h1>
+<h1>Bike Details</h1>
 
 <div>
-    <h4>Supplier</h4>
+    <h4>Bike</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.Model)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.Model)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Supplier.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Supplier.Name)
         </dd>
     </dl>
 </div>
 
 <div>
-    <h4>Bikes</h4>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Model</th>
-                <th>Price</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var bike in bikes)
-            {
-                <tr>
-                    <td>@bike.Model</td>
-                    <td>@bike.Price</td>
-                    <td>
-                        <a asp-action="EditBike" asp-route-id="@bike.Id" class="btn btn-primary">Edit</a> |
-                        <a asp-action="DeleteBike" asp-route-id="@bike.Id" class="btn btn-danger">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-
-<div>
-    <a asp-action="EditSupplier" asp-route-id="@Model.Id" class="btn btn-primary">Edit Supplier</a> |
-    <a asp-action="Index" class="btn btn-primary">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a> |
+    <a asp-action="Index" class="btn btn-primary">Back to Bike List</a>
+    <a asp-action="Index" asp-controller="Supplier" class="btn btn-primary">Back to Suppliers List</a>
 </div>
