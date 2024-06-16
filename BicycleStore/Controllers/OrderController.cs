@@ -22,7 +22,7 @@ namespace BicycleStore.Controllers
 
         public IActionResult Create()
         {
-            ViewBag.Bikes = new SelectList(_context.Bikes, "Id", "Model");
+            ViewBag.Bikes = new SelectList(_context.Bikes.Where(b => !b.IsReserved), "Id", "Model");
             return View();
         }
 
@@ -56,6 +56,7 @@ namespace BicycleStore.Controllers
                 }
                 else
                 {
+                    bike.IsReserved = true; // Oznacz rower jako zarezerwowany
                     order.Bike = bike;
                     order.Customer = customer;
                     _context.Add(order);
@@ -65,9 +66,10 @@ namespace BicycleStore.Controllers
                 }
             }
 
-            ViewBag.Bikes = new SelectList(_context.Bikes, "Id", "Model", order.BikeId);
+            ViewBag.Bikes = new SelectList(_context.Bikes.Where(b => !b.IsReserved), "Id", "Model", order.BikeId);
             return View(order);
         }
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -87,7 +89,6 @@ namespace BicycleStore.Controllers
             return View(order);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Reserve(int BikeId)
@@ -97,7 +98,7 @@ namespace BicycleStore.Controllers
             if (bike == null)
             {
                 _logger.LogWarning("Invalid Bike ID: {BikeId}", BikeId);
-                return RedirectToAction(nameof(Search));
+                return RedirectToAction(nameof(Search)); // Return to Search view if the bike is invalid
             }
 
             // Redirect to Reserve view with preselected bike
@@ -105,7 +106,7 @@ namespace BicycleStore.Controllers
             var order = new Order
             {
                 BikeId = BikeId,
-                OrderDate = DateTime.Now
+                OrderDate = DateTime.Now // Set the current date as default
             };
             return View("Reserve", order);
         }
@@ -145,7 +146,7 @@ namespace BicycleStore.Controllers
                     _context.Add(order);
                     await _context.SaveChangesAsync();
                     _logger.LogInformation("Reservation created successfully.");
-                    return RedirectToAction(nameof(ReservationSuccess));
+                    return RedirectToAction(nameof(ReservationSuccess), new { orderId = order.OrderId });
                 }
             }
 
@@ -153,10 +154,21 @@ namespace BicycleStore.Controllers
             return View("Reserve", order);
         }
 
-        public IActionResult ReservationSuccess()
+        public async Task<IActionResult> ReservationSuccess(int orderId)
         {
-            return View();
+            var order = await _context.Orders
+                .Include(o => o.Bike)
+                .Include(o => o.Customer)
+                .FirstOrDefaultAsync(o => o.OrderId == orderId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return View(order);
         }
+
 
         public async Task<IActionResult> Index()
         {
@@ -196,11 +208,17 @@ namespace BicycleStore.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var order = await _context.Orders.FindAsync(id);
-            _context.Orders.Remove(order);
-            await _context.SaveChangesAsync();
+            if (order != null)
+            {
+                var bike = await _context.Bikes.FindAsync(order.BikeId);
+                if (bike != null)
+                {
+                    bike.IsReserved = false; // Oznacz rower jako niezarezerwowany
+                }
+                _context.Orders.Remove(order);
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Index));
         }
-
-
     }
 }

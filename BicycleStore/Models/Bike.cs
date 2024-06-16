@@ -13,7 +13,8 @@ namespace BicycleStore.Models
         public decimal Price { get; set; }
 
         public int SupplierID { get; set; }
-        public Supplier? Supplier { get; set; } 
+        public Supplier? Supplier { get; set; }
+        public bool IsReserved { get; set; }
     }
 
 }

@@ -60,20 +60,20 @@ namespace BicycleStore.DbContext
             );
 
             modelBuilder.Entity<Bike>().HasData(
-                new Bike { Id = 1, Model = "Mountain King", Price = 999.99m, SupplierID = 1 },
-                new Bike { Id = 2, Model = "Road Pro", Price = 1299.99m, SupplierID = 2 }
-            );
+               new Bike { Id = 1, Model = "Mountain King", Price = 999.99m, SupplierID = 1, IsReserved = false },
+               new Bike { Id = 2, Model = "Road Pro", Price = 1299.99m, SupplierID = 2, IsReserved = false }
+           );
 
 
-           /* modelBuilder.Entity<Customer>().HasData(
-               new Customer { CustomerId = 1, LastName = "Smith" },
-               new Customer { CustomerId = 2, LastName = "Johnson" }
-           );*/
-
-           /* modelBuilder.Entity<Order>().HasData(
-                new Order { OrderId = 1, BikeId = 1, CustomerId = 1, OrderDate = DateTime.Now },
-                new Order { OrderId = 2, BikeId = 2, CustomerId = 2, OrderDate = DateTime.Now }
+            /* modelBuilder.Entity<Customer>().HasData(
+                new Customer { CustomerId = 1, LastName = "Smith" },
+                new Customer { CustomerId = 2, LastName = "Johnson" }
             );*/
+
+            /* modelBuilder.Entity<Order>().HasData(
+                 new Order { OrderId = 1, BikeId = 1, CustomerId = 1, OrderDate = DateTime.Now },
+                 new Order { OrderId = 2, BikeId = 2, CustomerId = 2, OrderDate = DateTime.Now }
+             );*/
 
 
 

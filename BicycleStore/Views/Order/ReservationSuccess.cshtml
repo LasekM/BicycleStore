@@ -1,4 +1,6 @@
-﻿@{
+﻿@model BicycleStore.Models.Order
+
+@{
     ViewData["Title"] = "Reservation Success";
 }
 
@@ -6,6 +8,22 @@
 
 <p>Your reservation was successful!</p>
 
+<h3>Order Details</h3>
+<table class="table">
+    <tr>
+        <th>Customer Name</th>
+        <td>@Model.Customer.LastName</td>
+    </tr>
+    <tr>
+        <th>Bike Model</th>
+        <td>@Model.Bike.Model</td>
+    </tr>
+    <tr>
+        <th>Order Date</th>
+        <td>@Model.OrderDate</td>
+    </tr>
+</table>
+
 <div>
-    <a asp-action="Search" asp-controller="Bike">Back to Bike List</a>
+    <a asp-action="Index">Back to Orders List</a>
 </div>

@@ -35,9 +35,7 @@ namespace BicycleStore.Controllers
 
         public IActionResult Create(int supplierId)
         {
-            /*var suppliers = _context.Suppliers.ToList();
-            ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name");
-            return View();*/
+           
             var suppliers = _context.Suppliers.ToList();
             ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name");
             ViewBag.SelectedSupplierId = supplierId;
@@ -47,15 +45,7 @@ namespace BicycleStore.Controllers
         [HttpPost]
         public IActionResult Create(Bike bike)
         {
-            /* if (ModelState.IsValid)
-             {
-                 _context.Bikes.Add(bike);
-                 _context.SaveChanges();
-                 return RedirectToAction(nameof(Index));
-             }
-             var suppliers = _context.Suppliers.ToList();
-             ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name");
-             return View(bike);*/
+            
             if (ModelState.IsValid)
             {
                 _context.Bikes.Add(bike);
@@ -158,5 +148,14 @@ namespace BicycleStore.Controllers
             }
             return NotFound();
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Reserve(int BikeId)
+        {
+            // Przekierowanie do akcji Reserve w OrderController
+            return RedirectToAction("Reserve", "Order", new { BikeId = BikeId });
+        }
+
     }
 }

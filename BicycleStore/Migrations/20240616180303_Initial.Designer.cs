@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BicycleStore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240616163945_Initial")]
+    [Migration("20240616180303_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -24,6 +24,9 @@ namespace BicycleStore.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsReserved")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Model")
@@ -46,6 +49,7 @@ namespace BicycleStore.Migrations
                         new
                         {
                             Id = 1,
+                            IsReserved = false,
                             Model = "Mountain King",
                             Price = 999.99m,
                             SupplierID = 1
@@ -53,6 +57,7 @@ namespace BicycleStore.Migrations
                         new
                         {
                             Id = 2,
+                            IsReserved = false,
                             Model = "Road Pro",
                             Price = 1299.99m,
                             SupplierID = 2
@@ -157,15 +162,15 @@ namespace BicycleStore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c450bb72-7db1-402c-99fc-7f438c9491af",
-                            ConcurrencyStamp = "c450bb72-7db1-402c-99fc-7f438c9491af",
+                            Id = "a1ed1214-3b55-4d76-9952-efdf2b26f153",
+                            ConcurrencyStamp = "a1ed1214-3b55-4d76-9952-efdf2b26f153",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "06c90656-b757-47a7-a722-0d66fae5df7d",
-                            ConcurrencyStamp = "06c90656-b757-47a7-a722-0d66fae5df7d",
+                            Id = "331e8e23-2ba0-45f2-8666-9a92340c9dba",
+                            ConcurrencyStamp = "331e8e23-2ba0-45f2-8666-9a92340c9dba",
                             Name = "user",
                             NormalizedName = "USER"
                         });
@@ -260,33 +265,33 @@ namespace BicycleStore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "33658679-2adb-49fa-8069-10aad6b0a234",
+                            Id = "9a985011-bccc-4e81-bdc9-ff3e9cd40f08",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b578e434-dd7a-478a-98be-007d3a7c1eed",
+                            ConcurrencyStamp = "3f644d0f-2bc7-4539-a37b-ec31c9db69dc",
                             Email = "adam@wsei.edu.pl",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADAM@WSEI.EDU.PL",
                             NormalizedUserName = "ADAM@WSEI.EDU.PL",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFg9wCnVUHCmYlfxbHxLi4fcRKksTLPqza5LcqcO3cjbOurYGEMZ/iudSkyWk7GLwg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEI0WgFil96fefBSlsgeGwmnsk2PyIasbDzgEYU0/O+3y8Us0ibOyonN133XcPNTmoQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c59d265b-6d9b-4747-9728-258c53ab6733",
+                            SecurityStamp = "152c2316-b6c7-4ae0-a2a9-b94c2b034716",
                             TwoFactorEnabled = false,
                             UserName = "adam@wsei.edu.pl"
                         },
                         new
                         {
-                            Id = "c23d065e-8daa-435c-9feb-24023bc2b153",
+                            Id = "b4831026-bca3-4f44-8bff-9a758dba5300",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ed64d340-298a-4117-9674-4f475d7b2380",
+                            ConcurrencyStamp = "ae10bfcc-9c9e-4cd9-a94f-fe5772a77005",
                             Email = "user@wsei.edu.pl",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@WSEI.EDU.PL",
                             NormalizedUserName = "USER",
-                            PasswordHash = "AQAAAAIAAYagAAAAECtuiGhdSI+OLGjHTMYddpf1P1wzfFYU4Wk2J4JF5uQdMAb2WBa3I31Vli/yy3sj1A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOqRyb6FGryY3qXpvLvWrhfz/pRVTwPcFGtqYtkXG9SXyHeQK16VVqpq3b7JkTiO/w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3b77de6f-313a-47ff-81da-59aa38143b38",
+                            SecurityStamp = "939b5e14-7928-4602-be21-3034aee00e06",
                             TwoFactorEnabled = false,
                             UserName = "user"
                         });
@@ -356,13 +361,13 @@ namespace BicycleStore.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "33658679-2adb-49fa-8069-10aad6b0a234",
-                            RoleId = "c450bb72-7db1-402c-99fc-7f438c9491af"
+                            UserId = "9a985011-bccc-4e81-bdc9-ff3e9cd40f08",
+                            RoleId = "a1ed1214-3b55-4d76-9952-efdf2b26f153"
                         },
                         new
                         {
-                            UserId = "c23d065e-8daa-435c-9feb-24023bc2b153",
-                            RoleId = "06c90656-b757-47a7-a722-0d66fae5df7d"
+                            UserId = "b4831026-bca3-4f44-8bff-9a758dba5300",
+                            RoleId = "331e8e23-2ba0-45f2-8666-9a92340c9dba"
                         });
                 });
 
