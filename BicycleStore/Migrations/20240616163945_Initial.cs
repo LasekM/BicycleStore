@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BicycleStore.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -213,7 +213,8 @@ namespace BicycleStore.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     BikeId = table.Column<int>(type: "INTEGER", nullable: false),
                     CustomerId = table.Column<int>(type: "INTEGER", nullable: false),
-                    OrderDate = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    OrderDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    UserName = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -237,8 +238,8 @@ namespace BicycleStore.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "8af49192-e911-44ee-9553-1d52382a6a1c", "8af49192-e911-44ee-9553-1d52382a6a1c", "user", "USER" },
-                    { "90c0de8b-c60b-419b-b59d-eb65991849da", "90c0de8b-c60b-419b-b59d-eb65991849da", "admin", "ADMIN" }
+                    { "06c90656-b757-47a7-a722-0d66fae5df7d", "06c90656-b757-47a7-a722-0d66fae5df7d", "user", "USER" },
+                    { "c450bb72-7db1-402c-99fc-7f438c9491af", "c450bb72-7db1-402c-99fc-7f438c9491af", "admin", "ADMIN" }
                 });
 
             migrationBuilder.InsertData(
@@ -246,17 +247,8 @@ namespace BicycleStore.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "a4597adf-3666-4bf5-ab16-5750ff72ea32", 0, "d16a8a8e-9a29-4a50-99db-723ffd440843", "adam@wsei.edu.pl", true, false, null, "ADAM@WSEI.EDU.PL", "ADAM@WSEI.EDU.PL", "AQAAAAIAAYagAAAAEBZMLs1bLAz9LufHsjr/RxSxGbBNUPBgp2LbGuxxlX5uYwaj5LRoOoJ0l2+I4GHsbA==", null, false, "f375d43c-497d-4d4d-97f9-44c1d0e84d9b", false, "adam@wsei.edu.pl" },
-                    { "c262ee46-c512-4660-88c1-43a3f0cfdfd2", 0, "6b2b7500-d958-4e84-93af-d549d057496a", "user@wsei.edu.pl", true, false, null, "USER@WSEI.EDU.PL", "USER", "AQAAAAIAAYagAAAAEAbqu4VRlkFDTyVpDBykiwAet87b/+rTwiH40P1pc66hZC9cGydwcwjrQrHwRHVTJw==", null, false, "2f885b6e-27c8-4f9a-84ba-ef173e04278f", false, "user" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Customers",
-                columns: new[] { "CustomerId", "LastName" },
-                values: new object[,]
-                {
-                    { 1, "Smith" },
-                    { 2, "Johnson" }
+                    { "33658679-2adb-49fa-8069-10aad6b0a234", 0, "b578e434-dd7a-478a-98be-007d3a7c1eed", "adam@wsei.edu.pl", true, false, null, "ADAM@WSEI.EDU.PL", "ADAM@WSEI.EDU.PL", "AQAAAAIAAYagAAAAEFg9wCnVUHCmYlfxbHxLi4fcRKksTLPqza5LcqcO3cjbOurYGEMZ/iudSkyWk7GLwg==", null, false, "c59d265b-6d9b-4747-9728-258c53ab6733", false, "adam@wsei.edu.pl" },
+                    { "c23d065e-8daa-435c-9feb-24023bc2b153", 0, "ed64d340-298a-4117-9674-4f475d7b2380", "user@wsei.edu.pl", true, false, null, "USER@WSEI.EDU.PL", "USER", "AQAAAAIAAYagAAAAECtuiGhdSI+OLGjHTMYddpf1P1wzfFYU4Wk2J4JF5uQdMAb2WBa3I31Vli/yy3sj1A==", null, false, "3b77de6f-313a-47ff-81da-59aa38143b38", false, "user" }
                 });
 
             migrationBuilder.InsertData(
@@ -273,8 +265,8 @@ namespace BicycleStore.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { "90c0de8b-c60b-419b-b59d-eb65991849da", "a4597adf-3666-4bf5-ab16-5750ff72ea32" },
-                    { "8af49192-e911-44ee-9553-1d52382a6a1c", "c262ee46-c512-4660-88c1-43a3f0cfdfd2" }
+                    { "c450bb72-7db1-402c-99fc-7f438c9491af", "33658679-2adb-49fa-8069-10aad6b0a234" },
+                    { "06c90656-b757-47a7-a722-0d66fae5df7d", "c23d065e-8daa-435c-9feb-24023bc2b153" }
                 });
 
             migrationBuilder.InsertData(
@@ -284,15 +276,6 @@ namespace BicycleStore.Migrations
                 {
                     { 1, "Mountain King", 999.99m, 1 },
                     { 2, "Road Pro", 1299.99m, 2 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Orders",
-                columns: new[] { "OrderId", "BikeId", "CustomerId", "OrderDate" },
-                values: new object[,]
-                {
-                    { 1, 1, 1, new DateTime(2024, 6, 16, 0, 46, 59, 156, DateTimeKind.Local).AddTicks(3744) },
-                    { 2, 2, 2, new DateTime(2024, 6, 16, 0, 46, 59, 156, DateTimeKind.Local).AddTicks(3780) }
                 });
 
             migrationBuilder.CreateIndex(

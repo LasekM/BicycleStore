@@ -1,12 +1,12 @@
 ﻿@model BicycleStore.Models.Order
 
 @{
-    ViewData["Title"] = "Create Order";
+    ViewData["Title"] = "Reserve Bike";
 }
 
-<h2>Create Order</h2>
+<h2>Reserve Bike</h2>
 
-<form asp-action="Create" method="post">
+<form asp-action="SubmitReservation" method="post">
     <div class="form-group">
         <label asp-for="UserName" class="control-label"></label>
         <input asp-for="UserName" class="form-control" />
@@ -25,7 +25,7 @@
         <span asp-validation-for="OrderDate" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <input type="submit" value="Create" class="btn btn-primary" />
+        <input type="submit" value="Reserve" class="btn btn-primary" />
     </div>
 </form>
 
@@ -34,7 +34,5 @@
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 }

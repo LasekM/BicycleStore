@@ -1,4 +1,5 @@
 ﻿using BicycleStore.Models;
+using System.Collections.Generic;
 
 namespace BicycleStore.Services
 {
@@ -6,8 +7,8 @@ namespace BicycleStore.Services
     {
         IEnumerable<Order> GetAllOrders();
         Order GetOrderById(int id);
-        void CreateOrder(Order order);
+        int CreateOrder(Order order);
         void UpdateOrder(Order order);
-        void DeleteOrder(int id);
+        void DeleteOrder(Order order);
     }
 }

@@ -5,11 +5,11 @@ using BicycleStore.Models;
 
 namespace BicycleStore.Services
 {
-    public class MemoryCustomerService : ICustomerService
+    public class MemoryCustomerServices : ICustomerService
     {
         private readonly AppDbContext _context;
 
-        public MemoryCustomerService(AppDbContext context)
+        public MemoryCustomerServices(AppDbContext context)
         {
             _context = context;
         }

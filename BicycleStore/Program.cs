@@ -28,7 +28,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IBikeService, MemoryBikeService>();
 builder.Services.AddScoped<ISupplierService, MemorySupplierService>();
 builder.Services.AddScoped<IOrderService, MemoryOrderServices>();
-builder.Services.AddScoped<ICustomerService, MemoryCustomerService>();
+builder.Services.AddScoped<ICustomerService, MemoryCustomerServices>();
 
 
 var dbPath = Path.Combine(builder.Environment.ContentRootPath, "Bike.db");

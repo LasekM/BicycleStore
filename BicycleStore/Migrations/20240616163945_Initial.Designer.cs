@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BicycleStore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240615224659_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240616163945_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -72,18 +72,6 @@ namespace BicycleStore.Migrations
                     b.HasKey("CustomerId");
 
                     b.ToTable("Customers");
-
-                    b.HasData(
-                        new
-                        {
-                            CustomerId = 1,
-                            LastName = "Smith"
-                        },
-                        new
-                        {
-                            CustomerId = 2,
-                            LastName = "Johnson"
-                        });
                 });
 
             modelBuilder.Entity("BicycleStore.Models.Order", b =>
@@ -101,6 +89,10 @@ namespace BicycleStore.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("OrderId");
 
                     b.HasIndex("BikeId");
@@ -108,22 +100,6 @@ namespace BicycleStore.Migrations
                     b.HasIndex("CustomerId");
 
                     b.ToTable("Orders");
-
-                    b.HasData(
-                        new
-                        {
-                            OrderId = 1,
-                            BikeId = 1,
-                            CustomerId = 1,
-                            OrderDate = new DateTime(2024, 6, 16, 0, 46, 59, 156, DateTimeKind.Local).AddTicks(3744)
-                        },
-                        new
-                        {
-                            OrderId = 2,
-                            BikeId = 2,
-                            CustomerId = 2,
-                            OrderDate = new DateTime(2024, 6, 16, 0, 46, 59, 156, DateTimeKind.Local).AddTicks(3780)
-                        });
                 });
 
             modelBuilder.Entity("BicycleStore.Models.Supplier", b =>
@@ -181,15 +157,15 @@ namespace BicycleStore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "90c0de8b-c60b-419b-b59d-eb65991849da",
-                            ConcurrencyStamp = "90c0de8b-c60b-419b-b59d-eb65991849da",
+                            Id = "c450bb72-7db1-402c-99fc-7f438c9491af",
+                            ConcurrencyStamp = "c450bb72-7db1-402c-99fc-7f438c9491af",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "8af49192-e911-44ee-9553-1d52382a6a1c",
-                            ConcurrencyStamp = "8af49192-e911-44ee-9553-1d52382a6a1c",
+                            Id = "06c90656-b757-47a7-a722-0d66fae5df7d",
+                            ConcurrencyStamp = "06c90656-b757-47a7-a722-0d66fae5df7d",
                             Name = "user",
                             NormalizedName = "USER"
                         });
@@ -284,33 +260,33 @@ namespace BicycleStore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a4597adf-3666-4bf5-ab16-5750ff72ea32",
+                            Id = "33658679-2adb-49fa-8069-10aad6b0a234",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d16a8a8e-9a29-4a50-99db-723ffd440843",
+                            ConcurrencyStamp = "b578e434-dd7a-478a-98be-007d3a7c1eed",
                             Email = "adam@wsei.edu.pl",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADAM@WSEI.EDU.PL",
                             NormalizedUserName = "ADAM@WSEI.EDU.PL",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBZMLs1bLAz9LufHsjr/RxSxGbBNUPBgp2LbGuxxlX5uYwaj5LRoOoJ0l2+I4GHsbA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFg9wCnVUHCmYlfxbHxLi4fcRKksTLPqza5LcqcO3cjbOurYGEMZ/iudSkyWk7GLwg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f375d43c-497d-4d4d-97f9-44c1d0e84d9b",
+                            SecurityStamp = "c59d265b-6d9b-4747-9728-258c53ab6733",
                             TwoFactorEnabled = false,
                             UserName = "adam@wsei.edu.pl"
                         },
                         new
                         {
-                            Id = "c262ee46-c512-4660-88c1-43a3f0cfdfd2",
+                            Id = "c23d065e-8daa-435c-9feb-24023bc2b153",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6b2b7500-d958-4e84-93af-d549d057496a",
+                            ConcurrencyStamp = "ed64d340-298a-4117-9674-4f475d7b2380",
                             Email = "user@wsei.edu.pl",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@WSEI.EDU.PL",
                             NormalizedUserName = "USER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAbqu4VRlkFDTyVpDBykiwAet87b/+rTwiH40P1pc66hZC9cGydwcwjrQrHwRHVTJw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECtuiGhdSI+OLGjHTMYddpf1P1wzfFYU4Wk2J4JF5uQdMAb2WBa3I31Vli/yy3sj1A==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2f885b6e-27c8-4f9a-84ba-ef173e04278f",
+                            SecurityStamp = "3b77de6f-313a-47ff-81da-59aa38143b38",
                             TwoFactorEnabled = false,
                             UserName = "user"
                         });
@@ -380,13 +356,13 @@ namespace BicycleStore.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "a4597adf-3666-4bf5-ab16-5750ff72ea32",
-                            RoleId = "90c0de8b-c60b-419b-b59d-eb65991849da"
+                            UserId = "33658679-2adb-49fa-8069-10aad6b0a234",
+                            RoleId = "c450bb72-7db1-402c-99fc-7f438c9491af"
                         },
                         new
                         {
-                            UserId = "c262ee46-c512-4660-88c1-43a3f0cfdfd2",
-                            RoleId = "8af49192-e911-44ee-9553-1d52382a6a1c"
+                            UserId = "c23d065e-8daa-435c-9feb-24023bc2b153",
+                            RoleId = "06c90656-b757-47a7-a722-0d66fae5df7d"
                         });
                 });
 

@@ -47,6 +47,11 @@ namespace BicycleStore.DbContext
            .WithMany(c => c.Orders)
            .HasForeignKey(o => o.CustomerId);
 
+            modelBuilder.Entity<Order>()
+            .HasOne(o => o.Bike)
+            .WithMany()
+            .HasForeignKey(o => o.BikeId);
+
 
             // Przykładowe dane
             modelBuilder.Entity<Supplier>().HasData(
@@ -60,15 +65,15 @@ namespace BicycleStore.DbContext
             );
 
 
-            modelBuilder.Entity<Customer>().HasData(
+           /* modelBuilder.Entity<Customer>().HasData(
                new Customer { CustomerId = 1, LastName = "Smith" },
                new Customer { CustomerId = 2, LastName = "Johnson" }
-           );
+           );*/
 
-            modelBuilder.Entity<Order>().HasData(
+           /* modelBuilder.Entity<Order>().HasData(
                 new Order { OrderId = 1, BikeId = 1, CustomerId = 1, OrderDate = DateTime.Now },
                 new Order { OrderId = 2, BikeId = 2, CustomerId = 2, OrderDate = DateTime.Now }
-            );
+            );*/
 
 
 
@@ -144,6 +149,19 @@ namespace BicycleStore.DbContext
                 UserId = USER_ID
             });
 
+        }
+        public override int SaveChanges()
+        {
+            try
+            {
+                return base.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                // Log the exception
+                Console.WriteLine(ex.Message);
+                throw;
+            }
         }
     }
 }

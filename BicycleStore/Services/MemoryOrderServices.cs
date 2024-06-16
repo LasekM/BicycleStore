@@ -31,10 +31,11 @@ namespace BicycleStore.Services
                 .FirstOrDefault(o => o.OrderId == id);
         }
 
-        public void CreateOrder(Order order)
+        public int CreateOrder(Order order)
         {
             _context.Orders.Add(order);
             _context.SaveChanges();
+            return order.OrderId;
         }
 
         public void UpdateOrder(Order order)
@@ -43,14 +44,10 @@ namespace BicycleStore.Services
             _context.SaveChanges();
         }
 
-        public void DeleteOrder(int id)
+        public void DeleteOrder(Order order)
         {
-            var order = _context.Orders.FirstOrDefault(o => o.OrderId == id);
-            if (order != null)
-            {
-                _context.Orders.Remove(order);
-                _context.SaveChanges();
-            }
+            _context.Orders.Remove(order);
+            _context.SaveChanges();
         }
     }
 }
