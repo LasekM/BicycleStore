@@ -41,7 +41,7 @@ namespace BicycleStore.DbContext
                .OnDelete(DeleteBehavior.Cascade);
 
 
-
+/*
             modelBuilder.Entity<Order>()
            .HasOne(o => o.Customer)
            .WithMany(c => c.Orders)
@@ -50,7 +50,7 @@ namespace BicycleStore.DbContext
             modelBuilder.Entity<Order>()
             .HasOne(o => o.Bike)
             .WithMany()
-            .HasForeignKey(o => o.BikeId);
+            .HasForeignKey(o => o.BikeId);*/
 
 
             // Przykładowe dane

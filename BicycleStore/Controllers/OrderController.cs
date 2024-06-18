@@ -1,28 +1,46 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using BicycleStore.Models;
-using System.Linq;
+using BicycleStore.Services;
 using System.Threading.Tasks;
-using BicycleStore.DbContext;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using BicycleStore.DbContext;
+using System;
 
 namespace BicycleStore.Controllers
 {
     public class OrderController : Controller
     {
+        private readonly BikeService _bikeService;
         private readonly AppDbContext _context;
-        private readonly ILogger<OrderController> _logger;
 
-        public OrderController(AppDbContext context, ILogger<OrderController> logger)
+        public OrderController(BikeService bikeService, AppDbContext context)
         {
+            _bikeService = bikeService;
             _context = context;
-            _logger = logger;
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Index()
         {
-            ViewBag.Bikes = new SelectList(_context.Bikes.Where(b => !b.IsReserved), "Id", "Model");
+            var orders = await _bikeService.GetOrdersAsync();
+            return View(orders);
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var order = await _bikeService.GetOrderAsync(id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            return View(order);
+        }
+
+        public async Task<IActionResult> Create()
+        {
+            var bikes = await _bikeService.GetBikesAsync();
+            ViewBag.Bikes = new SelectList(bikes.Where(b => !b.IsReserved), "Id", "Model");
             return View();
         }
 
@@ -30,9 +48,6 @@ namespace BicycleStore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BikeId,OrderDate,UserName")] Order order)
         {
-            _logger.LogInformation("Create order POST action called.");
-            _logger.LogInformation("UserName: {UserName}", order.UserName);
-
             var customer = await _context.Customers.SingleOrDefaultAsync(c => c.LastName == order.UserName);
 
             if (customer == null)
@@ -43,181 +58,73 @@ namespace BicycleStore.Controllers
             }
 
             order.CustomerId = customer.CustomerId;
+            order.Customer = customer;
+
             ModelState.Remove("Bike");
             ModelState.Remove("Customer");
 
             if (ModelState.IsValid)
             {
-                var bike = await _context.Bikes.FindAsync(order.BikeId);
+                var bike = await _bikeService.GetBikeByIdAsync(order.BikeId);
+
                 if (bike == null)
                 {
                     ModelState.AddModelError("BikeId", "Invalid Bike");
-                    _logger.LogWarning("Invalid Bike ID: {BikeId}", order.BikeId);
                 }
                 else
                 {
-                    bike.IsReserved = true; // Oznacz rower jako zarezerwowany
+                    bike.IsReserved = true;
                     order.Bike = bike;
                     order.Customer = customer;
-                    _context.Add(order);
-                    await _context.SaveChangesAsync();
-                    _logger.LogInformation("Order created successfully.");
+                    await _bikeService.CreateOrderAsync(order);
                     return RedirectToAction(nameof(Index));
                 }
             }
 
-            ViewBag.Bikes = new SelectList(_context.Bikes.Where(b => !b.IsReserved), "Id", "Model", order.BikeId);
+            var bikes = await _bikeService.GetBikesAsync();
+            ViewBag.Bikes = new SelectList(bikes.Where(b => !b.IsReserved), "Id", "Model", order.BikeId);
             return View(order);
         }
 
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var order = await _context.Orders
-                .Include(o => o.Bike)
-                .Include(o => o.Customer)
-                .FirstOrDefaultAsync(m => m.OrderId == id);
+            var order = await _bikeService.GetOrderAsync(id);
             if (order == null)
             {
                 return NotFound();
             }
-
+            var bikes = await _bikeService.GetBikesAsync();
+            ViewBag.Bikes = new SelectList(bikes, "Id", "Model", order.BikeId);
             return View(order);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Reserve(int BikeId)
+        public async Task<IActionResult> Edit(Order order)
         {
-            _logger.LogInformation("Reserve bike POST action called.");
-            var bike = await _context.Bikes.FindAsync(BikeId);
-            if (bike == null)
-            {
-                _logger.LogWarning("Invalid Bike ID: {BikeId}", BikeId);
-                return RedirectToAction(nameof(Search)); // Return to Search view if the bike is invalid
-            }
-
-            // Redirect to Reserve view with preselected bike
-            ViewBag.Bikes = new SelectList(_context.Bikes, "Id", "Model", BikeId);
-            var order = new Order
-            {
-                BikeId = BikeId,
-                OrderDate = DateTime.Now // Set the current date as default
-            };
-            return View("Reserve", order);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SubmitReservation([Bind("BikeId,OrderDate,UserName")] Order order)
-        {
-            _logger.LogInformation("Submit reservation POST action called.");
-            _logger.LogInformation("UserName: {UserName}", order.UserName);
-
-            var customer = await _context.Customers.SingleOrDefaultAsync(c => c.LastName == order.UserName);
-
-            if (customer == null)
-            {
-                customer = new Customer { LastName = order.UserName };
-                _context.Customers.Add(customer);
-                await _context.SaveChangesAsync();
-            }
-
-            order.CustomerId = customer.CustomerId;
-            ModelState.Remove("Bike");
-            ModelState.Remove("Customer");
-
             if (ModelState.IsValid)
             {
-                var bike = await _context.Bikes.FindAsync(order.BikeId);
-                if (bike == null)
-                {
-                    ModelState.AddModelError("BikeId", "Invalid Bike");
-                    _logger.LogWarning("Invalid Bike ID: {BikeId}", order.BikeId);
-                }
-                else
-                {
-                    order.Bike = bike;
-                    order.Customer = customer;
-                    _context.Add(order);
-                    await _context.SaveChangesAsync();
-                    _logger.LogInformation("Reservation created successfully.");
-                    return RedirectToAction(nameof(ReservationSuccess), new { orderId = order.OrderId });
-                }
+                await _bikeService.UpdateOrderAsync(order.OrderId, order);
+                return RedirectToAction(nameof(Details), new { id = order.OrderId });
             }
-
-            ViewBag.Bikes = new SelectList(_context.Bikes, "Id", "Model", order.BikeId);
-            return View("Reserve", order);
-        }
-
-        public async Task<IActionResult> ReservationSuccess(int orderId)
-        {
-            var order = await _context.Orders
-                .Include(o => o.Bike)
-                .Include(o => o.Customer)
-                .FirstOrDefaultAsync(o => o.OrderId == orderId);
-
-            if (order == null)
-            {
-                return NotFound();
-            }
-
+            var bikes = await _bikeService.GetBikesAsync();
+            ViewBag.Bikes = new SelectList(bikes, "Id", "Model", order.BikeId);
             return View(order);
         }
 
-
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Delete(int id)
         {
-            var orders = await _context.Orders
-                .Include(o => o.Bike)
-                .Include(o => o.Customer)
-                .ToListAsync();
-            return View(orders);
-        }
-
-        public async Task<IActionResult> Search()
-        {
-            var bikes = await _context.Bikes.Include(b => b.Supplier).ToListAsync();
-            return View(bikes);
-        }
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var order = await _context.Orders
-                .Include(o => o.Bike)
-                .Include(o => o.Customer)
-                .FirstOrDefaultAsync(m => m.OrderId == id);
+            var order = await _bikeService.GetOrderAsync(id);
             if (order == null)
             {
                 return NotFound();
             }
-
             return View(order);
         }
 
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var order = await _context.Orders.FindAsync(id);
-            if (order != null)
-            {
-                var bike = await _context.Bikes.FindAsync(order.BikeId);
-                if (bike != null)
-                {
-                    bike.IsReserved = false; // Oznacz rower jako niezarezerwowany
-                }
-                _context.Orders.Remove(order);
-                await _context.SaveChangesAsync();
-            }
+            await _bikeService.DeleteOrderAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BicycleStore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240616180303_Initial")]
+    [Migration("20240618213319_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -162,15 +162,15 @@ namespace BicycleStore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a1ed1214-3b55-4d76-9952-efdf2b26f153",
-                            ConcurrencyStamp = "a1ed1214-3b55-4d76-9952-efdf2b26f153",
+                            Id = "ca9c1e55-1520-4693-be77-2ac878c9aa35",
+                            ConcurrencyStamp = "ca9c1e55-1520-4693-be77-2ac878c9aa35",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "331e8e23-2ba0-45f2-8666-9a92340c9dba",
-                            ConcurrencyStamp = "331e8e23-2ba0-45f2-8666-9a92340c9dba",
+                            Id = "9b27b841-6f2e-4bad-aac0-56bdf6e8abb7",
+                            ConcurrencyStamp = "9b27b841-6f2e-4bad-aac0-56bdf6e8abb7",
                             Name = "user",
                             NormalizedName = "USER"
                         });
@@ -265,33 +265,33 @@ namespace BicycleStore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9a985011-bccc-4e81-bdc9-ff3e9cd40f08",
+                            Id = "f9b2a4ea-bd7b-48d1-beb6-5c4afef5b4e5",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3f644d0f-2bc7-4539-a37b-ec31c9db69dc",
+                            ConcurrencyStamp = "d61a93e6-87ef-4bf6-88c0-1356b5b31cfd",
                             Email = "adam@wsei.edu.pl",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADAM@WSEI.EDU.PL",
                             NormalizedUserName = "ADAM@WSEI.EDU.PL",
-                            PasswordHash = "AQAAAAIAAYagAAAAEI0WgFil96fefBSlsgeGwmnsk2PyIasbDzgEYU0/O+3y8Us0ibOyonN133XcPNTmoQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMEYF2nenDUoo/OLD9dv9/vgRQgXkH9btYWiIBoleW0oFau5wYblTUu6s89XCMzGug==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "152c2316-b6c7-4ae0-a2a9-b94c2b034716",
+                            SecurityStamp = "b0d76787-38e9-444b-a12b-90c5b522b8f2",
                             TwoFactorEnabled = false,
                             UserName = "adam@wsei.edu.pl"
                         },
                         new
                         {
-                            Id = "b4831026-bca3-4f44-8bff-9a758dba5300",
+                            Id = "4a7463b5-a2db-41af-ab01-d735aa37dc8f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ae10bfcc-9c9e-4cd9-a94f-fe5772a77005",
+                            ConcurrencyStamp = "e1f9d245-4a66-4b32-b764-fd5de8e0bde1",
                             Email = "user@wsei.edu.pl",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@WSEI.EDU.PL",
                             NormalizedUserName = "USER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOqRyb6FGryY3qXpvLvWrhfz/pRVTwPcFGtqYtkXG9SXyHeQK16VVqpq3b7JkTiO/w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOiLMxZRsyXFG2jOm/iaY1jyQmw6GPy1tM2yDSW2jBiJFPOeDH58H+V9hF+GcnWE/A==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "939b5e14-7928-4602-be21-3034aee00e06",
+                            SecurityStamp = "d794def7-3d11-4235-bcd3-babfab424584",
                             TwoFactorEnabled = false,
                             UserName = "user"
                         });
@@ -361,13 +361,13 @@ namespace BicycleStore.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "9a985011-bccc-4e81-bdc9-ff3e9cd40f08",
-                            RoleId = "a1ed1214-3b55-4d76-9952-efdf2b26f153"
+                            UserId = "f9b2a4ea-bd7b-48d1-beb6-5c4afef5b4e5",
+                            RoleId = "ca9c1e55-1520-4693-be77-2ac878c9aa35"
                         },
                         new
                         {
-                            UserId = "b4831026-bca3-4f44-8bff-9a758dba5300",
-                            RoleId = "331e8e23-2ba0-45f2-8666-9a92340c9dba"
+                            UserId = "4a7463b5-a2db-41af-ab01-d735aa37dc8f",
+                            RoleId = "9b27b841-6f2e-4bad-aac0-56bdf6e8abb7"
                         });
                 });
 

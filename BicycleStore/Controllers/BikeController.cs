@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BicycleStore.Models;
-using System.Linq;
-using BicycleStore.DbContext;
+using BicycleStore.Services;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,126 +9,84 @@ namespace BicycleStore.Controllers
 {
     public class BikeController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly BikeService _bikeService;
 
-        public BikeController(AppDbContext context)
+        public BikeController(BikeService bikeService)
         {
-            _context = context;
+            _bikeService = bikeService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var bikes = _context.Bikes.ToList();
+            var bikes = await _bikeService.GetBikesAsync();
             return View(bikes);
         }
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var bike = _context.Bikes.Include(b => b.Supplier).FirstOrDefault(b => b.Id == id);
+            var bike = await _bikeService.GetBikeAsync(id);
             if (bike == null)
             {
                 return NotFound();
             }
+            if (bike.SupplierID > 0)
+            {
+                bike.Supplier = await _bikeService.GetSupplierAsync(bike.SupplierID);
+            }
             return View(bike);
         }
 
-
-        public IActionResult Create(int supplierId)
+        public async Task<IActionResult> Create(int supplierId)
         {
-           
-            var suppliers = _context.Suppliers.ToList();
+            var suppliers = await _bikeService.GetSuppliersAsync(); // Assume this method is implemented in BikeService
             ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name");
             ViewBag.SelectedSupplierId = supplierId;
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(Bike bike)
+        public async Task<IActionResult> Create(Bike bike)
         {
-            
             if (ModelState.IsValid)
             {
-                _context.Bikes.Add(bike);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Details), new { id = bike.Id });
+                var createdBike = await _bikeService.CreateBikeAsync(bike);
+                return RedirectToAction(nameof(Details), new { id = createdBike.Id });
             }
-            var suppliers = _context.Suppliers.ToList();
-            ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name");
+
+            var suppliers = await _bikeService.GetSuppliersAsync();
+            ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name", bike.SupplierID);
             return View(bike);
         }
 
-        public IActionResult Edit(int id)
+
+        public async Task<IActionResult> Edit(int id)
         {
-            var bike = _context.Bikes.FirstOrDefault(b => b.Id == id);
+            var bike = await _bikeService.GetBikeAsync(id);
             if (bike == null)
             {
                 return NotFound();
             }
-            var suppliers = _context.Suppliers.ToList();
+            var suppliers = await _bikeService.GetSuppliersAsync(); // Assume this method is implemented in BikeService
             ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name", bike.SupplierID);
             return View(bike);
         }
 
         [HttpPost]
-        public IActionResult Edit(Bike bike)
+        public async Task<IActionResult> Edit(Bike bike)
         {
             if (ModelState.IsValid)
             {
-                _context.Bikes.Update(bike);
-                _context.SaveChanges();
+                await _bikeService.UpdateBikeAsync(bike.Id, bike);
                 return RedirectToAction(nameof(Details), new { id = bike.Id });
             }
-            var suppliers = _context.Suppliers.ToList();
+            var suppliers = await _bikeService.GetSuppliersAsync(); // Assume this method is implemented in BikeService
             ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name", bike.SupplierID);
             return View(bike);
         }
 
-        [HttpGet]
-        public IActionResult Search(string searchString)
+        public async Task<IActionResult> Delete(int id)
         {
-            var bikes = from b in _context.Bikes.Include(b => b.Supplier)
-                        select b;
-
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                bikes = bikes.Where(s => s.Model.Contains(searchString));
-            }
-
-            return View(bikes.ToList());
-        }
-
-        [HttpGet]
-        public JsonResult SearchBikes(string searchString)
-        {
-            var bikes = from b in _context.Bikes.Include(b => b.Supplier)
-                        select b;
-
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                searchString = searchString.ToLower();
-                bikes = bikes.Where(s => s.Model.ToLower().Contains(searchString));
-            }
-
-            var result = bikes.Select(b => new {
-                b.Id,
-                b.Model,
-                b.Price,
-                SupplierName = b.Supplier.Name
-            }).ToList();
-
-            return Json(result);
-        }
-
-
-
-
-
-
-
-
-        public IActionResult Delete(int id)
-        {
-            var bike = _context.Bikes.FirstOrDefault(b => b.Id == id);
+            var bike = await _bikeService.GetBikeAsync(id);
             if (bike == null)
             {
                 return NotFound();
@@ -137,25 +95,35 @@ namespace BicycleStore.Controllers
         }
 
         [HttpPost, ActionName("Delete")]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var bike = _context.Bikes.FirstOrDefault(b => b.Id == id);
-            if (bike != null)
-            {
-                _context.Bikes.Remove(bike);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
-            }
-            return NotFound();
+            await _bikeService.DeleteBikeAsync(id);
+            return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Reserve(int BikeId)
+        public async Task<IActionResult> Search(string searchString)
         {
-            // Przekierowanie do akcji Reserve w OrderController
-            return RedirectToAction("Reserve", "Order", new { BikeId = BikeId });
+            var bikes = await _bikeService.GetBikesAsync();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                bikes = bikes.Where(s => s.Model.ToLower().Contains(searchString.ToLower())).ToList();
+            }
+
+            foreach (var bike in bikes)
+            {
+                bike.Supplier = await _bikeService.GetSupplierAsync(bike.SupplierID);
+            }
+
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_BikeListPartial", bikes);
+            }
+
+            return View(bikes);
         }
+
+
 
     }
 }

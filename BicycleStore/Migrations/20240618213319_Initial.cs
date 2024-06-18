@@ -239,8 +239,8 @@ namespace BicycleStore.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "331e8e23-2ba0-45f2-8666-9a92340c9dba", "331e8e23-2ba0-45f2-8666-9a92340c9dba", "user", "USER" },
-                    { "a1ed1214-3b55-4d76-9952-efdf2b26f153", "a1ed1214-3b55-4d76-9952-efdf2b26f153", "admin", "ADMIN" }
+                    { "9b27b841-6f2e-4bad-aac0-56bdf6e8abb7", "9b27b841-6f2e-4bad-aac0-56bdf6e8abb7", "user", "USER" },
+                    { "ca9c1e55-1520-4693-be77-2ac878c9aa35", "ca9c1e55-1520-4693-be77-2ac878c9aa35", "admin", "ADMIN" }
                 });
 
             migrationBuilder.InsertData(
@@ -248,8 +248,8 @@ namespace BicycleStore.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "9a985011-bccc-4e81-bdc9-ff3e9cd40f08", 0, "3f644d0f-2bc7-4539-a37b-ec31c9db69dc", "adam@wsei.edu.pl", true, false, null, "ADAM@WSEI.EDU.PL", "ADAM@WSEI.EDU.PL", "AQAAAAIAAYagAAAAEI0WgFil96fefBSlsgeGwmnsk2PyIasbDzgEYU0/O+3y8Us0ibOyonN133XcPNTmoQ==", null, false, "152c2316-b6c7-4ae0-a2a9-b94c2b034716", false, "adam@wsei.edu.pl" },
-                    { "b4831026-bca3-4f44-8bff-9a758dba5300", 0, "ae10bfcc-9c9e-4cd9-a94f-fe5772a77005", "user@wsei.edu.pl", true, false, null, "USER@WSEI.EDU.PL", "USER", "AQAAAAIAAYagAAAAEOqRyb6FGryY3qXpvLvWrhfz/pRVTwPcFGtqYtkXG9SXyHeQK16VVqpq3b7JkTiO/w==", null, false, "939b5e14-7928-4602-be21-3034aee00e06", false, "user" }
+                    { "4a7463b5-a2db-41af-ab01-d735aa37dc8f", 0, "e1f9d245-4a66-4b32-b764-fd5de8e0bde1", "user@wsei.edu.pl", true, false, null, "USER@WSEI.EDU.PL", "USER", "AQAAAAIAAYagAAAAEOiLMxZRsyXFG2jOm/iaY1jyQmw6GPy1tM2yDSW2jBiJFPOeDH58H+V9hF+GcnWE/A==", null, false, "d794def7-3d11-4235-bcd3-babfab424584", false, "user" },
+                    { "f9b2a4ea-bd7b-48d1-beb6-5c4afef5b4e5", 0, "d61a93e6-87ef-4bf6-88c0-1356b5b31cfd", "adam@wsei.edu.pl", true, false, null, "ADAM@WSEI.EDU.PL", "ADAM@WSEI.EDU.PL", "AQAAAAIAAYagAAAAEMEYF2nenDUoo/OLD9dv9/vgRQgXkH9btYWiIBoleW0oFau5wYblTUu6s89XCMzGug==", null, false, "b0d76787-38e9-444b-a12b-90c5b522b8f2", false, "adam@wsei.edu.pl" }
                 });
 
             migrationBuilder.InsertData(
@@ -266,8 +266,8 @@ namespace BicycleStore.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { "a1ed1214-3b55-4d76-9952-efdf2b26f153", "9a985011-bccc-4e81-bdc9-ff3e9cd40f08" },
-                    { "331e8e23-2ba0-45f2-8666-9a92340c9dba", "b4831026-bca3-4f44-8bff-9a758dba5300" }
+                    { "9b27b841-6f2e-4bad-aac0-56bdf6e8abb7", "4a7463b5-a2db-41af-ab01-d735aa37dc8f" },
+                    { "ca9c1e55-1520-4693-be77-2ac878c9aa35", "f9b2a4ea-bd7b-48d1-beb6-5c4afef5b4e5" }
                 });
 
             migrationBuilder.InsertData(

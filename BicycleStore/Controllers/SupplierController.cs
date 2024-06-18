@@ -1,36 +1,39 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using BicycleStore.DbContext;
 using BicycleStore.Models;
-using Microsoft.EntityFrameworkCore;
+using BicycleStore.Services;
+using System.Threading.Tasks;
 
 namespace BicycleStore.Controllers
 {
     public class SupplierController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly BikeService _bikeService;
 
-        public SupplierController(AppDbContext context)
+        public SupplierController(BikeService bikeService)
         {
-            _context = context;
+            _bikeService = bikeService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var suppliers = _context.Suppliers.ToList();
+            var suppliers = await _bikeService.GetSuppliersAsync();
             return View(suppliers);
         }
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var supplier = _context.Suppliers
-                                    .Include(s => s.Bikes) 
-                                    .FirstOrDefault(s => s.Id == id);
+            var supplier = await _bikeService.GetSupplierAsync(id);
             if (supplier == null)
             {
                 return NotFound();
             }
+
+            var bikes = await _bikeService.GetBikesBySupplierIdAsync(id);
+            supplier.Bikes = bikes;
+
             return View(supplier);
         }
+
 
         public IActionResult Create()
         {
@@ -38,20 +41,19 @@ namespace BicycleStore.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Supplier supplier)
+        public async Task<IActionResult> Create(Supplier supplier)
         {
             if (ModelState.IsValid)
             {
-                _context.Suppliers.Add(supplier);
-                _context.SaveChanges();
+                await _bikeService.CreateSupplierAsync(supplier);
                 return RedirectToAction(nameof(Index));
             }
             return View(supplier);
         }
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var supplier = _context.Suppliers.FirstOrDefault(s => s.Id == id);
+            var supplier = await _bikeService.GetSupplierAsync(id);
             if (supplier == null)
             {
                 return NotFound();
@@ -60,20 +62,19 @@ namespace BicycleStore.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(Supplier supplier)
+        public async Task<IActionResult> Edit(Supplier supplier)
         {
             if (ModelState.IsValid)
             {
-                _context.Suppliers.Update(supplier);
-                _context.SaveChanges();
+                await _bikeService.UpdateSupplierAsync(supplier.Id, supplier);
                 return RedirectToAction(nameof(Index));
             }
             return View(supplier);
         }
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var supplier = _context.Suppliers.FirstOrDefault(s => s.Id == id);
+            var supplier = await _bikeService.GetSupplierAsync(id);
             if (supplier == null)
             {
                 return NotFound();
@@ -82,19 +83,13 @@ namespace BicycleStore.Controllers
         }
 
         [HttpPost, ActionName("Delete")]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var supplier = _context.Suppliers.FirstOrDefault(s => s.Id == id);
-            if (supplier != null)
-            {
-                _context.Suppliers.Remove(supplier);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
-            }
-            return NotFound();
+            await _bikeService.DeleteSupplierAsync(id);
+            return RedirectToAction(nameof(Index));
         }
 
-        // Dodajemy metodę CreateBike
+        // Method to redirect to bike creation with supplierId
         public IActionResult CreateBike(int id)
         {
             return RedirectToAction("Create", "Bike", new { supplierId = id });

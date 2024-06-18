@@ -1,79 +1,30 @@
 ﻿@model IEnumerable<BicycleStore.Models.Bike>
 
 @{
-    ViewData["Title"] = "Search Bikes";
+    ViewBag.Title = "Search Bikes";
 }
 
-<h1>Search Bikes</h1>
+<h2>Search Bikes</h2>
 
-<input type="text" id="searchString" placeholder="Search by Model" class="form-control" />
+<input type="text" id="searchString" placeholder="Search by Model" onkeyup="searchBikes()" />
 
-<table class="table" id="searchResults">
-    <thead>
-        <tr>
-            <th>Model</th>
-            <th>Price</th>
-            <th>Supplier</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var bike in Model)
-        {
-            <tr>
-                <td>@bike.Model</td>
-                <td>@bike.Price</td>
-                <td>@bike.Supplier.Name</td>
-                <td>
-                    @if (!bike.IsReserved)
-                    {
-                        <form asp-action="Reserve" asp-controller="Order" method="post">
-                            <input type="hidden" name="bikeId" value="@bike.Id" />
-                            <input type="submit" value="Reserve" class="btn btn-primary" />
-                        </form>
-                    }
-                    else
-                    {
-                        <button class="btn btn-secondary" disabled>Reserved</button>
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div id="bikeList">
+    @await Html.PartialAsync("_BikeListPartial", Model)
+</div>
 
 @section Scripts {
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function () {
-            $('#searchString').on('input', function () {
-                var searchString = $(this).val();
-                $.ajax({
-                    url: '@Url.Action("SearchBikes", "Bike")',
-                    type: 'GET',
-                    data: { searchString: searchString },
-                    success: function (data) {
-                        var tableBody = $('#searchResults tbody');
-                        tableBody.empty();
-                        if (data.length === 0) {
-                            tableBody.append('<tr><td colspan="4">No bikes found.</td></tr>');
-                        } else {
-                            $.each(data, function (index, bike) {
-                                tableBody.append('<tr>'
-                                    + '<td>' + bike.model + '</td>'
-                                    + '<td>' + bike.price + '</td>'
-                                    + '<td>' + bike.supplierName + '</td>'
-                                    + '<td>'
-                                    + '<a href="/Bike/Edit/' + bike.id + '">Edit</a> | '
-                                    + '<a href="/Bike/Details/' + bike.id + '">Details</a> | '
-                                    + '<a href="/Bike/Delete/' + bike.id + '">Delete</a>'
-                                    + '</td>'
-                                    + '</tr>');
-                            });
-                        }
-                    }
-                });
-            });
-        });
+        function searchBikes() {
+            var searchString = document.getElementById('searchString').value;
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '@Url.Action("Search", "Bike")?searchString=' + searchString, true);
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.onload = function () {
+                if (xhr.status >= 200 && xhr.status < 400) {
+                    document.getElementById('bikeList').innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send();
+        }
     </script>
 }

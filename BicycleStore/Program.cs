@@ -3,8 +3,30 @@ using Microsoft.EntityFrameworkCore;
 using BicycleStore.DbContext;
 using BicycleStore.Services;
 using Serilog;
+using System.Text.Json.Serialization;
+using System.Net.Http;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddHttpClient<BikeService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7042/api/");
+})
+.ConfigurePrimaryHttpMessageHandler(() =>
+{
+    var handler = new HttpClientHandler
+    {
+        // Akceptowanie wszystkich certyfikatów SSL
+        ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+    };
+    return handler;
+});
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    });
 
 // Konfiguracja Seriloga
 Log.Logger = new LoggerConfiguration()
@@ -29,7 +51,6 @@ builder.Services.AddScoped<IBikeService, MemoryBikeService>();
 builder.Services.AddScoped<ISupplierService, MemorySupplierService>();
 builder.Services.AddScoped<IOrderService, MemoryOrderServices>();
 builder.Services.AddScoped<ICustomerService, MemoryCustomerServices>();
-
 
 var dbPath = Path.Combine(builder.Environment.ContentRootPath, "Bike.db");
 builder.Services.AddDbContext<AppDbContext>(options =>

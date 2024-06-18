@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Text.Json.Serialization;
-using BicycleStore.Models;
+using BikeService.Models;
 
-namespace BicycleStore.Models
+namespace BikeService.Models
 {
     public class Order
     {
@@ -15,6 +15,5 @@ namespace BicycleStore.Models
         public Customer Customer { get; set; }
         public Bike Bike { get; set; }
     }
-
 }
 

@@ -4,30 +4,20 @@
     ViewData["Title"] = "Bike Details";
 }
 
-<h1>Bike Details</h1>
+<h1>@Model.Model</h1>
 
 <div>
     <h4>Bike</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Model)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Model)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Supplier.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Supplier.Name)
-        </dd>
+        <dt class="col-sm-2">Model</dt>
+        <dd class="col-sm-10">@Model.Model</dd>
+        <dt class="col-sm-2">Price</dt>
+        <dd class="col-sm-10">@Model.Price</dd>
+        <dt class="col-sm-2">Is Reserved</dt>
+        <dd class="col-sm-10">@Model.IsReserved</dd>
+        <dt class="col-sm-2">Supplier</dt>
+        <dd class="col-sm-10">@Model.Supplier?.Name</dd>
     </dl>
 </div>
 

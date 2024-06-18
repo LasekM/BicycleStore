@@ -1,9 +1,8 @@
-﻿using BicycleStore.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace BicycleStore.Models
+namespace BikeService.Models
 {
     public class Supplier
     {

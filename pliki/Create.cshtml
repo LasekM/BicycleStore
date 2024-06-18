@@ -1,7 +1,7 @@
 ﻿@model BicycleStore.Models.Order
 
 @{
-    ViewBag.Title = "Create Order";
+    ViewData["Title"] = "Create Order";
 }
 
 <h1>Create Order</h1>
@@ -11,11 +11,10 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
+                <label asp-for="BikeId" class="control-label"></label>
+                <select asp-for="BikeId" class="form-control" asp-items="ViewBag.Bikes"></select>
+                <span asp-validation-for="BikeId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="OrderDate" class="control-label"></label>
@@ -23,9 +22,9 @@
                 <span asp-validation-for="OrderDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="BikeId" class="control-label"></label>
-                <select asp-for="BikeId" class="form-control" asp-items="ViewBag.Bikes"></select>
-                <span asp-validation-for="BikeId" class="text-danger"></span>
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -37,3 +36,9 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
