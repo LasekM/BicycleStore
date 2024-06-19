@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using BicycleStore.Models;
+using Newtonsoft.Json;
 
 namespace BicycleStore.Services
 {
@@ -45,6 +46,12 @@ namespace BicycleStore.Services
         {
             var response = await _httpClient.PutAsJsonAsync($"https://localhost:7042/api/bike/{id}", bike);
             response.EnsureSuccessStatusCode();
+
+            // Check if the content is empty
+            if (response.Content.Headers.ContentLength == 0)
+            {
+                throw new JsonException("Response content is empty.");
+            }
 
             return await response.Content.ReadFromJsonAsync<Bike>();
         }

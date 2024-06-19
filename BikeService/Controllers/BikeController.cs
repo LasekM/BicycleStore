@@ -64,7 +64,7 @@ public class BikeController : ControllerBase
         _context.Entry(bike).State = EntityState.Modified;
         await _context.SaveChangesAsync();
 
-        return NoContent();
+        return Ok(bike);
     }
 
     [HttpDelete("{id}")]
