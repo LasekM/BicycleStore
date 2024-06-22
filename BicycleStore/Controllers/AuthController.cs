@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace BicycleStore.Controllers
 {
@@ -34,24 +36,76 @@ namespace BicycleStore.Controllers
             var response = await _httpClient.PostAsJsonAsync("https://localhost:7137/api/Auth/Login", model);
             if (response.IsSuccessStatusCode)
             {
-                var token = await response.Content.ReadAsStringAsync();
-                HttpContext.Session.SetString("JWToken", token);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
 
-                var claims = new List<Claim>
+                // Debugging: Print out the jsonResponse
+                System.Diagnostics.Debug.WriteLine("API Response: " + jsonResponse);
+
+                var tokenDict = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonResponse);
+
+                // Debugging: Print out the dictionary keys
+                foreach (var key in tokenDict.Keys)
+                {
+                    System.Diagnostics.Debug.WriteLine("Key: " + key);
+                }
+
+                if (tokenDict.TryGetValue("token", out var token))
+                {
+                    // Print the JWT token to the console
+                    System.Diagnostics.Debug.WriteLine("JWT Token: " + token);
+
+                    HttpContext.Session.SetString("JWToken", token);
+
+                    var handler = new JwtSecurityTokenHandler();
+
+                    if (handler.CanReadToken(token))
+                    {
+                        var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+
+                        // Debugging: Print out the claims in the token
+                        foreach (var claim in jsonToken.Claims)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Claim Type: {claim.Type}, Value: {claim.Value}");
+                        }
+
+                        var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, model.Username)
                 };
 
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                        // Add role claims from the token
+                        if (jsonToken != null)
+                        {
+                            foreach (var claim in jsonToken.Claims)
+                            {
+                                if (claim.Type == "role")
+                                {
+                                    claims.Add(new Claim(ClaimTypes.Role, claim.Value));
+                                }
+                            }
+                        }
 
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                return RedirectToAction("Index", "Home");
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return View(model);
             }
 
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return View(model);
         }
+
+
+
+
+
+
 
         [HttpGet]
         public IActionResult Register()

@@ -57,15 +57,11 @@ namespace JwtAuthApi.Services
 
         public async Task<User> Authenticate(string username, string password)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(x => x.Username == username && x.Password == password);
-
-            // return null if user not found
-            if (user == null)
-                return null;
-
-            // authentication successful
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Username == username && u.Password == password);
             return user;
         }
+
+
 
         public async Task<User> GetUserById(int id)
         {

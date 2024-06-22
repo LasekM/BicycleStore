@@ -146,21 +146,21 @@ namespace JwtAuthApi.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] User login)
+        public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
         {
-            var user = await _userService.Authenticate(login.Username, login.Password);
+            var user = await _userService.Authenticate(loginModel.Username, loginModel.Password);
 
             if (user == null)
                 return Unauthorized();
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
+            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
             new Claim(ClaimTypes.Name, user.Username),
-            new Claim(ClaimTypes.Role, user.Role)  // Add the role claim
+            new Claim(ClaimTypes.Role, user.Role)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -168,8 +168,11 @@ namespace JwtAuthApi.Controllers
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
 
-            return Ok(new { Token = tokenString });
+            return Ok(new { token = tokenString });
         }
+
+
+
 
 
         [HttpGet("GetUserById/{id}")]
@@ -211,5 +214,4 @@ namespace JwtAuthApi.Controllers
 
     }
 }
-
 
