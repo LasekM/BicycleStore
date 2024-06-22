@@ -17,120 +17,6 @@ namespace BicycleStore.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.5");
 
-            modelBuilder.Entity("BicycleStore.Models.Bike", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsReserved")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("SupplierID")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SupplierID");
-
-                    b.ToTable("Bikes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            IsReserved = false,
-                            Model = "Mountain King",
-                            Price = 999.99m,
-                            SupplierID = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            IsReserved = false,
-                            Model = "Road Pro",
-                            Price = 1299.99m,
-                            SupplierID = 2
-                        });
-                });
-
-            modelBuilder.Entity("BicycleStore.Models.Customer", b =>
-                {
-                    b.Property<int>("CustomerId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("CustomerId");
-
-                    b.ToTable("Customers");
-                });
-
-            modelBuilder.Entity("BicycleStore.Models.Order", b =>
-                {
-                    b.Property<int>("OrderId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BikeId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("OrderId");
-
-                    b.HasIndex("BikeId");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("BicycleStore.Models.Supplier", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Suppliers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Bike Suppliers Inc."
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Premium Bike Parts"
-                        });
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -159,15 +45,15 @@ namespace BicycleStore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ca9c1e55-1520-4693-be77-2ac878c9aa35",
-                            ConcurrencyStamp = "ca9c1e55-1520-4693-be77-2ac878c9aa35",
+                            Id = "9ac53286-1f43-41fa-b76e-264378e289d8",
+                            ConcurrencyStamp = "9ac53286-1f43-41fa-b76e-264378e289d8",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "9b27b841-6f2e-4bad-aac0-56bdf6e8abb7",
-                            ConcurrencyStamp = "9b27b841-6f2e-4bad-aac0-56bdf6e8abb7",
+                            Id = "9d8d7f95-4677-48f0-88c7-43b7e8502a0d",
+                            ConcurrencyStamp = "9d8d7f95-4677-48f0-88c7-43b7e8502a0d",
                             Name = "user",
                             NormalizedName = "USER"
                         });
@@ -262,33 +148,33 @@ namespace BicycleStore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f9b2a4ea-bd7b-48d1-beb6-5c4afef5b4e5",
+                            Id = "4ddee081-e9bc-4a82-8237-da4a13be1d35",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d61a93e6-87ef-4bf6-88c0-1356b5b31cfd",
+                            ConcurrencyStamp = "86cc2ff5-aa00-4ab6-940e-bacadc92b747",
                             Email = "adam@wsei.edu.pl",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADAM@WSEI.EDU.PL",
                             NormalizedUserName = "ADAM@WSEI.EDU.PL",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMEYF2nenDUoo/OLD9dv9/vgRQgXkH9btYWiIBoleW0oFau5wYblTUu6s89XCMzGug==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDpSgx1qXnIWTYpYM2h44zb4Yq453Tl803eKyNzHd+ZiQRt/tXLew+y5zYdOHnvX3Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b0d76787-38e9-444b-a12b-90c5b522b8f2",
+                            SecurityStamp = "cb617243-2f29-46a0-9c7f-569c32446771",
                             TwoFactorEnabled = false,
                             UserName = "adam@wsei.edu.pl"
                         },
                         new
                         {
-                            Id = "4a7463b5-a2db-41af-ab01-d735aa37dc8f",
+                            Id = "cb0a97da-7f74-4a2b-8ce7-c153b5c0dc1e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e1f9d245-4a66-4b32-b764-fd5de8e0bde1",
+                            ConcurrencyStamp = "58d6fafb-635a-4110-bf43-d40b7e1825a8",
                             Email = "user@wsei.edu.pl",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@WSEI.EDU.PL",
                             NormalizedUserName = "USER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOiLMxZRsyXFG2jOm/iaY1jyQmw6GPy1tM2yDSW2jBiJFPOeDH58H+V9hF+GcnWE/A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECj1vzFuugBW9vnN05S6z8A3cf+qs10c7Nb8KqRflRQSbeU0zPm84Q0JyK36qKmUTA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d794def7-3d11-4235-bcd3-babfab424584",
+                            SecurityStamp = "816b09d9-cc13-4d4c-9f3d-adcdf4fa4810",
                             TwoFactorEnabled = false,
                             UserName = "user"
                         });
@@ -358,13 +244,13 @@ namespace BicycleStore.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "f9b2a4ea-bd7b-48d1-beb6-5c4afef5b4e5",
-                            RoleId = "ca9c1e55-1520-4693-be77-2ac878c9aa35"
+                            UserId = "4ddee081-e9bc-4a82-8237-da4a13be1d35",
+                            RoleId = "9ac53286-1f43-41fa-b76e-264378e289d8"
                         },
                         new
                         {
-                            UserId = "4a7463b5-a2db-41af-ab01-d735aa37dc8f",
-                            RoleId = "9b27b841-6f2e-4bad-aac0-56bdf6e8abb7"
+                            UserId = "cb0a97da-7f74-4a2b-8ce7-c153b5c0dc1e",
+                            RoleId = "9d8d7f95-4677-48f0-88c7-43b7e8502a0d"
                         });
                 });
 
@@ -387,36 +273,6 @@ namespace BicycleStore.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("BicycleStore.Models.Bike", b =>
-                {
-                    b.HasOne("BicycleStore.Models.Supplier", "Supplier")
-                        .WithMany("Bikes")
-                        .HasForeignKey("SupplierID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Supplier");
-                });
-
-            modelBuilder.Entity("BicycleStore.Models.Order", b =>
-                {
-                    b.HasOne("BicycleStore.Models.Bike", "Bike")
-                        .WithMany()
-                        .HasForeignKey("BikeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BicycleStore.Models.Customer", "Customer")
-                        .WithMany("Orders")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Bike");
-
-                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -468,16 +324,6 @@ namespace BicycleStore.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("BicycleStore.Models.Customer", b =>
-                {
-                    b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("BicycleStore.Models.Supplier", b =>
-                {
-                    b.Navigation("Bikes");
                 });
 #pragma warning restore 612, 618
         }

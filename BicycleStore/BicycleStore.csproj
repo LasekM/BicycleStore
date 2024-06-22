@@ -30,6 +30,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BicycleStoreAPI\BicycleStoreAPI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Update="Views\Supplier\Create.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

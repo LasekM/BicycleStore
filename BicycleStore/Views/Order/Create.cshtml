@@ -1,7 +1,7 @@
 ﻿@model BicycleStore.Models.Order
 
 @{
-    ViewBag.Title = "Create Order";
+    ViewData["Title"] = "Create Order";
 }
 
 <h1>Create Order</h1>
@@ -18,14 +18,14 @@
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="OrderDate" class="control-label"></label>
-                <input asp-for="OrderDate" class="form-control" />
-                <span asp-validation-for="OrderDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="BikeId" class="control-label"></label>
                 <select asp-for="BikeId" class="form-control" asp-items="ViewBag.Bikes"></select>
                 <span asp-validation-for="BikeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderDate" class="control-label"></label>
+                <input asp-for="OrderDate" class="form-control" />
+                <span asp-validation-for="OrderDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -37,3 +37,7 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,12 +1,17 @@
 ﻿@model IEnumerable<BicycleStore.Models.Bike>
 
 @{
-    ViewBag.Title = "Search Bikes";
+    ViewData["Title"] = "Search Bikes";
 }
 
-<h2>Search Bikes</h2>
+<h1>Search Bikes</h1>
 
-<input type="text" id="searchString" placeholder="Search by Model" onkeyup="searchBikes()" />
+<form method="get" asp-action="Search">
+    <div class="form-group">
+        <label for="searchString">Search by Model:</label>
+        <input type="text" class="form-control" id="searchString" name="searchString" value="@ViewData["CurrentFilter"]" onkeyup="searchBikes()" />
+    </div>
+</form>
 
 <div id="bikeList">
     @await Html.PartialAsync("_BikeListPartial", Model)

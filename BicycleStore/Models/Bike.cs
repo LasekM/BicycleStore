@@ -1,11 +1,8 @@
-﻿using BicycleStore.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace BicycleStore.Models
-{
-    public class Bike
+{    public class Bike
     {
         [HiddenInput]
         [Key]
@@ -16,9 +13,16 @@ namespace BicycleStore.Models
         public decimal Price { get; set; }
 
         public int SupplierID { get; set; }
-        [JsonIgnore]
         public Supplier? Supplier { get; set; }
         public bool IsReserved { get; set; }
     }
-}
 
+    public class BikeDto
+    {
+        public string Model { get; set; }
+        public decimal Price { get; set; }
+        public int SupplierID { get; set; }
+        public bool IsReserved { get; set; }
+    }
+
+}

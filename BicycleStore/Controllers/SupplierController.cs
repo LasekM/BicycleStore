@@ -1,98 +1,94 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using BicycleStore.Models;
-using BicycleStore.Services;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using BicycleStore.Models;
 
-namespace BicycleStore.Controllers
+public class SupplierController : Controller
 {
-    public class SupplierController : Controller
+    private readonly HttpClient _httpClient;
+
+    public SupplierController(HttpClient httpClient)
     {
-        private readonly BikeService _bikeService;
+        _httpClient = httpClient;
+    }
 
-        public SupplierController(BikeService bikeService)
+    public async Task<IActionResult> Index()
+    {
+        var response = await _httpClient.GetAsync("https://localhost:7265/api/Supplier");
+        response.EnsureSuccessStatusCode();
+        var jsonString = await response.Content.ReadAsStringAsync();
+        var suppliers = JsonConvert.DeserializeObject<List<Supplier>>(jsonString);
+        return View(suppliers);
+    }
+
+    public async Task<IActionResult> Details(int id)
+    {
+        var response = await _httpClient.GetAsync($"https://localhost:7265/api/Supplier/{id}");
+        response.EnsureSuccessStatusCode();
+        var jsonString = await response.Content.ReadAsStringAsync();
+        var supplier = JsonConvert.DeserializeObject<Supplier>(jsonString);
+        if (supplier == null)
         {
-            _bikeService = bikeService;
+            return NotFound();
         }
+        return View(supplier);
+    }
 
-        public async Task<IActionResult> Index()
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(Supplier supplier)
+    {
+        var response = await _httpClient.PostAsJsonAsync("https://localhost:7265/api/Supplier", supplier);
+        response.EnsureSuccessStatusCode();
+        return RedirectToAction(nameof(Index));
+    }
+
+    public async Task<IActionResult> Edit(int id)
+    {
+        var response = await _httpClient.GetAsync($"https://localhost:7265/api/Supplier/{id}");
+        response.EnsureSuccessStatusCode();
+        var jsonString = await response.Content.ReadAsStringAsync();
+        var supplier = JsonConvert.DeserializeObject<Supplier>(jsonString);
+        if (supplier == null)
         {
-            var suppliers = await _bikeService.GetSuppliersAsync();
-            return View(suppliers);
+            return NotFound();
         }
+        return View(supplier);
+    }
 
-        public async Task<IActionResult> Details(int id)
+    [HttpPost]
+    public async Task<IActionResult> Edit(Supplier supplier)
+    {
+        var response = await _httpClient.PutAsJsonAsync($"https://localhost:7265/api/Supplier/{supplier.Id}", supplier);
+        response.EnsureSuccessStatusCode();
+        return RedirectToAction(nameof(Index));
+    }
+
+    public async Task<IActionResult> Delete(int id)
+    {
+        var response = await _httpClient.GetAsync($"https://localhost:7265/api/Supplier/{id}");
+        response.EnsureSuccessStatusCode();
+        var jsonString = await response.Content.ReadAsStringAsync();
+        var supplier = JsonConvert.DeserializeObject<Supplier>(jsonString);
+        if (supplier == null)
         {
-            var supplier = await _bikeService.GetSupplierAsync(id);
-            if (supplier == null)
-            {
-                return NotFound();
-            }
-
-            var bikes = await _bikeService.GetBikesBySupplierIdAsync(id);
-            supplier.Bikes = bikes;
-
-            return View(supplier);
+            return NotFound();
         }
+        return View(supplier);
+    }
 
-
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(Supplier supplier)
-        {
-            if (ModelState.IsValid)
-            {
-                await _bikeService.CreateSupplierAsync(supplier);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(supplier);
-        }
-
-        public async Task<IActionResult> Edit(int id)
-        {
-            var supplier = await _bikeService.GetSupplierAsync(id);
-            if (supplier == null)
-            {
-                return NotFound();
-            }
-            return View(supplier);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Edit(Supplier supplier)
-        {
-            if (ModelState.IsValid)
-            {
-                await _bikeService.UpdateSupplierAsync(supplier.Id, supplier);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(supplier);
-        }
-
-        public async Task<IActionResult> Delete(int id)
-        {
-            var supplier = await _bikeService.GetSupplierAsync(id);
-            if (supplier == null)
-            {
-                return NotFound();
-            }
-            return View(supplier);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            await _bikeService.DeleteSupplierAsync(id);
-            return RedirectToAction(nameof(Index));
-        }
-
-        // Method to redirect to bike creation with supplierId
-        public IActionResult CreateBike(int id)
-        {
-            return RedirectToAction("Create", "Bike", new { supplierId = id });
-        }
+    [HttpPost, ActionName("Delete")]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        var response = await _httpClient.DeleteAsync($"https://localhost:7265/api/Supplier/{id}");
+        response.EnsureSuccessStatusCode();
+        return RedirectToAction(nameof(Index));
     }
 }
