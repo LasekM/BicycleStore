@@ -53,6 +53,47 @@ namespace BicycleStore.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Customers",
+                columns: table => new
+                {
+                    CustomerId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    LastName = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customers", x => x.CustomerId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Suppliers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Suppliers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Username = table.Column<string>(type: "TEXT", nullable: false),
+                    Password = table.Column<string>(type: "TEXT", nullable: false),
+                    Role = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -98,8 +139,8 @@ namespace BicycleStore.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
+                    ProviderKey = table.Column<string>(type: "TEXT", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "TEXT", nullable: true),
                     UserId = table.Column<string>(type: "TEXT", nullable: false)
                 },
@@ -143,8 +184,8 @@ namespace BicycleStore.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    LoginProvider = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
                     Value = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -158,13 +199,63 @@ namespace BicycleStore.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Bikes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Model = table.Column<string>(type: "TEXT", nullable: false),
+                    Price = table.Column<decimal>(type: "TEXT", nullable: false),
+                    SupplierID = table.Column<int>(type: "INTEGER", nullable: false),
+                    IsReserved = table.Column<bool>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bikes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Bikes_Suppliers_SupplierID",
+                        column: x => x.SupplierID,
+                        principalTable: "Suppliers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    OrderId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    BikeId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CustomerId = table.Column<int>(type: "INTEGER", nullable: false),
+                    OrderDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    UserName = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.OrderId);
+                    table.ForeignKey(
+                        name: "FK_Orders_Bikes_BikeId",
+                        column: x => x.BikeId,
+                        principalTable: "Bikes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Orders_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "CustomerId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "9ac53286-1f43-41fa-b76e-264378e289d8", "9ac53286-1f43-41fa-b76e-264378e289d8", "admin", "ADMIN" },
-                    { "9d8d7f95-4677-48f0-88c7-43b7e8502a0d", "9d8d7f95-4677-48f0-88c7-43b7e8502a0d", "user", "USER" }
+                    { "27db8f89-20c7-4f98-9c9c-633d8cd11deb", "27db8f89-20c7-4f98-9c9c-633d8cd11deb", "admin", "ADMIN" },
+                    { "78841c1a-1fed-4c53-9fa0-2f0f8ea1154d", "78841c1a-1fed-4c53-9fa0-2f0f8ea1154d", "user", "USER" }
                 });
 
             migrationBuilder.InsertData(
@@ -172,8 +263,8 @@ namespace BicycleStore.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "4ddee081-e9bc-4a82-8237-da4a13be1d35", 0, "86cc2ff5-aa00-4ab6-940e-bacadc92b747", "adam@wsei.edu.pl", true, false, null, "ADAM@WSEI.EDU.PL", "ADAM@WSEI.EDU.PL", "AQAAAAIAAYagAAAAEDpSgx1qXnIWTYpYM2h44zb4Yq453Tl803eKyNzHd+ZiQRt/tXLew+y5zYdOHnvX3Q==", null, false, "cb617243-2f29-46a0-9c7f-569c32446771", false, "adam@wsei.edu.pl" },
-                    { "cb0a97da-7f74-4a2b-8ce7-c153b5c0dc1e", 0, "58d6fafb-635a-4110-bf43-d40b7e1825a8", "user@wsei.edu.pl", true, false, null, "USER@WSEI.EDU.PL", "USER", "AQAAAAIAAYagAAAAECj1vzFuugBW9vnN05S6z8A3cf+qs10c7Nb8KqRflRQSbeU0zPm84Q0JyK36qKmUTA==", null, false, "816b09d9-cc13-4d4c-9f3d-adcdf4fa4810", false, "user" }
+                    { "26f63aa4-8dd7-4080-8953-0dff12e2c2ce", 0, "1d018431-6ba8-4b84-b983-65a6b0097e85", "adam@wsei.edu.pl", true, false, null, "ADAM@WSEI.EDU.PL", "ADAM@WSEI.EDU.PL", "AQAAAAIAAYagAAAAEFEL7xhmDG8CtFy9T7huX2vovtkLQqsnGyKhRlTaIzLfn9FluzHNz52v16Uq70qtQg==", null, false, "fb6a9de5-cf45-4cac-a060-d086d9764d69", false, "adam@wsei.edu.pl" },
+                    { "d69002ed-abb7-4019-b25c-eac0a319dd0a", 0, "638838cb-fd60-491d-9ba0-b18606d6c92f", "user@wsei.edu.pl", true, false, null, "USER@WSEI.EDU.PL", "USER", "AQAAAAIAAYagAAAAEFGDE0dFelRQOMwNb9BaRbRYNdLD/8Sj3Fb5i6ojitu+y0lhViqE70QN8DFFi1/LrA==", null, false, "187f699b-e047-4925-848f-455930ef1c4e", false, "user" }
                 });
 
             migrationBuilder.InsertData(
@@ -181,8 +272,8 @@ namespace BicycleStore.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { "9ac53286-1f43-41fa-b76e-264378e289d8", "4ddee081-e9bc-4a82-8237-da4a13be1d35" },
-                    { "9d8d7f95-4677-48f0-88c7-43b7e8502a0d", "cb0a97da-7f74-4a2b-8ce7-c153b5c0dc1e" }
+                    { "27db8f89-20c7-4f98-9c9c-633d8cd11deb", "26f63aa4-8dd7-4080-8953-0dff12e2c2ce" },
+                    { "78841c1a-1fed-4c53-9fa0-2f0f8ea1154d", "d69002ed-abb7-4019-b25c-eac0a319dd0a" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -221,6 +312,21 @@ namespace BicycleStore.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bikes_SupplierID",
+                table: "Bikes",
+                column: "SupplierID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_BikeId",
+                table: "Orders",
+                column: "BikeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_CustomerId",
+                table: "Orders",
+                column: "CustomerId");
         }
 
         /// <inheritdoc />
@@ -242,10 +348,25 @@ namespace BicycleStore.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Bikes");
+
+            migrationBuilder.DropTable(
+                name: "Customers");
+
+            migrationBuilder.DropTable(
+                name: "Suppliers");
         }
     }
 }
