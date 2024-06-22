@@ -35,18 +35,33 @@ public class OrderController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Order>> CreateOrder(Order order)
+    public async Task<IActionResult> CreateOrder([FromBody] Order order)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
+        var existingCustomer = await _context.Customers.SingleOrDefaultAsync(c => c.LastName == order.UserName);
+        if (existingCustomer != null)
+        {
+            order.CustomerId = existingCustomer.CustomerId;
+        }
+        else
+        {
+            var newCustomer = new Customer { LastName = order.UserName };
+            _context.Customers.Add(newCustomer);
+            await _context.SaveChangesAsync();
+            order.CustomerId = newCustomer.CustomerId;
+        }
+
         _context.Orders.Add(order);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(GetOrder), new { id = order.OrderId }, order);
+        return CreatedAtAction("GetOrder", new { id = order.OrderId }, order);
     }
+
+
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateOrder(int id, Order order)

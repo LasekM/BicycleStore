@@ -1,8 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
-using BicycleStoreAPI.Models;
 
 namespace BicycleStoreAPI.Models
 {
@@ -20,12 +18,9 @@ namespace BicycleStoreAPI.Models
         public string UserName { get; set; }
 
         [ForeignKey("BikeId")]
-        [JsonIgnore]
         public Bike Bike { get; set; }
 
         [ForeignKey("CustomerId")]
-        [JsonIgnore]
         public Customer Customer { get; set; }
     }
 }
-

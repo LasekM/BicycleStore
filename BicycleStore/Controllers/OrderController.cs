@@ -1,14 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using BicycleStore.Models;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Linq;
-
+using BicycleStore.Models;
 public class OrderController : Controller
 {
     private readonly HttpClient _httpClient;
@@ -71,35 +64,50 @@ public class OrderController : Controller
             return View(order);
         }
 
-        order.CustomerId = customer.CustomerId;
-        ModelState.Remove("Bike");
-        ModelState.Remove("Customer");
-
-        if (ModelState.IsValid)
+        var bike = await GetBikeById(order.BikeId);
+        if (bike == null)
         {
-            var bike = await GetBikeById(order.BikeId);
-            if (bike == null)
-            {
-                ModelState.AddModelError("BikeId", "Invalid Bike");
-                _logger.LogWarning("Invalid Bike ID: {BikeId}", order.BikeId);
-            }
-            else
-            {
-                bike.IsReserved = true; // Mark bike as reserved
-                order.Bike = bike;
-                order.Customer = customer;
-
-                var createOrderResponse = await CreateOrder(order);
-
-                if (createOrderResponse.IsSuccessStatusCode)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-
-                ModelState.AddModelError(string.Empty, "Failed to create order.");
-            }
+            ModelState.AddModelError("BikeId", "Invalid Bike");
+            _logger.LogWarning("Invalid Bike ID: {BikeId}", order.BikeId);
+            await PopulateBikesSelectList(order.BikeId);
+            return View(order);
         }
 
+        bike.IsReserved = true; // Mark bike as reserved
+        order.Bike = bike;
+        order.Customer = customer;
+
+        // Utworzenie obiektu Order do wysłania do API
+        var newOrder = new Order
+        {
+            OrderDate = order.OrderDate,
+            UserName = order.UserName,
+            BikeId = order.BikeId,
+            CustomerId = customer.CustomerId,
+            Bike = new Bike
+            {
+                Id = order.BikeId,
+                Model = bike.Model,
+                Price = bike.Price,
+                SupplierID = bike.SupplierID,
+                Supplier = bike.Supplier,
+                IsReserved = true
+            },
+            Customer = new Customer
+            {
+                LastName = customer.LastName
+            }
+        };
+
+        var createOrderResponse = await CreateOrder(newOrder);
+        var updateBikeResponse = await UpdateBike(bike);
+
+        if (createOrderResponse.IsSuccessStatusCode && updateBikeResponse.IsSuccessStatusCode)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        ModelState.AddModelError(string.Empty, "Failed to create order.");
         await PopulateBikesSelectList(order.BikeId);
         return View(order);
     }
@@ -202,5 +210,134 @@ public class OrderController : Controller
         var response = await _httpClient.DeleteAsync($"https://localhost:7265/api/Order/{id}");
         response.EnsureSuccessStatusCode();
         return RedirectToAction(nameof(Index));
+    }
+
+    // Reserve action method
+    public async Task<IActionResult> Reserve(int bikeId)
+    {
+        _logger.LogInformation("Reserve bike POST action called.");
+        var bike = await GetBikeById(bikeId);
+        if (bike == null)
+        {
+            _logger.LogWarning("Invalid Bike ID: {BikeId}", bikeId);
+            return RedirectToAction(nameof(Index)); // Return to Index view if the bike is invalid
+        }
+
+        // Redirect to Reserve view with preselected bike
+        ViewBag.Bikes = new SelectList(await GetAvailableBikes(), "Id", "Model", bikeId);
+        var order = new Order
+        {
+            BikeId = bikeId,
+            OrderDate = DateTime.Now // Set the current date as default
+        };
+        return View("Reserve", order);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SubmitReservation([Bind("BikeId,OrderDate,UserName")] Order order)
+    {
+        _logger.LogInformation("Submit reservation POST action called.");
+        _logger.LogInformation("UserName: {UserName}", order.UserName);
+
+        var customer = await GetOrCreateCustomer(order.UserName);
+
+        if (customer == null)
+        {
+            ModelState.AddModelError("UserName", "Failed to create or retrieve customer.");
+            await PopulateBikesSelectList(order.BikeId);
+            return View("Reserve", order);
+        }
+
+        order.CustomerId = customer.CustomerId;
+        ModelState.Remove("Bike");
+        ModelState.Remove("Customer");
+
+        if (ModelState.IsValid)
+        {
+            var bike = await GetBikeById(order.BikeId);
+            if (bike == null || bike.IsReserved)
+            {
+                ModelState.AddModelError("BikeId", "Invalid or already reserved bike.");
+                _logger.LogWarning("Invalid or already reserved Bike ID: {BikeId}", order.BikeId);
+            }
+            else
+            {
+                bike.IsReserved = true; // Mark bike as reserved
+                order.Bike = bike;
+                order.Customer = customer;
+
+                // Utworzenie obiektu Order do wysłania do API
+                var newOrder = new Order
+                {
+                    OrderDate = order.OrderDate,
+                    UserName = order.UserName,
+                    BikeId = order.BikeId,
+                    CustomerId = customer.CustomerId,
+                    Bike = new Bike
+                    {
+                        Id = order.BikeId,
+                        Model = bike.Model,
+                        Price = bike.Price,
+                        SupplierID = bike.SupplierID,
+                        Supplier = bike.Supplier,
+                        IsReserved = true
+                    },
+                    Customer = new Customer
+                    {
+                        LastName = customer.LastName
+                    }
+                };
+
+                var createOrderResponse = await CreateOrder(newOrder);
+                var updateBikeResponse = await UpdateBike(bike);
+
+                if (createOrderResponse.IsSuccessStatusCode && updateBikeResponse.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(ReservationSuccess), new { orderId = newOrder.OrderId });
+                }
+
+                ModelState.AddModelError(string.Empty, "Failed to create order or update bike.");
+            }
+        }
+
+        await PopulateBikesSelectList(order.BikeId);
+        return View("Reserve", order);
+    }
+
+
+    public async Task<IActionResult> ReservationSuccess(int orderId)
+    {
+        var order = await GetOrderById(orderId);
+        if (order == null)
+        {
+            return NotFound();
+        }
+
+        return View(order);
+    }
+
+    private async Task<IEnumerable<Bike>> GetAvailableBikes()
+    {
+        var bikesResponse = await _httpClient.GetAsync("https://localhost:7265/api/Bike");
+        bikesResponse.EnsureSuccessStatusCode();
+        var bikesJsonString = await bikesResponse.Content.ReadAsStringAsync();
+        return JsonConvert.DeserializeObject<List<Bike>>(bikesJsonString).Where(b => !b.IsReserved);
+    }
+
+    private async Task<Order> GetOrderById(int orderId)
+    {
+        var orderResponse = await _httpClient.GetAsync($"https://localhost:7265/api/Order/{orderId}");
+        if (orderResponse.IsSuccessStatusCode)
+        {
+            var orderJsonString = await orderResponse.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<Order>(orderJsonString);
+        }
+        return null;
+    }
+
+    private async Task<HttpResponseMessage> UpdateBike(Bike bike)
+    {
+        return await _httpClient.PutAsJsonAsync($"https://localhost:7265/api/Bike/{bike.Id}", bike);
     }
 }
