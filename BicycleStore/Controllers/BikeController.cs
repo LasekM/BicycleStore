@@ -101,9 +101,10 @@ public class BikeController : Controller
         var suppliersJsonString = await suppliersResponse.Content.ReadAsStringAsync();
         var suppliers = JsonConvert.DeserializeObject<List<Supplier>>(suppliersJsonString);
 
-        ViewBag.Suppliers = new SelectList(suppliers, "SupplierID", "Name", bike.SupplierID);
+        ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name", bike.SupplierID);
         return View(bike);
     }
+
     [Authorize(Roles = "admin")]
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -129,9 +130,11 @@ public class BikeController : Controller
         var suppliersJsonString = await suppliersResponse.Content.ReadAsStringAsync();
         var suppliers = JsonConvert.DeserializeObject<List<Supplier>>(suppliersJsonString);
 
-        ViewBag.Suppliers = new SelectList(suppliers, "SupplierID", "Name", bike.SupplierID);
+        ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name", bike.SupplierID);
         return View(bike);
     }
+
+
     [Authorize(Roles = "admin")]
     public async Task<IActionResult> Delete(int id)
     {

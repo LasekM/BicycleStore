@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BicycleStoreAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240623103324_Initial")]
+    [Migration("20240623175919_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -59,7 +59,7 @@ namespace BicycleStoreAPI.Migrations
                             Id = 1,
                             Category = "Road Bike",
                             GroupSet = "Shimano Ultegra",
-                            IsReserved = false,
+                            IsReserved = true,
                             Model = "Speedster 3000",
                             Price = 2599.99m,
                             SupplierID = 1
@@ -189,7 +189,7 @@ namespace BicycleStoreAPI.Migrations
                             Id = 14,
                             Category = "Mountain Bike",
                             GroupSet = "SRAM GX",
-                            IsReserved = true,
+                            IsReserved = false,
                             Model = "Mach 6",
                             Price = 5000.00m,
                             SupplierID = 4
@@ -229,7 +229,7 @@ namespace BicycleStoreAPI.Migrations
                             Id = 18,
                             Category = "Mountain Bike",
                             GroupSet = "SRAM X01",
-                            IsReserved = true,
+                            IsReserved = false,
                             Model = "Top Fuel 9.8",
                             Price = 6500.00m,
                             SupplierID = 1
@@ -269,6 +269,18 @@ namespace BicycleStoreAPI.Migrations
                     b.HasKey("CustomerId");
 
                     b.ToTable("Customers");
+
+                    b.HasData(
+                        new
+                        {
+                            CustomerId = 1,
+                            LastName = "admin"
+                        },
+                        new
+                        {
+                            CustomerId = 2,
+                            LastName = "user"
+                        });
                 });
 
             modelBuilder.Entity("BicycleStoreAPI.Models.Order", b =>
@@ -297,6 +309,24 @@ namespace BicycleStoreAPI.Migrations
                     b.HasIndex("CustomerId");
 
                     b.ToTable("Orders");
+
+                    b.HasData(
+                        new
+                        {
+                            OrderId = 1,
+                            BikeId = 1,
+                            CustomerId = 1,
+                            OrderDate = new DateTime(2024, 6, 23, 19, 59, 19, 780, DateTimeKind.Local).AddTicks(8455),
+                            UserName = "admin"
+                        },
+                        new
+                        {
+                            OrderId = 2,
+                            BikeId = 2,
+                            CustomerId = 2,
+                            OrderDate = new DateTime(2024, 6, 23, 19, 59, 19, 780, DateTimeKind.Local).AddTicks(8491),
+                            UserName = "user"
+                        });
                 });
 
             modelBuilder.Entity("BicycleStoreAPI.Models.Supplier", b =>

@@ -43,5 +43,10 @@
     </dl>
     <div>
         <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        <form asp-action="MarkAsReceived" method="post" style="display:inline">
+            <input type="hidden" name="id" value="@Model.OrderId" />
+            <button type="submit" class="btn btn-primary">Received</button>
+        </form>
+        <a asp-action="Delete" asp-route-id="@Model.OrderId" class="btn btn-danger btn-sm">Delete</a>
     </div>
 </div>

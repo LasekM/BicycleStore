@@ -92,6 +92,15 @@ namespace BicycleStoreAPI.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Customers",
+                columns: new[] { "CustomerId", "LastName" },
+                values: new object[,]
+                {
+                    { 1, "admin" },
+                    { 2, "user" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Suppliers",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
@@ -108,7 +117,7 @@ namespace BicycleStoreAPI.Migrations
                 columns: new[] { "Id", "Category", "GroupSet", "IsReserved", "Model", "Price", "SupplierID" },
                 values: new object[,]
                 {
-                    { 1, "Road Bike", "Shimano Ultegra", false, "Speedster 3000", 2599.99m, 1 },
+                    { 1, "Road Bike", "Shimano Ultegra", true, "Speedster 3000", 2599.99m, 1 },
                     { 2, "Mountain Bike", "SRAM Eagle", true, "Spectral", 3299.00m, 2 },
                     { 3, "Urban Bike", "Shimano Nexus", false, "Mistral", 899.50m, 3 },
                     { 4, "E-Bike", "Shiamno XT", false, "Urta Hybrid", 6700.50m, 4 },
@@ -121,13 +130,22 @@ namespace BicycleStoreAPI.Migrations
                     { 11, "Urban Bike", "Shimano Altus", false, "Quick CX 3", 800.00m, 5 },
                     { 12, "Urban Bike", "Shimano Nexus", false, "Vintage", 450.00m, 3 },
                     { 13, "Road Bike", "Shimano Ultegra Di2", false, "Filante SLR", 9500.00m, 4 },
-                    { 14, "Mountain Bike", "SRAM GX", true, "Mach 6", 5000.00m, 4 },
+                    { 14, "Mountain Bike", "SRAM GX", false, "Mach 6", 5000.00m, 4 },
                     { 15, "Urban Bike", "Shimano Deore XT", false, "Roadlite", 950.00m, 2 },
                     { 16, "E-Bike", "Shimano 105", false, "Domane+ AL 5", 2800.00m, 1 },
                     { 17, "Road Bike", "Campagnolo chorus", false, "Garda", 650.00m, 4 },
-                    { 18, "Mountain Bike", "SRAM X01", true, "Top Fuel 9.8", 6500.00m, 1 },
+                    { 18, "Mountain Bike", "SRAM X01", false, "Top Fuel 9.8", 6500.00m, 1 },
                     { 19, "Road Bike", "Shimano Tiagra", false, "CAAD13", 2100.00m, 5 },
                     { 20, "Gravel Bike", "Shimano GRX-400", false, "Aspre 2", 1500.00m, 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Orders",
+                columns: new[] { "OrderId", "BikeId", "CustomerId", "OrderDate", "UserName" },
+                values: new object[,]
+                {
+                    { 1, 1, 1, new DateTime(2024, 6, 23, 19, 59, 19, 780, DateTimeKind.Local).AddTicks(8455), "admin" },
+                    { 2, 2, 2, new DateTime(2024, 6, 23, 19, 59, 19, 780, DateTimeKind.Local).AddTicks(8491), "user" }
                 });
 
             migrationBuilder.CreateIndex(

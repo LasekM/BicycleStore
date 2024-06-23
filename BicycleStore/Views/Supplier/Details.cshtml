@@ -42,9 +42,11 @@
                     @Html.DisplayFor(modelItem => bike.Price)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-controller="Bike" asp-route-id="@bike.Id">Edit</a> |
-                    <a asp-action="Details" asp-controller="Bike" asp-route-id="@bike.Id">Details</a> |
-                    <a asp-action="Delete" asp-controller="Bike" asp-route-id="@bike.Id">Delete</a>
+                    <div class="btn-group" role="group" aria-label="Action buttons">
+                        <a asp-action="Edit" asp-controller="Bike" asp-route-id="@bike.Id" class="btn btn-primary btn-sm">Edit</a>
+                        <a asp-action="Details" asp-controller="Bike" asp-route-id="@bike.Id" class="btn btn-secondary btn-sm">Details</a>
+                        <a asp-action="Delete" asp-controller="Bike" asp-route-id="@bike.Id" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
                 </td>
             </tr>
         }

@@ -221,6 +221,25 @@ public class OrderController : Controller
         return View();
     }
 
+
+    [Authorize]
+    public async Task<IActionResult> ConfirmDeleteMyOrder(int id)
+    {
+        var userName = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+
+        var response = await _httpClient.GetAsync($"https://localhost:7265/api/Order/{id}");
+        response.EnsureSuccessStatusCode();
+        var jsonString = await response.Content.ReadAsStringAsync();
+        var order = JsonConvert.DeserializeObject<Order>(jsonString);
+        if (order == null || order.UserName != userName)
+        {
+            return Unauthorized(); // Return unauthorized if the order does not belong to the current user
+        }
+
+        return View(order);
+    }
+
+
     [HttpPost, ActionName("DeleteMyOrderConfirmed")]
     [ValidateAntiForgeryToken]
     [Authorize]
@@ -392,6 +411,52 @@ public class OrderController : Controller
         return View(orders);
     }
 
+    [HttpPost, ActionName("MarkAsReceived")]
+    [ValidateAntiForgeryToken]
+    [Authorize]
+    public async Task<IActionResult> MarkAsReceived(int id)
+    {
+        var userName = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
 
+        // Fetch the order to ensure it belongs to the current user
+        var orderResponse = await _httpClient.GetAsync($"https://localhost:7265/api/Order/{id}");
+        if (!orderResponse.IsSuccessStatusCode)
+        {
+            ModelState.AddModelError(string.Empty, "Failed to retrieve the order.");
+            return View();
+        }
+
+        var orderJsonString = await orderResponse.Content.ReadAsStringAsync();
+        var order = JsonConvert.DeserializeObject<Order>(orderJsonString);
+        /*if (order == null || order.UserName != userName)
+        {
+            return Unauthorized(); // Return unauthorized if the order does not belong to the current user
+        }*/
+
+        // Retrieve and update the bike
+        var bike = await GetBikeById(order.BikeId);
+        if (bike == null)
+        {
+            ModelState.AddModelError(string.Empty, "Failed to retrieve the bike.");
+            return View();
+        }
+
+        // Delete the order
+        var response = await _httpClient.DeleteAsync($"https://localhost:7265/api/Order/{id}");
+        if (!response.IsSuccessStatusCode)
+        {
+            ModelState.AddModelError(string.Empty, "Failed to delete the order.");
+            return View();
+        }
+
+        var bikeResponse = await _httpClient.DeleteAsync($"https://localhost:7265/api/Bike/{bike.Id}");
+        if (bikeResponse.IsSuccessStatusCode)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        ModelState.AddModelError(string.Empty, "Failed to delete the bike.");
+        return View();
+    }
 
 }

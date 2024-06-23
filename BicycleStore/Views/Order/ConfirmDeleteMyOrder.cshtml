@@ -1,0 +1,45 @@
+﻿@model BicycleStore.Models.Order
+
+@{
+    ViewData["Title"] = "Confirm Delete Order";
+}
+
+<h1>Confirm Delete Order</h1>
+
+<h3>Are you sure you want to delete this order?</h3>
+<div>
+    <h4>Order</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrderDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Bike.Model)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Bike.Model)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+    </dl>
+
+    <div class="btn-toolbar" role="toolbar" aria-label="Action buttons">
+        <div class="btn-group mr-2" role="group">
+            <a asp-action="DetailsUser" asp-route-id="@Model.OrderId" class="btn btn-primary btn-sm">Details</a>
+            <a asp-action="MyOrders" class="btn btn-info btn-sm">My Orders</a>
+        </div>
+        <form asp-action="DeleteMyOrderConfirmed" method="post" style="display:inline" class="btn-group" role="group">
+            <input type="hidden" name="id" value="@Model.OrderId" />
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        </form>
+    </div>
+
+</div>

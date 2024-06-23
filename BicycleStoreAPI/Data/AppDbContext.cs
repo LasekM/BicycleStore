@@ -63,7 +63,7 @@ namespace BicycleStoreAPI.Data
                     GroupSet = "Shimano Ultegra",
                     Price = 2599.99m,
                     SupplierID = 1,
-                    IsReserved = false
+                    IsReserved = true
                 },
                 new Bike
                 {
@@ -193,7 +193,7 @@ namespace BicycleStoreAPI.Data
                     GroupSet = "SRAM GX",
                     Price = 5000.00m,
                     SupplierID = 4,
-                    IsReserved = true
+                    IsReserved = false
                 },
                 new Bike
                 {
@@ -233,7 +233,7 @@ namespace BicycleStoreAPI.Data
                     GroupSet = "SRAM X01",
                     Price = 6500.00m,
                     SupplierID = 1,
-                    IsReserved = true
+                    IsReserved = false
                 },
                 new Bike
                 {
@@ -257,16 +257,15 @@ namespace BicycleStoreAPI.Data
                 }
            );
 
+            modelBuilder.Entity<Customer>().HasData(
+                            new Customer { CustomerId = 1, LastName = "admin" },
+                            new Customer { CustomerId = 2, LastName = "user" }
+                        );
 
-            // modelBuilder.Entity<Customer>().HasData(
-            //     new Customer { CustomerId = 1, LastName = "Smith" },
-            //     new Customer { CustomerId = 2, LastName = "Johnson" }
-            // );
-
-            // modelBuilder.Entity<Order>().HasData(
-            //     new Order { OrderId = 1, BikeId = 1, CustomerId = 1, OrderDate = DateTime.Now },
-            //     new Order { OrderId = 2, BikeId = 2, CustomerId = 2, OrderDate = DateTime.Now }
-            // );
+            modelBuilder.Entity<Order>().HasData(
+                new Order { OrderId = 1, BikeId = 1, CustomerId = 1, OrderDate = DateTime.Now, UserName = "admin" },
+                new Order { OrderId = 2, BikeId = 2, CustomerId = 2, OrderDate = DateTime.Now, UserName = "user" }
+            );
         }
 
         public override int SaveChanges()
