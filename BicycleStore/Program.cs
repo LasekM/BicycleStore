@@ -12,8 +12,6 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.File("Logs/log.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
-
-
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 
@@ -24,9 +22,14 @@ var jwtAudience = builder.Configuration["Jwt:Audience"];
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 })
-.AddJwtBearer(options =>
+.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+{
+    options.LoginPath = "/Auth/Login";
+    options.AccessDeniedPath = "/Auth/AccessDenied";
+})
+.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -38,8 +41,15 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = jwtAudience,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
     };
-})
-.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireLoggedIn", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+    });
+});
 
 builder.Services.AddSession(options =>
 {

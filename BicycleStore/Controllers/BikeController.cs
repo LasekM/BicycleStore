@@ -8,6 +8,7 @@ using BicycleStore.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using BicycleStoreAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 
 public class BikeController : Controller
 {
@@ -28,7 +29,7 @@ public class BikeController : Controller
         var bikes = JsonConvert.DeserializeObject<List<Bike>>(jsonString);
         return View(bikes);
     }
-
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> Details(int id)
     {
         var response = await _httpClient.GetAsync($"https://localhost:7265/api/Bike/{id}");
@@ -41,7 +42,7 @@ public class BikeController : Controller
         }
         return View(bike);
     }
-
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> Create()
     {
         var suppliersResponse = await _httpClient.GetAsync("https://localhost:7265/api/Supplier");
@@ -53,7 +54,7 @@ public class BikeController : Controller
         return View();
     }
 
-
+    [Authorize(Roles = "admin")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Bike bike)
@@ -83,7 +84,7 @@ public class BikeController : Controller
         ViewBag.Suppliers = new SelectList(suppliers, "SupplierID", "Name");
         return View(bike);
     }
-
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> Edit(int id)
     {
         var bikeResponse = await _httpClient.GetAsync($"https://localhost:7265/api/Bike/{id}");
@@ -103,7 +104,7 @@ public class BikeController : Controller
         ViewBag.Suppliers = new SelectList(suppliers, "SupplierID", "Name", bike.SupplierID);
         return View(bike);
     }
-
+    [Authorize(Roles = "admin")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Bike bike)
@@ -131,7 +132,7 @@ public class BikeController : Controller
         ViewBag.Suppliers = new SelectList(suppliers, "SupplierID", "Name", bike.SupplierID);
         return View(bike);
     }
-
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> Delete(int id)
     {
         var response = await _httpClient.GetAsync($"https://localhost:7265/api/Bike/{id}");
@@ -144,7 +145,7 @@ public class BikeController : Controller
         }
         return View(bike);
     }
-
+    [Authorize(Roles = "admin")]
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)

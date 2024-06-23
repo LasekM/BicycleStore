@@ -4,29 +4,35 @@
     ViewData["Title"] = "Reserve Bike";
 }
 
-<h2>Reserve Bike</h2>
+<h1>Reserve Bike</h1>
 
-<form asp-action="SubmitReservation" method="post">
-    <div class="form-group">
-        <label asp-for="OrderDate" class="control-label"></label>
-        <input asp-for="OrderDate" class="form-control" type="date" />
-        <span asp-validation-for="OrderDate" class="text-danger"></span>
+<h4>Order</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ReserveConfirm">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="BikeId" class="control-label"></label>
+                <select asp-for="BikeId" class="form-control" asp-items="ViewBag.Bikes"></select>
+                <span asp-validation-for="BikeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderDate" class="control-label"></label>
+                <input asp-for="OrderDate" class="form-control" type="datetime-local" value="@Model.OrderDate.ToString("yyyy-MM-ddTHH:mm")" />
+                <span asp-validation-for="OrderDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Reserve" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
-    <div class="form-group">
-        <label asp-for="UserName" class="control-label"></label>
-        <input asp-for="UserName" class="form-control" />
-        <span asp-validation-for="UserName" class="text-danger"></span>
-    </div>
-    <input type="hidden" asp-for="BikeId" />
-    <button type="submit" class="btn btn-primary">Reserve</button>
-</form>
+</div>
 
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    <partial name="_ValidationScriptsPartial" />
 }

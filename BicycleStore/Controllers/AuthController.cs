@@ -135,5 +135,11 @@ namespace BicycleStore.Controllers
             HttpContext.Session.Remove("JWToken");
             return RedirectToAction("Index", "Home");
         }
+
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }

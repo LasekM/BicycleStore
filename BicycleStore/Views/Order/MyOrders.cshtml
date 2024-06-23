@@ -1,0 +1,58 @@
+﻿@model List<BicycleStore.Models.Order>
+
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+<h1>My Orders</h1>
+
+@if (ViewBag.Message != null)
+{
+    <p>@ViewBag.Message</p>
+}
+else if (Model != null && Model.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().OrderDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Bike.Model)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().UserName)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Bike.Model)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        <a asp-action="DetailsUser" asp-route-id="@item.OrderId">Details</a> |
+                        <form asp-action="DeleteMyOrderConfirmed" method="post" style="display:inline">
+                            <input type="hidden" name="id" value="@item.OrderId" />
+                            <button type="submit" class="btn btn-link">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No orders found.</p>
+}

@@ -1,29 +1,30 @@
-﻿@model BicycleStore.Models.Order
+﻿@model BicycleStore.Models.Bike
 
 @{
     ViewData["Title"] = "Reservation Success";
 }
 
-<h2>Reservation Success</h2>
+<h1>Reservation Success</h1>
 
-<p>Your reservation was successful!</p>
-
-<h3>Order Details</h3>
-<table class="table">
-    <tr>
-        <th>Customer Name</th>
-        <td>@Model.Customer.LastName</td>
-    </tr>
-    <tr>
-        <th>Bike Model</th>
-        <td>@Model.Bike.Model</td>
-    </tr>
-    <tr>
-        <th>Order Date</th>
-        <td>@Model.OrderDate</td>
-    </tr>
-</table>
-
+<h3>You have successfully reserved the bike:</h3>
 <div>
-    <a asp-action="Index">Back to Orders List</a>
+    <h4>Bike</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Model)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Model)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+    </dl>
+    <div>
+        <a asp-action="MyOrders" class="btn btn-primary">Back to List</a>
+    </div>
 </div>
