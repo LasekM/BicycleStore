@@ -4,6 +4,8 @@
     <thead>
         <tr>
             <th>Model</th>
+            <th>Category</th>
+            <th>GroupSet</th>
             <th>Price</th>
             <th>Supplier</th>
             <th>Actions</th>
@@ -14,6 +16,8 @@
         {
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.Model)</td>
+                <td>@Html.DisplayFor(modelItem => item.Category)</td>
+                <td>@Html.DisplayFor(modelItem => item.GroupSet)</td>
                 <td>@Html.DisplayFor(modelItem => item.Price)</td>
                 <td>@Html.DisplayFor(modelItem => item.Supplier.Name)</td>
                 <td>

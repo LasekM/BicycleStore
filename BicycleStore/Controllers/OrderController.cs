@@ -88,6 +88,8 @@ public class OrderController : Controller
             {
                 Id = order.BikeId,
                 Model = bike.Model,
+                Category = bike.Category,
+                GroupSet = bike.GroupSet,
                 Price = bike.Price,
                 SupplierID = bike.SupplierID,
                 Supplier = bike.Supplier,
@@ -278,6 +280,8 @@ public class OrderController : Controller
                     {
                         Id = order.BikeId,
                         Model = bike.Model,
+                        Category = bike.Category,
+                        GroupSet = bike.GroupSet,
                         Price = bike.Price,
                         SupplierID = bike.SupplierID,
                         Supplier = bike.Supplier,

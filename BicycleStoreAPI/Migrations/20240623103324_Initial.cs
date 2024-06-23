@@ -46,6 +46,8 @@ namespace BicycleStoreAPI.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Model = table.Column<string>(type: "TEXT", nullable: false),
+                    Category = table.Column<string>(type: "TEXT", nullable: false),
+                    GroupSet = table.Column<string>(type: "TEXT", nullable: false),
                     Price = table.Column<decimal>(type: "TEXT", nullable: false),
                     SupplierID = table.Column<int>(type: "INTEGER", nullable: false),
                     IsReserved = table.Column<bool>(type: "INTEGER", nullable: false)
@@ -94,17 +96,38 @@ namespace BicycleStoreAPI.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Bike Suppliers Inc." },
-                    { 2, "Premium Bike Parts" }
+                    { 1, "Trek" },
+                    { 2, "Canyon" },
+                    { 3, "Romet" },
+                    { 4, "Willier" },
+                    { 5, "Cannondale" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Bikes",
-                columns: new[] { "Id", "IsReserved", "Model", "Price", "SupplierID" },
+                columns: new[] { "Id", "Category", "GroupSet", "IsReserved", "Model", "Price", "SupplierID" },
                 values: new object[,]
                 {
-                    { 1, false, "Mountain King", 999.99m, 1 },
-                    { 2, false, "Road Pro", 1299.99m, 2 }
+                    { 1, "Road Bike", "Shimano Ultegra", false, "Speedster 3000", 2599.99m, 1 },
+                    { 2, "Mountain Bike", "SRAM Eagle", true, "Spectral", 3299.00m, 2 },
+                    { 3, "Urban Bike", "Shimano Nexus", false, "Mistral", 899.50m, 3 },
+                    { 4, "E-Bike", "Shiamno XT", false, "Urta Hybrid", 6700.50m, 4 },
+                    { 5, "gravel Bike", "Shimano GRX-400", false, "Topstone", 3599.99m, 5 },
+                    { 6, "Road Bike", "Shimano 105", false, "Endurace", 2000.00m, 2 },
+                    { 7, "Mountain Bike", "SRAM NX", false, "Fuel EX", 3100.00m, 1 },
+                    { 8, "Mountain Bike", "Shimano Deore", false, "Rambler R9.2", 1200.00m, 3 },
+                    { 9, "E-Bike", "Shimano Deore", false, "Trail Neo", 3400.00m, 5 },
+                    { 10, "Road Bike", "Shimano Dura-Ace", false, "SuperSix EVO", 6000.00m, 5 },
+                    { 11, "Urban Bike", "Shimano Altus", false, "Quick CX 3", 800.00m, 5 },
+                    { 12, "Urban Bike", "Shimano Nexus", false, "Vintage", 450.00m, 3 },
+                    { 13, "Road Bike", "Shimano Ultegra Di2", false, "Filante SLR", 9500.00m, 4 },
+                    { 14, "Mountain Bike", "SRAM GX", true, "Mach 6", 5000.00m, 4 },
+                    { 15, "Urban Bike", "Shimano Deore XT", false, "Roadlite", 950.00m, 2 },
+                    { 16, "E-Bike", "Shimano 105", false, "Domane+ AL 5", 2800.00m, 1 },
+                    { 17, "Road Bike", "Campagnolo chorus", false, "Garda", 650.00m, 4 },
+                    { 18, "Mountain Bike", "SRAM X01", true, "Top Fuel 9.8", 6500.00m, 1 },
+                    { 19, "Road Bike", "Shimano Tiagra", false, "CAAD13", 2100.00m, 5 },
+                    { 20, "Gravel Bike", "Shimano GRX-400", false, "Aspre 2", 1500.00m, 3 }
                 });
 
             migrationBuilder.CreateIndex(
