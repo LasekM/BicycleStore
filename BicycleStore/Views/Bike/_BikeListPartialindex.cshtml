@@ -1,0 +1,31 @@
+﻿@model IEnumerable<BicycleStore.Models.Bike>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.First().Model)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Category)</th>
+            <th>@Html.DisplayNameFor(model => model.First().GroupSet)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Price)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Supplier.Name)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Model)</td>
+                <td>@Html.DisplayFor(modelItem => item.Category)</td>
+                <td>@Html.DisplayFor(modelItem => item.GroupSet)</td>
+                <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                <td>@Html.DisplayFor(modelItem => item.Supplier.Name)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Login Success";
+}
+
+<div class="alert alert-success" role="alert">
+    <h4 class="alert-heading">Login Successful!</h4>
+    <p>You have successfully logged in.</p>
+</div>
+
+<div class="loader"></div>
+
+<link rel="stylesheet" href="~/css/site.css" />
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        console.log("Document is ready.");
+        $(".alert").hide().fadeIn(1000).delay(3000).fadeOut(1000, function () {
+            console.log("Redirecting to home.");
+            window.location.href = "@Url.Action("Index", "Home")";
+        });
+    });
+</script>

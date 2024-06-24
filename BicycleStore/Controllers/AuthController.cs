@@ -89,15 +89,17 @@ namespace BicycleStore.Controllers
 
                         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-                        return RedirectToAction("Index", "Home");
+                        return View("LoginSuccess");
                     }
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                ViewBag.ErrorMessage = "Invalid login attempt.";
                 return View(model);
             }
 
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            ViewBag.ErrorMessage = "Invalid login attempt.";
             return View(model);
         }
 

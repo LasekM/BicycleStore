@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using BicycleStoreAPI.Services;
 using Microsoft.AspNetCore.Authorization;
+using PagedList;
 
 public class BikeController : Controller
 {
@@ -29,6 +30,7 @@ public class BikeController : Controller
         var bikes = JsonConvert.DeserializeObject<List<Bike>>(jsonString);
         return View(bikes);
     }
+
     [Authorize(Roles = "admin")]
     public async Task<IActionResult> Details(int id)
     {
@@ -166,7 +168,58 @@ public class BikeController : Controller
         }
     }
 
-    public async Task<IActionResult> Search(string searchString)
+    public async Task<IActionResult> Search(string searchString, string selectedCategory, int? selectedSupplierId)
+    {
+        var response = await _httpClient.GetAsync("https://localhost:7265/api/Bike");
+        response.EnsureSuccessStatusCode();
+        var jsonString = await response.Content.ReadAsStringAsync();
+        var bikes = JsonConvert.DeserializeObject<List<Bike>>(jsonString);
+
+        if (!string.IsNullOrEmpty(searchString))
+        {
+            bikes = bikes.Where(s => s.Model.ToLower().Contains(searchString.ToLower())).ToList();
+        }
+
+        if (!string.IsNullOrEmpty(selectedCategory))
+        {
+            bikes = bikes.Where(b => b.Category == selectedCategory).ToList();
+        }
+
+        if (selectedSupplierId.HasValue)
+        {
+            bikes = bikes.Where(b => b.SupplierID == selectedSupplierId.Value).ToList();
+        }
+
+        foreach (var bike in bikes)
+        {
+            var supplierResponse = await _httpClient.GetAsync($"https://localhost:7265/api/Supplier/{bike.SupplierID}");
+            supplierResponse.EnsureSuccessStatusCode();
+            var supplierJsonString = await supplierResponse.Content.ReadAsStringAsync();
+            bike.Supplier = JsonConvert.DeserializeObject<Supplier>(supplierJsonString);
+        }
+
+        var categoriesResponse = await _httpClient.GetAsync("https://localhost:7265/api/Bike/categories");
+        categoriesResponse.EnsureSuccessStatusCode();
+        var categoriesJsonString = await categoriesResponse.Content.ReadAsStringAsync();
+        var categories = JsonConvert.DeserializeObject<List<string>>(categoriesJsonString);
+
+        var suppliersResponse = await _httpClient.GetAsync("https://localhost:7265/api/Supplier");
+        suppliersResponse.EnsureSuccessStatusCode();
+        var suppliersJsonString = await suppliersResponse.Content.ReadAsStringAsync();
+        var suppliers = JsonConvert.DeserializeObject<List<Supplier>>(suppliersJsonString);
+
+        ViewBag.Categories = categories;
+        ViewBag.Suppliers = suppliers;
+
+        if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+        {
+            return PartialView("_BikeListPartial", bikes);
+        }
+
+        return View(bikes);
+    }
+
+    public async Task<IActionResult> SearchIndex(string searchString)
     {
         var response = await _httpClient.GetAsync("https://localhost:7265/api/Bike");
         response.EnsureSuccessStatusCode();
@@ -188,10 +241,11 @@ public class BikeController : Controller
 
         if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
         {
-            return PartialView("_BikeListPartial", bikes);
+            return PartialView("_BikeListPartialindex", bikes);
         }
 
-        return View(bikes);
+        return View("Index", bikes);
     }
+
 
 }

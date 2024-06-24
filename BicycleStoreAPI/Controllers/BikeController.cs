@@ -98,5 +98,19 @@ namespace BicycleStoreAPI.Controllers
         {
             return _context.Bikes.Any(e => e.Id == id);
         }
+
+        [HttpGet("categories")]
+        public async Task<ActionResult<IEnumerable<string>>> GetCategories()
+        {
+            var categories = await _context.Bikes
+                .Select(b => b.Category)
+                .Distinct()
+                .ToListAsync();
+
+            return Ok(categories);
+        }
+
+
+
     }
 }

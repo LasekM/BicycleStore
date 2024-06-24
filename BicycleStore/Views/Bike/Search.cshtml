@@ -6,10 +6,30 @@
 
 <h1>Search Bikes</h1>
 
-<form method="get" asp-action="Search">
+<form method="get" asp-action="Search" id="searchForm">
     <div class="form-group">
         <label for="searchString">Search by Model:</label>
         <input type="text" class="form-control" id="searchString" name="searchString" value="@ViewData["CurrentFilter"]" onkeyup="searchBikes()" />
+    </div>
+    <div class="form-group">
+        <label for="selectedCategory">Filter by Category:</label>
+        <select class="form-control" id="selectedCategory" name="selectedCategory" onchange="searchBikes()">
+            <option value="">All Categories</option>
+            @foreach (var category in ViewBag.Categories)
+            {
+                <option value="@category">@category</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="selectedSupplierId">Filter by Supplier:</label>
+        <select class="form-control" id="selectedSupplierId" name="selectedSupplierId" onchange="searchBikes()">
+            <option value="">All Suppliers</option>
+            @foreach (var supplier in ViewBag.Suppliers)
+            {
+                <option value="@supplier.Id">@supplier.Name</option>
+            }
+        </select>
     </div>
 </form>
 
@@ -20,9 +40,12 @@
 @section Scripts {
     <script>
         function searchBikes() {
-            var searchString = document.getElementById('searchString').value;
+            var form = document.getElementById('searchForm');
+            var formData = new FormData(form);
+            var searchParams = new URLSearchParams(formData).toString();
+
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', '@Url.Action("Search", "Bike")?searchString=' + searchString, true);
+            xhr.open('GET', '@Url.Action("Search", "Bike")?' + searchParams, true);
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
             xhr.onload = function () {
                 if (xhr.status >= 200 && xhr.status < 400) {
