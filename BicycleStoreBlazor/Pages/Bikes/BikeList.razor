@@ -1,0 +1,49 @@
+﻿@page "/bikes"
+@inject HttpClient Http
+
+<h3>Bike List</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Model</th>
+            <th>Price</th>
+            <th>Supplier</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (bikes == null)
+        {
+            <tr>
+                <td colspan="3">Loading...</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var bike in bikes)
+            {
+                <tr>
+                    <td>@bike.Model</td>
+                    <td>@bike.Price</td>
+                    <td>@bike.Supplier</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<Bike> bikes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        bikes = await Http.GetFromJsonAsync<List<Bike>>("/api/bikes");
+    }
+
+    public class Bike
+    {
+        public string Model { get; set; }
+        public decimal Price { get; set; }
+        public string Supplier { get; set; }
+    }
+}
