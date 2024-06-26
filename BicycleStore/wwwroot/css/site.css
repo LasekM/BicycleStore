@@ -1,11 +1,11 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
@@ -13,12 +13,29 @@ html {
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    background-color: #DCD7C9;
+}
+
+
+.navbar {
+    background-color: #343a40 !important;
+}
+
+.navbar.navbar-expand-sm {
+    background-color: #343a40 !important;
+}
+
+.navbar.navbar-expand-sm .nav-link {
+    color: #DCD7C9 !important;
+}
+
+.navbar-brand {
+    color: #A27B5C !important;
 }
 
 .carousel-item {
@@ -38,4 +55,70 @@ body {
     100% {
         transform: rotate(360deg);
     }
+}
+
+.pct {
+    height: 750px;
+    width: 1000px;
+    object-fit: cover;
+    border-radius: 30px;
+}
+
+.carousel-caption {
+    background-color: rgba(55, 58, 64, 0.4);
+    border-radius: 15px;
+    font-size: 20px;
+    box-shadow: 6px 6px 8px rgba(0, 0, 0, 0.3);
+}
+
+.mt-5 {
+    font-size: 48px;
+    color: #2C3639;
+}
+
+.btn-primary{
+    background-color: #3F4E4F;
+    border-color: #3F4E4F;
+    border-radius: 20px;
+    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.btn-primary:link, .btn-primary:visited {
+    background-color: #3F4E4F;
+    border-color: #3F4E4F;
+    border-radius: 20px;
+    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.btn-primary:hover, .btn-primary:active {
+    background-color: #2C3639;
+    border-color: #2C3639;
+    border-radius: 20px;
+    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.btn {
+    border-radius: 20px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.display-4 {
+    font-size: 52px;
+    font-weight: 500;
+    color: #283133;
+}
+
+.lead {
+    font-size: 24px;
+    font-weight: 500;
+    color: #2C3639;
+}
+
+.container .jumbotron {
+    width: 240rem !important;
+    height: auto;
+    padding: 30px;
+    background-color: #c2b6ac;
+    margin-top: -1rem;
+    margin-left: -80rem;
 }
