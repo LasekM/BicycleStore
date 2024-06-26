@@ -20,7 +20,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace BicycleStore.Tests
+namespace BicycleStore.Tests.Tests
 {
     public class AuthControllerTests
     {
@@ -41,7 +41,7 @@ namespace BicycleStore.Tests
             _handlerMock = new Mock<HttpMessageHandler>();
             _httpClient = new HttpClient(_handlerMock.Object)
             {
-                BaseAddress = new System.Uri("https://localhost:7137/")
+                BaseAddress = new Uri("https://localhost:7137/")
             };
 
             _controller = new AuthController(_httpClient);
