@@ -106,15 +106,24 @@ BicycleStore/
 ### Auth
 #### POST /api/auth/register - Rejestracja użytkownika
 #### POST /api/auth/login - Logowanie użytkownika
+#### GET /api/Auth/GetUserById/{id} - Pobranie użytkownika po ID
+#### GET /api/Auth/GetUserByUsername/{username} -  Pobranie użytkownika po nazwie użytkownika
+#### GET /api/Auth/currentUser - Pobieranie nazwy oraz roli użytkownika
 ### Bikes
 #### GET /api/bike - Pobranie wszystkich rowerów
 #### GET /api/bike/{id} - Pobranie roweru po ID
 #### POST /api/bike - Dodanie nowego roweru
 #### PUT /api/bike/{id} - Aktualizacja roweru
 #### DELETE /api/bike/{id} - Usunięcie roweru
+#### GET /api/bike/categories - Pobranie kategorie roweru
+### Customers
+#### POST /api/Customer - Dodanie nowego klienta
+#### GET /api/Customer/{id} - Pobieranie klienta po ID
+#### GET /api/Customer/ByName/{name} - Pobieranie klienta po nazwie klienta
 ### Orders
 #### GET /api/order - Pobranie wszystkich zamówień
 #### GET /api/order/{id} - Pobranie zamówienia po ID
+#### GET /api/order/byusername/{username} - Pobranie zamówienia po nazwie klienta
 #### POST /api/order - Dodanie nowego zamówienia
 #### PUT /api/order/{id} - Aktualizacja zamówienia
 #### DELETE /api/order/{id} - Usunięcie zamówienia
