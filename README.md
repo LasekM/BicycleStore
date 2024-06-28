@@ -100,6 +100,12 @@ BicycleStore/
 │   │   ├── MemoryOrderServices.cs
 │   │   └── MemorySupplierServices.cs
 │   └── Bike.db
+├── BicycleStore.Tests/
+│   ├── Tests/
+│   │   ├── AuthControllerTests.cs
+│   │   ├── BikeControllerTests.cs
+│   │   ├── OrderControllerTests.cs
+│   │   └── SupplierControllerTests.cs
 ```
 
 ## API Endpoints
