@@ -19,10 +19,9 @@ BicycleStore to aplikacja stworzona przy użyciu ASP.NET Core, która zarządza 
 
 ## Instalacja
 
-1. Sklonuj repozytorium:
+1. Uruchamiając visual studio wybierz opcje Klonowania projektu oraz wklej poniższy link:
     ```sh
-    git clone https://github.com/LasekM/BicycleStore.git
-    cd BicycleStoreAPI
+    https://github.com/LasekM/BicycleStore.git
     ```
 
 2. Przygotuj plik konfiguracyjny:
@@ -30,9 +29,10 @@ BicycleStore to aplikacja stworzona przy użyciu ASP.NET Core, która zarządza 
 
 ## Migracje bazy danych
 
-Aby zastosować migracje bazy danych, uruchom następujące polecenie:
+Aby zastosować migracje bazy danych, uruchom następujące polecenie w każdym projekcie z bazą danych:
 
 ```sh
+dotnet ef migrations add Initial
 dotnet ef database update
 ```
 *do uruchomienia projektu można wykorzystać baze dołączoną z projektem.
