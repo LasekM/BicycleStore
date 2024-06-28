@@ -21,7 +21,7 @@ BicycleStore to aplikacja stworzona przy użyciu ASP.NET Core, która zarządza 
 
 1. Sklonuj repozytorium:
     ```sh
-    git clone https://github.com/TwojeRepo/BicycleStoreAPI.git
+    git clone https://github.com/LasekM/BicycleStore.git
     cd BicycleStoreAPI
     ```
 
@@ -38,10 +38,11 @@ dotnet ef database update
 *do uruchomienia projektu można wykorzystać baze dołączoną z projektem.
 
 ## Uruchamianie aplikacji
-Aby uruchomić aplikację, użyj polecenia:
-```sh
-dotnet run
-```
+Wybierz opcje w projekcie "Konfiguruj projekty startowe...", nastepnie wybierz wiele projektów startowych oraz zaznacz akcje "Uruchomienie" dla tych projektów:
+- BicycleStoreApi
+- JwtAuthApi
+- BicycleStore
+Zastosuj ustawienia. Projekt jest gotowy do uruchomienia!
 ## Struktura projektu
 
 ```plaintext
