@@ -42,7 +42,7 @@ Wybierz opcje w projekcie "Konfiguruj projekty startowe...", nastepnie wybierz w
 - BicycleStoreApi
 - JwtAuthApi
 - BicycleStore
-Zastosuj ustawienia. Projekt jest gotowy do uruchomienia!
+#### Zastosuj ustawienia. Projekt jest gotowy do uruchomienia!
 ## Struktura projektu
 
 ```plaintext
