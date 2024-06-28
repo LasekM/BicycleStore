@@ -32,7 +32,7 @@ namespace BicycleStore.Tests.Tests
         [Fact]
         public async Task Index_ReturnsViewResult_WithListOfBikes()
         {
-            // Arrange
+            
             var mockBikes = new List<Bike>
             {
                 new Bike { Id = 1, Model = "Bike1", Category = "Road", Price = 1000, SupplierID = 1 },
@@ -47,10 +47,10 @@ namespace BicycleStore.Tests.Tests
                 .Setup(handler => handler.MockSendAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(mockResponse);
 
-            // Act
+            
             var result = await _controller.Index();
 
-            // Assert
+            
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsAssignableFrom<List<Bike>>(viewResult.ViewData.Model);
             Assert.Equal(2, model.Count);
@@ -59,7 +59,7 @@ namespace BicycleStore.Tests.Tests
         [Fact]
         public async Task Details_ReturnsNotFound_WhenBikeIsNull()
         {
-            // Arrange
+            
             var mockResponse = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent("null")
@@ -69,17 +69,17 @@ namespace BicycleStore.Tests.Tests
                 .Setup(handler => handler.MockSendAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(mockResponse);
 
-            // Act
+            
             var result = await _controller.Details(1);
 
-            // Assert
+            
             Assert.IsType<NotFoundResult>(result);
         }
 
         [Fact]
         public async Task Details_ReturnsViewResult_WithBike()
         {
-            // Arrange
+            
             var mockBike = new Bike { Id = 1, Model = "Bike1", Category = "Road", Price = 1000, SupplierID = 1 };
             var mockResponse = new HttpResponseMessage(HttpStatusCode.OK)
             {
@@ -90,10 +90,10 @@ namespace BicycleStore.Tests.Tests
                 .Setup(handler => handler.MockSendAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(mockResponse);
 
-            // Act
+           
             var result = await _controller.Details(1);
 
-            // Assert
+            
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsAssignableFrom<Bike>(viewResult.ViewData.Model);
             Assert.Equal(mockBike.Id, model.Id);

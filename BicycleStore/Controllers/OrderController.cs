@@ -71,7 +71,7 @@ namespace BicycleStore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BikeId,OrderDate,UserName")] Order order)
         {
-            // Usunięcie walidacji dla Bike i Customer
+            
             ModelState.Remove("Bike");
             ModelState.Remove("Customer");
 
@@ -201,7 +201,7 @@ namespace BicycleStore.Controllers
                 return View();
             }
 
-            // Zaktualizuj stan roweru
+            
             bike.IsReserved = false;
             var updateBikeResponse = await _httpClient.PutAsJsonAsync($"https://localhost:7265/api/Bike/{bike.Id}", bike);
             if (!updateBikeResponse.IsSuccessStatusCode)
@@ -218,7 +218,7 @@ namespace BicycleStore.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Opcjonalnie: obsłuż sytuację, gdy usunięcie nie powiodło się
+           
             ModelState.AddModelError(string.Empty, "Failed to delete the order.");
             return View();
         }
@@ -235,7 +235,7 @@ namespace BicycleStore.Controllers
             var order = JsonConvert.DeserializeObject<Order>(jsonString);
             if (order == null || order.UserName != userName)
             {
-                return Unauthorized(); // Return unauthorized if the order does not belong to the current user
+                return Unauthorized(); 
             }
 
             return View(order);
@@ -249,7 +249,7 @@ namespace BicycleStore.Controllers
         {
             var userName = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
 
-            // Fetch the order to ensure it belongs to the current user
+           
             var orderResponse = await _httpClient.GetAsync($"https://localhost:7265/api/Order/{id}");
             if (!orderResponse.IsSuccessStatusCode)
             {
@@ -261,10 +261,10 @@ namespace BicycleStore.Controllers
             var order = JsonConvert.DeserializeObject<Order>(orderJsonString);
             if (order == null || order.UserName != userName)
             {
-                return Unauthorized(); // Return unauthorized if the order does not belong to the current user
+                return Unauthorized();
             }
 
-            // Retrieve and update the bike
+            
             var bike = await GetBikeById(order.BikeId);
             if (bike == null)
             {
@@ -280,7 +280,7 @@ namespace BicycleStore.Controllers
                 return View();
             }
 
-            // Delete the order
+            
             var response = await _httpClient.DeleteAsync($"https://localhost:7265/api/Order/{id}");
             if (response.IsSuccessStatusCode)
             {
@@ -310,8 +310,8 @@ namespace BicycleStore.Controllers
             var order = new Order
             {
                 BikeId = bikeId,
-                OrderDate = DateTime.Now.AddDays(2), // ustawienie daty na bieżącą datę plus dwa dni
-                UserName = userName // użytkownik pobrany z tokenu JWT
+                OrderDate = DateTime.Now.AddDays(2), 
+                UserName = userName 
             };
 
             ViewBag.Bikes = new SelectList(await GetAvailableBikes(), "Id", "Model", bikeId);
@@ -323,7 +323,7 @@ namespace BicycleStore.Controllers
         [Authorize]
         public async Task<IActionResult> ReserveConfirm([Bind("BikeId,OrderDate")] Order order)
         {
-            // Usunięcie walidacji dla Bike i Customer
+            
             ModelState.Remove("Bike");
             ModelState.Remove("Customer");
             ModelState.Remove("UserName");
@@ -402,9 +402,9 @@ namespace BicycleStore.Controllers
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
                     ViewBag.Message = "You have no orders.";
-                    return View(new List<Order>()); // zwróć pustą listę zamówień
+                    return View(new List<Order>()); 
                 }
-                response.EnsureSuccessStatusCode(); // rzuci wyjątek dla innych błędów
+                response.EnsureSuccessStatusCode(); 
             }
 
             var ordersJsonString = await response.Content.ReadAsStringAsync();
@@ -420,7 +420,7 @@ namespace BicycleStore.Controllers
         {
             var userName = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
 
-            // Fetch the order to ensure it belongs to the current user
+            
             var orderResponse = await _httpClient.GetAsync($"https://localhost:7265/api/Order/{id}");
             if (!orderResponse.IsSuccessStatusCode)
             {
@@ -430,12 +430,7 @@ namespace BicycleStore.Controllers
 
             var orderJsonString = await orderResponse.Content.ReadAsStringAsync();
             var order = JsonConvert.DeserializeObject<Order>(orderJsonString);
-            /*if (order == null || order.UserName != userName)
-            {
-                return Unauthorized(); // Return unauthorized if the order does not belong to the current user
-            }*/
-
-            // Retrieve and update the bike
+           
             var bike = await GetBikeById(order.BikeId);
             if (bike == null)
             {
@@ -443,7 +438,7 @@ namespace BicycleStore.Controllers
                 return View();
             }
 
-            // Delete the order
+           
             var response = await _httpClient.DeleteAsync($"https://localhost:7265/api/Order/{id}");
             if (!response.IsSuccessStatusCode)
             {

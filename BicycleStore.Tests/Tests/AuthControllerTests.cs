@@ -72,13 +72,13 @@ namespace BicycleStore.Tests.Tests
         [Fact]
         public async Task Login_Post_ReturnsViewResult_WithInvalidModelState()
         {
-            // Arrange
+
             _controller.ModelState.AddModelError("Username", "Required");
 
-            // Act
+   
             var result = await _controller.Login(new LoginModel());
 
-            // Assert
+          
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.False(_controller.ModelState.IsValid);
         }
@@ -86,15 +86,15 @@ namespace BicycleStore.Tests.Tests
         [Fact]
         public async Task Login_Post_ReturnsViewResult_WithInvalidLoginAttempt()
         {
-            // Arrange
+           
             var model = new LoginModel { Username = "user", Password = "password" };
 
             _handlerMock.SetupRequest(HttpMethod.Post, "https://localhost:7137/api/Auth/Login", new StringContent(string.Empty), HttpStatusCode.Unauthorized);
 
-            // Act
+           
             var result = await _controller.Login(model);
 
-            // Assert
+           
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Equal("Invalid login attempt.", _controller.ViewBag.ErrorMessage);
         }
@@ -102,13 +102,13 @@ namespace BicycleStore.Tests.Tests
         [Fact]
         public async Task Register_Post_ReturnsViewResult_WithInvalidModelState()
         {
-            // Arrange
+            
             _controller.ModelState.AddModelError("Username", "Required");
 
-            // Act
+           
             var result = await _controller.Register(new RegisterModel());
 
-            // Assert
+            
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.False(_controller.ModelState.IsValid);
         }
@@ -116,15 +116,15 @@ namespace BicycleStore.Tests.Tests
         [Fact]
         public async Task Register_Post_ReturnsRedirectToAction_WithValidRegistration()
         {
-            // Arrange
+            
             var model = new RegisterModel { Username = "user", Password = "password" };
 
             _handlerMock.SetupRequest(HttpMethod.Post, "https://localhost:7137/api/Auth/Register", new StringContent(string.Empty), HttpStatusCode.OK);
 
-            // Act
+            
             var result = await _controller.Register(model);
 
-            // Assert
+           
             var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Login", redirectToActionResult.ActionName);
         }
@@ -132,15 +132,15 @@ namespace BicycleStore.Tests.Tests
         [Fact]
         public async Task Register_Post_ReturnsViewResult_WithRegistrationFailed()
         {
-            // Arrange
+            
             var model = new RegisterModel { Username = "user", Password = "password" };
 
             _handlerMock.SetupRequest(HttpMethod.Post, "https://localhost:7137/api/Auth/Register", new StringContent(string.Empty), HttpStatusCode.BadRequest);
 
-            // Act
+            
             var result = await _controller.Register(model);
 
-            // Assert
+            
             var viewResult = Assert.IsType<ViewResult>(result);
             Assert.Equal("Registration failed.", _controller.ModelState[string.Empty].Errors[0].ErrorMessage);
         }
@@ -148,14 +148,14 @@ namespace BicycleStore.Tests.Tests
         [Fact]
         public async Task Logout_Post_RedirectsToIndex()
         {
-            // Arrange
+           
             _authServiceMock.Setup(s => s.SignOutAsync(_httpContextMock.Object, CookieAuthenticationDefaults.AuthenticationScheme, null))
                             .Returns(Task.CompletedTask);
 
-            // Act
+           
             var result = await _controller.Logout();
 
-            // Assert
+            
             var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Index", redirectToActionResult.ActionName);
         }

@@ -61,7 +61,7 @@ public class BikeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Bike bike)
     {
-        bike.IsReserved = false; // Ustawienie domyślnej wartości
+        bike.IsReserved = false; 
 
         if (ModelState.IsValid)
         {

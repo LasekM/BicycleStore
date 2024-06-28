@@ -38,21 +38,18 @@ namespace BicycleStore.Controllers
             {
                 var jsonResponse = await response.Content.ReadAsStringAsync();
 
-                // Debugging: Print out the jsonResponse
-                System.Diagnostics.Debug.WriteLine("API Response: " + jsonResponse);
+                
+               
 
                 var tokenDict = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonResponse);
 
-                // Debugging: Print out the dictionary keys
-                foreach (var key in tokenDict.Keys)
-                {
-                    System.Diagnostics.Debug.WriteLine("Key: " + key);
-                }
+                
+                
 
                 if (tokenDict.TryGetValue("token", out var token))
                 {
-                    // Print the JWT token to the console
-                    System.Diagnostics.Debug.WriteLine("JWT Token: " + token);
+                    
+                   
 
                     HttpContext.Session.SetString("JWToken", token);
 
@@ -62,18 +59,15 @@ namespace BicycleStore.Controllers
                     {
                         var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
 
-                        // Debugging: Print out the claims in the token
-                        foreach (var claim in jsonToken.Claims)
-                        {
-                            System.Diagnostics.Debug.WriteLine($"Claim Type: {claim.Type}, Value: {claim.Value}");
-                        }
+                        
+                       
 
                         var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, model.Username)
                 };
 
-                        // Add role claims from the token
+                        
                         if (jsonToken != null)
                         {
                             foreach (var claim in jsonToken.Claims)

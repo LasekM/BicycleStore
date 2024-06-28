@@ -32,7 +32,7 @@ namespace BicycleStore.Tests
         [Fact]
         public async Task Index_ReturnsViewResult_WithListOfSuppliers()
         {
-            // Arrange
+            
             var suppliers = new List<Supplier>
             {
                 new Supplier { Id = 1, Name = "Supplier1" },
@@ -42,10 +42,10 @@ namespace BicycleStore.Tests
 
             _handlerMock.SetupRequest(HttpMethod.Get, "https://localhost:7265/api/Supplier", responseContent, HttpStatusCode.OK);
 
-            // Act
+            
             var result = await _controller.Index();
 
-            // Assert
+            
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsAssignableFrom<List<Supplier>>(viewResult.ViewData.Model);
             Assert.Equal(2, model.Count);
@@ -54,16 +54,16 @@ namespace BicycleStore.Tests
         [Fact]
         public async Task Details_ReturnsViewResult_WithSupplier()
         {
-            // Arrange
+            
             var supplier = new Supplier { Id = 1, Name = "Supplier1" };
             var responseContent = new StringContent(JsonConvert.SerializeObject(supplier), Encoding.UTF8, "application/json");
 
             _handlerMock.SetupRequest(HttpMethod.Get, "https://localhost:7265/api/Supplier/1", responseContent, HttpStatusCode.OK);
 
-            // Act
+            
             var result = await _controller.Details(1);
 
-            // Assert
+            
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsAssignableFrom<Supplier>(viewResult.ViewData.Model);
             Assert.Equal(1, model.Id);
@@ -72,16 +72,16 @@ namespace BicycleStore.Tests
         [Fact]
         public async Task Create_Post_ReturnsRedirectToActionResult()
         {
-            // Arrange
+            
             var supplier = new Supplier { Id = 1, Name = "New Supplier" };
             var responseContent = new StringContent(string.Empty, Encoding.UTF8, "application/json");
 
             _handlerMock.SetupRequest(HttpMethod.Post, "https://localhost:7265/api/Supplier", responseContent, HttpStatusCode.Created);
 
-            // Act
+            
             var result = await _controller.Create(supplier);
 
-            // Assert
+            
             var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Index", redirectToActionResult.ActionName);
         }
@@ -89,16 +89,16 @@ namespace BicycleStore.Tests
         [Fact]
         public async Task Edit_Post_ReturnsRedirectToActionResult()
         {
-            // Arrange
+            
             var supplier = new Supplier { Id = 1, Name = "Updated Supplier" };
             var responseContent = new StringContent(string.Empty, Encoding.UTF8, "application/json");
 
             _handlerMock.SetupRequest(HttpMethod.Put, "https://localhost:7265/api/Supplier/1", responseContent, HttpStatusCode.NoContent);
 
-            // Act
+            
             var result = await _controller.Edit(supplier);
 
-            // Assert
+            
             var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Index", redirectToActionResult.ActionName);
         }
@@ -106,15 +106,15 @@ namespace BicycleStore.Tests
         [Fact]
         public async Task DeleteConfirmed_ReturnsRedirectToActionResult()
         {
-            // Arrange
+            
             var responseContent = new StringContent(string.Empty, Encoding.UTF8, "application/json");
 
             _handlerMock.SetupRequest(HttpMethod.Delete, "https://localhost:7265/api/Supplier/1", responseContent, HttpStatusCode.NoContent);
 
-            // Act
+            
             var result = await _controller.DeleteConfirmed(1);
 
-            // Assert
+            
             var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Index", redirectToActionResult.ActionName);
         }

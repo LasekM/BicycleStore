@@ -22,7 +22,7 @@ namespace BicycleStore.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Your custom model configurations
+            
         }
 
         public override int SaveChanges()
@@ -33,7 +33,7 @@ namespace BicycleStore.Data
             }
             catch (DbUpdateException ex)
             {
-                // Log the exception
+                
                 Console.WriteLine(ex.Message);
                 throw;
             }

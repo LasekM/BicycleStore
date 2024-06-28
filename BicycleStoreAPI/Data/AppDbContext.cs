@@ -24,11 +24,11 @@ namespace BicycleStoreAPI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Dane //
+            
 
             base.OnModelCreating(modelBuilder);
 
-            // Relacje
+           
             modelBuilder.Entity<Supplier>()
                .HasMany(supplier => supplier.Bikes)
                .WithOne(bike => bike.Supplier)
@@ -45,7 +45,7 @@ namespace BicycleStoreAPI.Data
                 .WithMany()
                 .HasForeignKey(o => o.BikeId);
 
-            // Przykładowe dane
+           
             modelBuilder.Entity<Supplier>().HasData(
                 new Supplier { Id = 1, Name = "Trek" },
                 new Supplier { Id = 2, Name = "Canyon" },
@@ -276,7 +276,7 @@ namespace BicycleStoreAPI.Data
             }
             catch (DbUpdateException ex)
             {
-                // Log the exception
+                
                 Console.WriteLine(ex.Message);
                 throw;
             }

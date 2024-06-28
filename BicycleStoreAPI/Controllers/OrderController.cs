@@ -49,7 +49,7 @@ public class OrderController : ControllerBase
 
         try
         {
-            // Logowanie danych wejściowych
+            
             _logger.LogInformation("Creating order for BikeId: {BikeId}, UserName: {UserName}, OrderDate: {OrderDate}", orderDto.BikeId, orderDto.UserName, orderDto.OrderDate);
 
             var bike = await _context.Bikes.FindAsync(orderDto.BikeId);
@@ -77,7 +77,7 @@ public class OrderController : ControllerBase
                 BikeId = orderDto.BikeId,
                 CustomerId = customer.CustomerId,
                 OrderDate = orderDto.OrderDate,
-                UserName = orderDto.UserName // Dodano przypisanie UserName
+                UserName = orderDto.UserName 
             };
 
             _context.Orders.Add(order);
@@ -88,7 +88,7 @@ public class OrderController : ControllerBase
         }
         catch (Exception ex)
         {
-            // Log error
+            
             _logger.LogError(ex, "Error creating order");
             return StatusCode(500, "Internal server error");
         }
